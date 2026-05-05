@@ -29,8 +29,6 @@ from Curse.utils.custom_filters import command
 from Curse.utils.extract_user import extract_user
 from Curse.utils.parser import mention_markdown
 
-OWNER_ID = 7321657753
-
 def can_change_type(curr, to_user):
     if curr == "dev" and to_user in ["whitelist","sudo"]:
         return True

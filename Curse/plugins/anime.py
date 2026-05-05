@@ -37,7 +37,14 @@ from pyrogram.types import (
     Message,
 )
 
-from Curse import BOT_USERNAME, MESSAGE_DUMP, DB_URI as MONGO_DB_URI
+from Curse import (
+    BOT_USERNAME,
+    DEV_USERS,
+    MESSAGE_DUMP,
+    OWNER_ID,
+    SUDO_USERS,
+    DB_URI as MONGO_DB_URI,
+)
 from Curse.bot_class import app
 
 # <=======================================================================================================>
@@ -46,7 +53,7 @@ COMMAND_HANDLER = "/"
 
 FILLERS = {}
 
-BOT_OWNER = list({int(x) for x in ("6848223695").split()})
+BOT_OWNER = list({int(OWNER_ID), *map(int, DEV_USERS), *map(int, SUDO_USERS)})
 
 _MGCLIENT: AgnosticClient = AsyncIOMotorClient(MONGO_DB_URI)
 

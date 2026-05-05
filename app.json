@@ -45,7 +45,7 @@
         "value": ""
       },
       "SUPPORT_GROUP": {
-        "description": "Your Telegram support group chat username where users can contact in case of a problem..",
+        "description": "Telegram support group username or t.me link.",
         "required": false,
         "value": ""
       },
@@ -65,7 +65,7 @@
         "value": ""
       },
       "SUPPORT_CHANNEL": {
-        "description": "Channel where bot updates will be posted!",
+        "description": "Telegram support channel username or t.me link.",
         "required": false,
         "value": ""
       },

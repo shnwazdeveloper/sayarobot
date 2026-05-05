@@ -26,6 +26,15 @@ def _get_int_list(name, default=""):
     return [int(item) for item in raw.replace(",", " ").split() if item.strip()]
 
 
+def _get_telegram_username(name, default=""):
+    value = (_get_str(name, default=default) or "").strip()
+    for prefix in ("https://t.me/", "http://t.me/", "t.me/"):
+        if value.startswith(prefix):
+            value = value[len(prefix):]
+            break
+    return value.strip("/").lstrip("@")
+
+
 class SupportClass:
     def __init__(self, name):
         self.name = name
@@ -54,8 +63,8 @@ class Config:
     BDB_URI = _get_str("BDB_URI")
     NO_LOAD = _get_str("NO_LOAD", default="").split()
     PREFIX_HANDLER = _get_str("PREFIX_HANDLER", default="/ !").split()
-    SUPPORT_GROUP = _get_str("SUPPORT_GROUP", default="")
-    SUPPORT_CHANNEL = _get_str("SUPPORT_CHANNEL", default="")
+    SUPPORT_GROUP = _get_telegram_username("SUPPORT_GROUP")
+    SUPPORT_CHANNEL = _get_telegram_username("SUPPORT_CHANNEL")
     WORKERS = _get_int("WORKERS", default=8)
     TIME_ZONE = _get_str("TIME_ZONE", default="Asia/Kolkata")
     BOT_USERNAME = _get_str("BOT_USERNAME")

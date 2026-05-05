@@ -6,9 +6,7 @@ from pyrogram.types import Message
 
 from Curse.bot_class import pbot  # your Client instance
 from Curse.database.chats_db import Chats   # helper
-from Curse import SUDO_USERS                # list[int]
-
-C_OWNER = 7321657753                       # super‑admin for /pcast
+from Curse import OWNER_ID
 
 # ─────────────────────────────────────────────────────────────
 # Helper wrappers to auto‑handle FloodWait
@@ -47,7 +45,7 @@ async def _safe_send(client: Client, chat_id: int, text: str,
 # ─────────────────────────────────────────────────────────────
 @pbot.on_message(
     filters.command("pcast") &
-    filters.user(C_OWNER),
+    filters.user(OWNER_ID),
     group=12345)
 async def broadcast_post(_, message: Message):
     if not message.reply_to_message:

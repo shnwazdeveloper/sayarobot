@@ -24,6 +24,19 @@ DB_URI=
 DB_NAME=sayarobot
 ```
 
+Optional admin/support variables:
+
+```env
+DEV_USERS=
+SUDO_USERS=
+WHITELIST_USERS=
+SUPPORT_GROUP=YourMoreBotsChannel
+SUPPORT_CHANNEL=YourMoreBotsChannel
+```
+
+`SUPPORT_GROUP` and `SUPPORT_CHANNEL` can be either a Telegram username
+without `@` or a `https://t.me/...` link; the bot normalizes links at startup.
+
 Optional chatbot variables:
 
 ```env
