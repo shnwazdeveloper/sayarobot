@@ -46,7 +46,6 @@ pybase64
 datetime
 pySmartDL
 nekos.py
-Python_ARQ
 rich
 gtts
 openai==0.28.0

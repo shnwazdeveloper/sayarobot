@@ -38,8 +38,6 @@ Client ID and Client Secret are not used by this bot.
 Optional API integrations:
 
 ```env
-ARQ_API_KEY=
-ARQ_API_URL=arq.hamker.dev
 IMGBB_API_KEY=
 ```
 
