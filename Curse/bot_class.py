@@ -3,6 +3,7 @@ from threading import RLock
 from time import gmtime, strftime, time
 
 from pyrogram import Client, __version__
+from pyrogram.errors import RPCError
 from pyrogram.raw.all import layer
 from pyrogram.types import BotCommand
 
@@ -17,6 +18,52 @@ from Curse.supports import *
 from Curse.vars import Config
 
 INITIAL_LOCK = RLock()
+TOKEN_ERROR_NAMES = {
+    "AccessTokenExpired",
+    "AccessTokenInvalid",
+    "BotTokenInvalid",
+    "TokenInvalid",
+}
+CONFIG_ERROR_NAMES = {"ApiIdInvalid", "ApiIdPublishedFlood"}
+
+
+def _log_pyrogram_start_error(client_name, exc):
+    error_name = exc.__class__.__name__
+    details = str(exc).strip()
+    normalized_error = f"{error_name} {details}".upper()
+    if (
+        error_name in TOKEN_ERROR_NAMES
+        or "ACCESS_TOKEN" in normalized_error
+        or "BOT_TOKEN" in normalized_error
+    ):
+        LOGGER.error(
+            "%s login failed: Telegram rejected BOT_TOKEN (%s).",
+            client_name,
+            error_name,
+        )
+        LOGGER.error(
+            "Fix Railway variable BOT_TOKEN with the full token from @BotFather, not a Genius/OAuth token."
+        )
+        return
+    if error_name in CONFIG_ERROR_NAMES:
+        LOGGER.error(
+            "%s login failed: check API_ID and API_HASH in Railway (%s).",
+            client_name,
+            error_name,
+        )
+        return
+    if details:
+        LOGGER.error("%s login failed with %s: %s", client_name, error_name, details)
+    else:
+        LOGGER.error("%s login failed with %s.", client_name, error_name)
+
+
+async def _run_pyrogram_start(start_call, client_name):
+    try:
+        await start_call()
+    except RPCError as exc:
+        _log_pyrogram_start_error(client_name, exc)
+        raise SystemExit(1) from exc
 
 # Check if MESSAGE_DUMP is correct
 if MESSAGE_DUMP == -100 or not str(MESSAGE_DUMP).startswith("-100"):
@@ -43,8 +90,8 @@ class app(Client):
 
     async def start(self):
         """Start the bot."""
-        await pbot.start()
-        await super().start()
+        await _run_pyrogram_start(pbot.start, "Auxiliary Pyrogram client")
+        await _run_pyrogram_start(super().start, "Main Pyrogram client")
         await self.set_bot_commands(
             [
                 BotCommand("start", "Sᴛᴀʀᴛ's Tʜᴇ Bᴏᴛ"),

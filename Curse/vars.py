@@ -1,4 +1,5 @@
 from os import getcwd
+from re import fullmatch
 from urllib.parse import urlsplit
 
 from prettyconf import Configuration
@@ -8,12 +9,26 @@ from prettyconf.loaders import EnvFile, Environment
 def _get_str(name, default=None, required=False):
     value = config(name, default=default)
     if isinstance(value, str):
-        value = value.strip()
+        value = value.strip().strip('"').strip("'")
     if value in (None, ""):
         if required:
             raise RuntimeError(f"{name} environment variable is required")
         return default
     return value
+
+
+def _get_bot_token(name):
+    token = _get_str(name, required=True)
+    placeholders = {"your_bot_token", "bot_token", "none", "null"}
+    if token.lower() in placeholders or "..." in token:
+        raise RuntimeError(
+            f"{name} is a placeholder. Create a bot token with @BotFather and set the full token in Railway."
+        )
+    if not fullmatch(r"\d{5,12}:[A-Za-z0-9_-]{30,}", token):
+        raise RuntimeError(
+            f"{name} is not a valid Telegram bot token. Use the full @BotFather token like 123456789:AA..."
+        )
+    return token
 
 
 def _get_int(name, default=0, required=False):
@@ -98,7 +113,7 @@ config = Configuration(loaders=[Environment(), EnvFile(filename=env_file)])
 class Config:
     """Config class for variables."""
     LOGGER = True
-    BOT_TOKEN = _get_str("BOT_TOKEN", required=True)
+    BOT_TOKEN = _get_bot_token("BOT_TOKEN")
     API_ID = _get_int("API_ID", required=True)
     API_HASH = _get_str("API_HASH", required=True)
     OWNER_ID = _get_int("OWNER_ID", default=0)
