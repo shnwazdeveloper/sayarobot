@@ -596,20 +596,8 @@ NO       NO   NONONO            NONO
 ]
 
 StartPic = [
-    "https://files.catbox.moe/01qfx5.jpg",
-    "https://files.catbox.moe/n3xguv.jpg",
-    "https://files.catbox.moe/q62k7u.jpg",
-    "https://files.catbox.moe/j9xeqj.jpg",
-    "https://files.catbox.moe/57sgfw.jpg",
-    "https://files.catbox.moe/55w9ys.jpg",
-    "https://files.catbox.moe/9uttu2.jpg",
-    "https://files.catbox.moe/3gjcjb.jpg",
-    "https://files.catbox.moe/l9prwm.jpg",
-    "https://files.catbox.moe/eea2ka.jpg",
-    "https://files.catbox.moe/z6yd23.jpg",
-    "https://files.catbox.moe/fsq2hg.jpg",
-    "https://files.catbox.moe/2j80lj.jpg",
-    "https://files.catbox.moe/qswx90.jpg",
+    "https://files.catbox.moe/zq3yuw.jpg",
+    "https://files.catbox.moe/f2v55k.jpg",
 ]
 
 
