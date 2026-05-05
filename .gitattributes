@@ -1,0 +1,8 @@
+* text=auto eol=lf
+
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.otf binary
+*.png binary
+*.ttf binary

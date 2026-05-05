@@ -1,0 +1,17 @@
+.git
+.github
+.env
+.venv
+env
+venv
+__pycache__
+*.pyc
+*.pyo
+*.session
+*.session-journal
+Curse/logs
+logs
+.pytest_cache
+.mypy_cache
+.pyre
+downloads

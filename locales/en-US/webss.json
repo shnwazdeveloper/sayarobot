@@ -1,0 +1,6 @@
+{
+    "no_url": "Give A Url To Fetch Screenshot.",
+    "wait_str": "Capturing screenshot...",
+    "str_credit": "▶ 𝗛𝗲𝗿𝗲 𝗶𝘀 𝘆𝗼𝘂𝗿 𝘀𝗰𝗿𝗲𝗲𝗻𝘀𝗵𝗼𝘁",
+    "ss_failed_str": "Failed To Take Screenshot. {err}"
+}
