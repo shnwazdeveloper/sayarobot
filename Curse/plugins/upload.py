@@ -9,7 +9,7 @@ from telegraph.upload import upload_file
 
 from Curse.bot_class import app
 
-IMGBB_API_KEY = "efff7635b1e23d8ce31793d9fb6da1e3"
+IMGBB_API_KEY = os.environ.get("IMGBB_API_KEY", "")
 MAX_TGRAPH_SIZE = 5 * 1024 * 1024
 
 async def _dl_media(client, msg, status):
@@ -64,4 +64,3 @@ async def envs_upload(c, m: Message):
                 await _cleanup(fp)
         except Exception as e:
             await status.edit(f"❌ envs.sh error: `{e}`")
-

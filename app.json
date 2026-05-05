@@ -80,7 +80,22 @@
         "value": ""
       },
       "GENIUS_API" : {
-        "description": "Your Lyrics Genius Api Token. To fetch lyrics of songs",
+        "description": "Your Genius Client Access Token. Used to fetch lyrics.",
+        "required": false,
+        "value": ""
+      },
+      "ARQ_API_KEY": {
+        "description": "Optional ARQ API key for ARQ-backed features.",
+        "required": false,
+        "value": ""
+      },
+      "ARQ_API_URL": {
+        "description": "Optional ARQ API host.",
+        "required": false,
+        "value": "arq.hamker.dev"
+      },
+      "IMGBB_API_KEY": {
+        "description": "Optional ImgBB API key for /imgbb uploads.",
         "required": false,
         "value": ""
       },
