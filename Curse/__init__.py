@@ -86,12 +86,6 @@ else:
     is_genius_lyrics = False
     genius_lyrics = None
 
-# API for Audd and RMBG
-is_audd = bool(Config.AuDD_API)
-Audd = Config.AuDD_API if is_audd else None
-if is_audd:
-    LOGGER.info("Found Audd API")
-
 is_rmbg = bool(Config.RMBG_API)
 RMBG = Config.RMBG_API if is_rmbg else None
 

@@ -44,7 +44,6 @@ class Config:
     API_HASH = _get_str("API_HASH", required=True)
     OWNER_ID = _get_int("OWNER_ID", default=0)
     MESSAGE_DUMP = _get_int("MESSAGE_DUMP", required=True)
-    AuDD_API = _get_str("AuDD_API")
     DEV_USERS = _get_int_list("DEV_USERS")
     SUDO_USERS = _get_int_list("SUDO_USERS")
     WHITELIST_USERS = _get_int_list("WHITELIST_USERS")

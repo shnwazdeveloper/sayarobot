@@ -77,7 +77,6 @@ __HELP__ = """
 Upload media/text to various services:
 
 🌍 **Media Uploaders**
-• `/imgbb` – Upload photos to imgBB
 • `/envs` – Upload any file or text to envs.sh
 • `/catbox` – Upload file to catbox.moe (no DMCA)
 

@@ -84,11 +84,6 @@
         "required": false,
         "value": ""
       },
-      "IMGBB_API_KEY": {
-        "description": "Optional ImgBB API key for /imgbb uploads.",
-        "required": false,
-        "value": ""
-      },
       
       "BDB_URI": {
         "description": "Your Mongodb uri different from the previous one to store more info",

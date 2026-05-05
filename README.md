@@ -35,11 +35,5 @@ CHATBOT_DB_NAME=sayarobot
 For lyrics, set `GENIUS_API` to your Genius Client Access Token. The Genius
 Client ID and Client Secret are not used by this bot.
 
-Optional API integrations:
-
-```env
-IMGBB_API_KEY=
-```
-
 `MESSAGE_DUMP` must be a Telegram supergroup or channel id that starts with
 `-100`, and the bot must be able to send messages there.
