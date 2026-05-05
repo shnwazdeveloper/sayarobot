@@ -41,6 +41,7 @@ Optional chatbot variables:
 
 ```env
 GEMINI_API_KEY=
+GEMINI_MODEL=gemini-2.5-flash
 CHATBOT_DB_URI=
 CHATBOT_DB_NAME=sayarobot
 ```

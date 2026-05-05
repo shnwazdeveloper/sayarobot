@@ -1,7 +1,8 @@
 import random
 from os import environ
 
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 from pymongo import MongoClient
 
 from pyrogram import filters
@@ -13,17 +14,14 @@ from Curse.utils.custom_filters import admin_check_func
 from Curse.vars import Config
 
 GEMINI_API_KEY = environ.get("GEMINI_API_KEY")
+GEMINI_MODEL = environ.get("GEMINI_MODEL") or "gemini-2.5-flash"
 CHATBOT_DB_URI = environ.get("CHATBOT_DB_URI") or Config.BDB_URI or Config.DB_URI
 CHATBOT_DB_NAME = environ.get("CHATBOT_DB_NAME") or Config.DB_NAME or "sayarobot"
 
 if GEMINI_API_KEY:
-    genai.configure(api_key=GEMINI_API_KEY)
-    model = genai.GenerativeModel(
-        "gemini-1.5-flash",
-        generation_config=genai.GenerationConfig(temperature=0.85),
-    )
+    gemini_client = genai.Client(api_key=GEMINI_API_KEY)
 else:
-    model = None
+    gemini_client = None
 
 if CHATBOT_DB_URI:
     mongo = MongoClient(CHATBOT_DB_URI)[CHATBOT_DB_NAME]
@@ -67,7 +65,7 @@ async def chatbot_toggle(client, msg: Message):
     if not await admin_check_func(client, None, msg):
         return
 
-    if model is None or chatbot_chats is None:
+    if gemini_client is None or chatbot_chats is None:
         return await msg.reply(
             "Chatbot needs GEMINI_API_KEY and DB_URI or CHATBOT_DB_URI configured.",
         )
@@ -91,7 +89,7 @@ async def chatbot_toggle(client, msg: Message):
 
 @app.on_message(filters.text & filters.group, group=3501)
 async def chatbot_reply(client, msg: Message):
-    if model is None or chatbot_chats is None:
+    if gemini_client is None or chatbot_chats is None:
         return
 
     if not msg.reply_to_message or not msg.reply_to_message.from_user:
@@ -110,8 +108,10 @@ async def chatbot_reply(client, msg: Message):
     await client.send_chat_action(msg.chat.id, ChatAction.TYPING)
 
     try:
-        resp = await model.generate_content_async(
-            f"{_chatbot_prompt()}\nUser: {msg.text.strip()}",
+        resp = await gemini_client.aio.models.generate_content(
+            model=GEMINI_MODEL,
+            contents=f"{_chatbot_prompt()}\nUser: {msg.text.strip()}",
+            config=types.GenerateContentConfig(temperature=0.85),
         )
         reply_text = (resp.text or "").strip() if resp else random.choice(FALLBACKS)
 
