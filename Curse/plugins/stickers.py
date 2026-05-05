@@ -28,7 +28,7 @@ from pyrogram.types import InlineKeyboardMarkup
 from pyrogram.types import InlineKeyboardMarkup as IKM
 from pyrogram.types import Message
 
-from Curse import MESSAGE_DUMP
+from Curse import MESSAGE_DUMP, PREFIX_HANDLER
 from Curse.bot_class import app
 from Curse.extras.https import fetch
 from Curse.extras.localization import use_chat_lang
@@ -48,7 +48,7 @@ def get_emoji_regex():
     pattern_ = f"({'|'.join(e_sort)})"
     return re.compile(pattern_)
 
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 EMOJI_PATTERN = get_emoji_regex()
 SUPPORTED_TYPES = ["jpeg", "png", "webp"]
 

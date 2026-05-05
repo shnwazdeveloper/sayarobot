@@ -140,5 +140,5 @@ The bot will alert you whenever:
 🔁 A user changes their username  
 🔁 A user changes their first or last name
 
-Admins only. Powered by HarryX!
+Admins only. Powered by your bot!
 """

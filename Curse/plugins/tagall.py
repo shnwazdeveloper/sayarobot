@@ -5,10 +5,11 @@ from pyrogram import Client, filters, enums
 from pyrogram.errors import FloodWait, RPCError
 from pyrogram.types import Message, ChatPermissions, InlineKeyboardButton, InlineKeyboardMarkup
 
+from Curse import PREFIX_HANDLER
 from Curse.bot_class import pbot as app
 from Curse.extras.status import user_admin
 
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 SPAM_CHATS = []
 
 # chat_id -> task flag (True means spamming)

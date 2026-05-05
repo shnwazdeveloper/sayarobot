@@ -19,10 +19,6 @@ from Curse.database.toggle_mongo import dwelcome_off, dwelcome_on, is_dwelcome_o
 from Curse.extras.utils import temp
 from Curse.utils.custom_filters import admin_filter
 
-BOT_USERNAME = "Harry_Roxbot"
-LOG_CHANNEL = -1002324687097
-
-
 def circle(pfp, size=(250, 250)):
     pfp = pfp.resize(size, Image.ANTIALIAS).convert("RGBA")
     bigsize = (pfp.size[0] * 3, pfp.size[1] * 3)

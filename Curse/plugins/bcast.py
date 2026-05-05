@@ -1,11 +1,11 @@
 import asyncio
-from contextlib import suppress
 from pyrogram import Client, filters
 from pyrogram.errors import FloodWait, RPCError
 from pyrogram.types import Message
 
-from Curse.bot_class import pbot  # your Client instance
-from Curse.database.chats_db import Chats   # helper
+from Curse.bot_class import pbot
+from Curse.database.chats_db import Chats
+from Curse.database.users_db import Users
 from Curse import OWNER_ID
 
 # ─────────────────────────────────────────────────────────────
@@ -76,7 +76,7 @@ async def broadcast_post(_, message: Message):
 
     # --- broadcast to users ----------------------------------
     if target_users:
-        user_ids = Chats.list_users_by_id()
+        user_ids = [user["_id"] for user in Users.list_users()]
         text = "📢 New broadcast message:"
         for uid in user_ids:
             ok = await _safe_send(pbot, uid, text, reply_id=src_msg_id)

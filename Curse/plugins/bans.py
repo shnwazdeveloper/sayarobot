@@ -18,7 +18,7 @@ from pyrogram.types import (
     Message,
 )
 
-from Curse import LOGGER, MESSAGE_DUMP, OWNER_ID
+from Curse import LOGGER, MESSAGE_DUMP, OWNER_ID, PREFIX_HANDLER
 from Curse.bot_class import app
 from Curse.supports import get_support_staff
 from Curse.utils.caching import ADMIN_CACHE, admin_cache_reload
@@ -30,7 +30,7 @@ from Curse.utils.string import extract_time
 from Curse.vars import Config
 
 SUPPORT_STAFF = get_support_staff()
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 
 @app.on_message(filters.command(["tban"], C_HANDLER) & restrict_filter)
 async def tban_usr(c: app, m: Message):

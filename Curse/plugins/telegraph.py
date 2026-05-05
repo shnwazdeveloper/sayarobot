@@ -2,18 +2,23 @@ import os
 import requests
 import aiohttp
 import aiofiles
-from datetime import datetime
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-from telegraph import Telegraph, upload_file
-from Curse.bot_class import app
+from pyrogram import filters
 from pyrogram.types import Message
+from telegraph import Telegraph
+from urllib.parse import quote_plus
+
+from Curse import RMBG
+from Curse.bot_class import app
+from Curse.vars import Config
 
 telegraph = Telegraph()
 
 # Remove Background Function
 async def RemoveBG(input_file_name):
-    headers = {"X-API-Key": "u4x2416NAQVefYsfwbzrw7VE"}  # Replace with your key
+    if not RMBG:
+        return False, {"errors": [{"title": "RMBG_API is not configured"}]}
+
+    headers = {"X-API-Key": RMBG}
     async with aiohttp.ClientSession() as session:
         with open(input_file_name, 'rb') as f:
             data = aiohttp.FormData()
@@ -54,13 +59,19 @@ async def rmbg_handler(bot, message):
 # /write Command
 @app.on_message(filters.command("write"), group=383982)
 async def write_handler(_, message: Message):
-    text = message.reply_to_message.text if message.reply_to_message else message.text.split(None, 1)[1]
+    if message.reply_to_message and message.reply_to_message.text:
+        text = message.reply_to_message.text
+    elif len(message.command) > 1:
+        text = message.text.split(None, 1)[1]
+    else:
+        return await message.reply_text("Reply to text or use `/write <text>`.")
+
     m = await message.reply_text("Writing your text... ✍️")
-    response = requests.get(f"https://apis.xditya.me/write?text={text}").url
+    response = requests.get(f"https://apis.xditya.me/write?text={quote_plus(text)}").url
     caption = f"""
 ✨ ᴛᴇxᴛ ᴡʀɪᴛᴛᴇɴ sᴜᴄᴄᴇssғᴜʟʟʏ
 
-❤️ ʙᴏᴛ: [ʜᴀʀʀʏメᴘᴏᴛᴛᴇʀ](https://t.me/harry_RoxBot)
+❤️ ʙᴏᴛ: [{Config.BOT_NAME}](https://t.me/{Config.BOT_USERNAME})
 ✨ ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ: {message.from_user.mention}
 """
     await m.delete()

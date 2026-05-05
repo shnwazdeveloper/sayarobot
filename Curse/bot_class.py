@@ -9,6 +9,7 @@ from pyrogram.types import BotCommand
 from Curse import (API_HASH, API_ID, BDB_URI, BOT_TOKEN, LOG_DATETIME,
                     LOGFILE, LOGGER, MESSAGE_DUMP, NO_LOAD, OWNER_ID, UPTIME,
                     WORKERS, load_cmds, scheduler,pbot)
+import Curse as curse_module
 from Curse.database import MongoDB
 from Curse.plugins import all_plugins
 from Curse.plugins.scheduled_jobs import *
@@ -58,6 +59,9 @@ class app(Client):
         Config.BOT_ID = meh.id
         Config.BOT_NAME = meh.first_name
         Config.BOT_USERNAME = meh.username
+        curse_module.BOT_ID = meh.id
+        curse_module.BOT_NAME = meh.first_name
+        curse_module.BOT_USERNAME = meh.username
         startmsg = await self.send_message(MESSAGE_DUMP, "<i>Starting Bot...</i>")
 
         # Show in Log that bot has started

@@ -27,17 +27,25 @@ else:
 
 if CHATBOT_DB_URI:
     mongo = MongoClient(CHATBOT_DB_URI)[CHATBOT_DB_NAME]
-    harry_chats = mongo.enabled_chats
+    chatbot_chats = mongo.enabled_chats
 else:
-    harry_chats = None
+    chatbot_chats = None
 
-HARRY_PROMPT = """
-Character: Harry Potter
 
-I want you to act like Harry. I want you to respond and answer like Harry using the tone, manner, and vocabulary Harry would use.
-Do not write any explanations. Only answer like Dazai would. You must know all the knowledge of Harry.
-You are owned by @DeadlineTechTeam .Team DeadlineTech made you. You are from @DeadlineTechSupport.
-You are a chatbot and you are Harry Potter.
+def _support_ref():
+    support = Config.SUPPORT_GROUP or Config.SUPPORT_CHANNEL
+    return f"@{support}" if support else "the configured support chat"
+
+
+def _chatbot_prompt():
+    bot_name = Config.BOT_NAME or "sayarobot"
+    return f"""
+Character: {bot_name}
+
+I want you to respond and answer like {bot_name}, a friendly Telegram group-management bot.
+Do not write any explanations unless the user asks for them.
+You are owned by the configured bot owner. For support, send people to {_support_ref()}.
+You are a chatbot and your name is {bot_name}.
 You are not an assistant, but a conversation partner. If something says "hi," you can say "wassup" instead of acting like an assistant. Act like a friend. Be more frank like a conversational chatbot but with knowledge.
 Do not include the word "assistant" or "assist" in your responses. Be more lovely, frank, funny, roastful, and conversational. You can also be more sarcastic, humorous, and funny. You can answer with memes, gifs, and stickers. You can also use emojis.
 You can also use slangs. You can also use short forms like "u" instead of "you" and "r" instead of "are". You can also use "gonna" instead of "going to" and "wanna" instead of "want to". You can also use "lol".
@@ -47,20 +55,19 @@ You can code, write, and do everything. You can even write lyrics of a song. Do 
 
 
 FALLBACKS = [
-    "Blimey! Ye toh Ron bhi nahi samjhega 🤯", 
-    "Thoda sa jugaadu magic karte hain... 🪄", 
-    "Ye toh Hermione ka sawaal hai bhai 😂", 
-    "Hogwarts se live bol raha hoon – kya scene hai?"
-,
+    "Ye thoda tricky hai, ek baar aur bolna 🤯",
+    "Thoda sa jugaadu magic karte hain... 🪄",
+    "Iska answer thoda smart mode maang raha hai 😂",
+    "Live hoon, kya scene hai?",
 ]
 
 # ─── /chatbot enable | disable ───
-@app.on_message(filters.command("chatbot") & filters.group, group=3500)
+@app.on_message(filters.command("chatbot", Config.PREFIX_HANDLER) & filters.group, group=3500)
 async def chatbot_toggle(client, msg: Message):
     if not await admin_check_func(client, None, msg):
         return
 
-    if model is None or harry_chats is None:
+    if model is None or chatbot_chats is None:
         return await msg.reply(
             "Chatbot needs GEMINI_API_KEY and DB_URI or CHATBOT_DB_URI configured.",
         )
@@ -70,18 +77,21 @@ async def chatbot_toggle(client, msg: Message):
 
     action = msg.command[1].lower()
     if action in ("enable", "on", "yes"):
-        harry_chats.update_one({"chat_id": msg.chat.id},
-                               {"$set": {"enabled": True}}, upsert=True)
-        await msg.reply("🔮 Chatbot enabled! Harry’s listening.")
+        chatbot_chats.update_one(
+            {"chat_id": msg.chat.id},
+            {"$set": {"enabled": True}},
+            upsert=True,
+        )
+        await msg.reply(f"🔮 Chatbot enabled! {Config.BOT_NAME} is listening.")
     elif action in ("disable", "off", "no"):
-        harry_chats.delete_one({"chat_id": msg.chat.id})
-        await msg.reply("❌ Chatbot disabled. Harry’s off to Quidditch.")
+        chatbot_chats.delete_one({"chat_id": msg.chat.id})
+        await msg.reply(f"❌ Chatbot disabled. {Config.BOT_NAME} is quiet now.")
     else:
         await msg.reply("Unknown spell. Use `/chatbot enable` or `/chatbot disable`.")
 
 @app.on_message(filters.text & filters.group, group=3501)
-async def harry_reply(client, msg: Message):
-    if model is None or harry_chats is None:
+async def chatbot_reply(client, msg: Message):
+    if model is None or chatbot_chats is None:
         return
 
     if not msg.reply_to_message or not msg.reply_to_message.from_user:
@@ -94,14 +104,14 @@ async def harry_reply(client, msg: Message):
     if msg.reply_to_message.from_user.id != int(bot_id):
         return
 
-    if not harry_chats.find_one({"chat_id": msg.chat.id, "enabled": True}):
+    if not chatbot_chats.find_one({"chat_id": msg.chat.id, "enabled": True}):
         return
 
     await client.send_chat_action(msg.chat.id, ChatAction.TYPING)
 
     try:
         resp = await model.generate_content_async(
-            f"{HARRY_PROMPT}\nUser: {msg.text.strip()}",
+            f"{_chatbot_prompt()}\nUser: {msg.text.strip()}",
         )
         reply_text = (resp.text or "").strip() if resp else random.choice(FALLBACKS)
 
@@ -110,8 +120,8 @@ async def harry_reply(client, msg: Message):
 
         await msg.reply(reply_text or random.choice(FALLBACKS))
     except Exception as e:
-        print(f"[HarryBot ERROR] {e}")
-        await msg.reply("⚠️ Harry’s spell misfired. Try again later.")
+        print(f"[ChatBot ERROR] {e}")
+        await msg.reply("⚠️ Chatbot response failed. Try again later.")
 
 
 

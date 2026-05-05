@@ -16,7 +16,7 @@ from pyrogram.errors import (
 )
 from pyrogram.types import ChatPrivileges, Message
 
-from Curse import LOGGER, OWNER_ID
+from Curse import LOGGER, OWNER_ID, PREFIX_HANDLER
 from Curse.bot_class import app
 
 # imports
@@ -44,7 +44,7 @@ from Curse.utils.parser import mention_html
 from Curse.vars import Config
 
 SUPPORT_STAFF = get_support_staff()
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 
 @app.on_message(filters.command(["adminlist"], C_HANDLER) & admin_filter)
 async def adminlist_show(_, m: Message):

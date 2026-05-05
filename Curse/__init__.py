@@ -26,7 +26,7 @@ file_handler = FileHandler(filename=LOGFILE)
 stdout_handler = StreamHandler(stdout)
 
 basicConfig(
-    format="%(asctime)s - [Tosu] - %(levelname)s - %(message)s",
+    format="%(asctime)s - [sayarobot] - %(levelname)s - %(message)s",
     level=INFO,
     handlers=[file_handler, stdout_handler],
 )
@@ -62,7 +62,7 @@ VERSION = sorted(version_files)[-1][8:-3] if version_files else "unknown"
 PYTHON_VERSION = python_version()
 PYROGRAM_VERSION = pyrogram.__version__
 LOGGER.info("------------------------")
-LOGGER.info("|      Tosu     |")
+LOGGER.info(f"|      {Config.BOT_NAME}     |")
 LOGGER.info("------------------------")
 LOGGER.info(f"Version: {VERSION}")
 LOGGER.info(f"Owner: {str(Config.OWNER_ID)}")
@@ -116,7 +116,7 @@ DB_URI = Config.DB_URI
 DB_NAME = Config.DB_NAME
 NO_LOAD = Config.NO_LOAD
 WORKERS = Config.WORKERS
-BDB_URI = Config.BDB_URI
+BDB_URI = Config.BDB_URI or DB_URI
 
 # Prefixes
 PREFIX_HANDLER = Config.PREFIX_HANDLER

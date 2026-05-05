@@ -1,7 +1,7 @@
 import os
 from pyrogram import filters
 from pyrogram.types import Message
-from Curse import pbot as bot
+from Curse import PREFIX_HANDLER, pbot as bot
 
 # Get the file type
 async def FileType(message: Message):
@@ -16,7 +16,7 @@ async def FileType(message: Message):
         return message.video.mime_type.split("/")[1]
     return None
 
-@bot.on_message(filters.command("rename", ["/", "!", ".", "?"]), group=16283)
+@bot.on_message(filters.command("rename", PREFIX_HANDLER), group=16283)
 async def rename_file(_, message: Message):
     if not message.reply_to_message:
         return await message.reply_text("❌ Reply to a media message to rename it.")
@@ -25,7 +25,7 @@ async def rename_file(_, message: Message):
     try:
         new_name = message.text.split(None, 1)[1]
     except IndexError:
-        new_name = "Harry Potter"
+        new_name = "sayarobot"
 
     # Get file extension
     try:

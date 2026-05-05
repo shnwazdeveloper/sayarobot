@@ -6,9 +6,10 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 from pyrogram import filters
 
-from Curse import OWNER_ID
+from Curse import OWNER_ID, SUPPORT_GROUP
 from Curse.bot_class import app
 from Curse.extras.https import fetch
+from Curse.vars import Config
 
 LOGO_LINKS = [
     "https://telegra.ph/file/d1838efdafce9fe611d0c.jpg",
@@ -295,9 +296,8 @@ async def lego(client, message):
 
         img.save(fname, "png")
 
-        await client.send_photo(
-            message.chat.id, photo=fname, caption=f"🎨 𝗠𝗮𝗱𝗲 𝗕𝘆 **@Harry_Roxbot**"
-        )
+        credit = f"@{Config.BOT_USERNAME}" if Config.BOT_USERNAME else Config.BOT_NAME
+        await client.send_photo(message.chat.id, photo=fname, caption=f"🎨 𝗠𝗮𝗱𝗲 𝗕𝘆 **{credit}**")
 
         await pesan.delete()
 
@@ -305,7 +305,8 @@ async def lego(client, message):
             os.remove(fname)
 
     except Exception as e:
-        await message.reply(f"Error. Report to @Harry_PotterxSupport: {e}")
+        support = f"@{SUPPORT_GROUP}" if SUPPORT_GROUP else "support"
+        await message.reply(f"Error. Report to {support}: {e}")
 
 
 __PLUGIN__ = "Logo"

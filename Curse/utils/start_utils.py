@@ -24,6 +24,11 @@ from Curse.vars import Config
 notes_db = Notes()
 
 
+def _telegram_url(username, query=""):
+    username = (username or "").lstrip("@")
+    return f"https://t.me/{username}{query}" if username else "https://t.me/"
+
+
 async def gen_cmds_kb(m: Message or CallbackQuery):
     """Generate the keyboard"""
     if isinstance(m, CallbackQuery):
@@ -50,12 +55,12 @@ async def gen_start_kb(q: Message or CallbackQuery):
                 ("📚 Commands", "commands"),
             ],
             [
-                ("📡 Updates", f"https://t.me/hogwarts_updates", "url"),
-                ("🏪 Support", f"https://t.me/HarryPotterSupport", "url") 
+                ("📡 Updates", _telegram_url(Config.SUPPORT_CHANNEL), "url"),
+                ("🏪 Support", _telegram_url(Config.SUPPORT_GROUP), "url")
 
             ],
             [
-                ("➕ Add Harry to your Groups ➕", f"https://t.me/{Config.BOT_USERNAME}?startgroup=new", "url")
+                ("➕ Add Bot to your Groups ➕", _telegram_url(Config.BOT_USERNAME, "?startgroup=new"), "url")
             ], 
         ],
     )
@@ -71,7 +76,7 @@ async def get_private_note(c: app, m: Message, help_option: str):
         chat_title = Chats.get_chat_info(chat_id)["chat_name"]
         rply = f"Notes in {chat_title}:\n\n"
         note_list = [
-            f"- [{note[0]}](https://t.me/{Config.BOT_USERNAME}?start=note_{chat_id}_{note[1]})"
+            f"- [{note[0]}]({_telegram_url(Config.BOT_USERNAME, f'?start=note_{chat_id}_{note[1]}')})"
             for note in all_notes
         ]
         rply = f"Available notes in {chat_title}\n"

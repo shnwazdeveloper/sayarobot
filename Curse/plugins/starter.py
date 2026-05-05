@@ -22,32 +22,37 @@ from Curse.utils.start_utils import (gen_cmds_kb, gen_start_kb, get_help_msg,
 from Curse.vars import Config
 from Curse.utils.paginate import paginate_modules
 
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = Config.PREFIX_HANDLER
+
+
+def _telegram_url(username, query=""):
+    username = (username or "").lstrip("@")
+    return f"https://t.me/{username}{query}" if username else "https://t.me/"
+
 
 @app.on_callback_query(filters.regex("^donate$"))
 async def handle_donate_callback(_, query: CallbackQuery):
     await query.answer()
     await query.message.edit_text(
-      """
+        f"""
         Hey dude! 😄
 So glad to hear you wanna donate! 💖
 
 You can directly contact my developer for donation info,
-or just hop into our [support chat](t.me/HarryPotterSupport) and ask there — we’ll help you out! 🙌
+or just hop into our [support chat]({_telegram_url(Config.SUPPORT_GROUP)}) and ask there — we’ll help you out! 🙌
 
 Thanks for supporting the magic! 🪄✨""",
-  reply_markup=InlineKeyboardMarkup(
+        reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Support", url="http://t.me/HarryPotterSupport"),
+                    InlineKeyboardButton("Support", url=_telegram_url(Config.SUPPORT_GROUP)),
                 ],
                 [InlineKeyboardButton("Back", callback_data="start_back")],
             ],
         ),
-    ),
+    )
 
-    LOGGER.info(f"{query.from_user.id} fetched donation text in {query.chat.id}")
-    await query.reply_photo(photo=str(choice(StartPic)), caption=cpt)
+    LOGGER.info(f"{query.from_user.id} fetched donation text")
     return
 
 
@@ -105,9 +110,9 @@ async def start(c: app, m: Message):
 
         # ── default PM /start ─────────────────────────────────────
         try:
-            caption = """
-Hello There, I'm Harry 🧙
-A Magic‑Powered Hogwarts themed bot built to manage your groups and make things fun.
+            caption = f"""
+Hello There, I'm {Config.BOT_NAME} 🧙
+A magic-powered Telegram bot built to manage your groups and make things fun.
 Don't forget to check out the About Me section below for all the cool stuff I can do!
 """
 
@@ -125,12 +130,12 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
     # ── GROUP CONTEXT ────────────────────────────────────────────
     else:
         kb = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("✨ Click here for help", url="https://t.me/Harry_RoxBot?start=start")]]
+            [[InlineKeyboardButton("✨ Click here for help", url=_telegram_url(Config.BOT_USERNAME, "?start=start"))]]
         )
 
         await m.reply_photo(
             photo=str(choice(StartPic)),
-            caption="🧙 I’m awake! For updates and details, visit [Hogwarts Updates](https://t.me/hogwarts_updates).",
+            caption=f"🧙 I’m awake! For updates and details, visit [Updates]({_telegram_url(Config.SUPPORT_CHANNEL)}).",
             reply_markup=kb,
             parse_mode=enums.ParseMode.MARKDOWN,
             quote=True,
@@ -140,28 +145,9 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
 @app.on_callback_query(filters.regex("^start_back$"))
 async def start_back(_, q: CallbackQuery):
     try:
-        caption = """
-Hello There, I'm Harry 🧙
-A Magic‑Powered Hogwarts themed bot built to manage your groups and make things fun.
-Don't forget to check out the About Me section below for all the cool stuff I can do!
-"""
-        await q.edit_message_caption(
-            caption=caption,
-            reply_markup=await gen_start_kb(q.message),
-            parse_mode=enums.ParseMode.HTML,
-        )
-    except MessageNotModified:
-        pass
-    await q.answer()
-
-
-
-@app.on_callback_query(filters.regex("^start_back$"))
-async def start_back(_, q: CallbackQuery):
-    try:
         cpt = f"""
-Hello There, I'm Harry 🧙
-A Magic‑Powered Hogwarts themed bot built to manage your groups and make things fun.
+Hello There, I'm {Config.BOT_NAME} 🧙
+A magic-powered Telegram bot built to manage your groups and make things fun.
 Don't forget to check out the About Me section below for all the cool stuff I can do!
 """
 
@@ -239,7 +225,7 @@ async def help_menu(_, m: Message):
                     [
                       InlineKeyboardButton(
                         "Help",
-                        url=f"t.me/Harry_RoxBot?start={help_option}",
+                        url=_telegram_url(Config.BOT_USERNAME, f"?start={help_option}"),
                         ),
                     ],
                   ],
@@ -259,7 +245,7 @@ Commands available:
                 [
                   InlineKeyboardButton(
                     "Help", 
-                    url=f"t.me/Harry_RoxBot?start=start_help",
+                    url=_telegram_url(Config.BOT_USERNAME, "?start=start_help"),
                   ),
                 ],
               ],
@@ -314,13 +300,13 @@ async def get_module_info(c: app, q: CallbackQuery):
 async def handle_details_callback(_, query: CallbackQuery):
     await query.answer()
     await query.message.edit_text(
-     """[Harry Potter](t.me/Harry_Roxbot) is a powerful, anime-inspired bot crafted for group management with tons of extra magical features. 🧙‍♂️✨
+     f"""[{Config.BOT_NAME}]({_telegram_url(Config.BOT_USERNAME)}) is a powerful, anime-inspired bot crafted for group management with tons of extra magical features. 🧙‍♂️✨
 
 Built upon the solid foundation of [Gojo](https://github.com/Gojo-Bots/Gojo_Satoru),
-Harry operates under the GNU General Public License v3.0 🛡️
+{Config.BOT_NAME} operates under the GNU General Public License v3.0 🛡️
 
 Got questions or need some help with the bot?
-Hop into the [Support Chat](t.me/HarryPotterSupport) — the Hogwarts help desk is always open! 💬🔮""",
+Hop into the [Support Chat]({_telegram_url(Config.SUPPORT_GROUP)}) — the help desk is always open! 💬🔮""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -338,20 +324,20 @@ Hop into the [Support Chat](t.me/HarryPotterSupport) — the Hogwarts help desk 
 async def handle_how_to_use_callback(_, query: CallbackQuery):
     await query.answer()
     await query.message.edit_text(
-     """Hey there! my name is Harry Potter Click on Help button to know my commands 
+     f"""Hey there! my name is {Config.BOT_NAME}. Click on Help button to know my commands
 
 I'm here to make your group management fun and easy! I have lots of handy features, such as flood control, a warning system, a note keeping system, and even replies on predetermined filters.
 
- Join [Updates Channel](t.me/hogwarts_updates) To Keep Yourself Updated About me.
+ Join [Updates Channel]({_telegram_url(Config.SUPPORT_CHANNEL)}) To Keep Yourself Updated About me.
 
-Any issues or need help related to me? Come visit us in [Support Chat](http://t.me/HarryPotterSupport) 
+Any issues or need help related to me? Come visit us in [Support Chat]({_telegram_url(Config.SUPPORT_GROUP)})
 
 You Can Know More About Me By Clicking The Below Buttons.
         """,
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Add Me to Your Group", url="https://t.me/Harry_RoxBot?startgroup=new"),
+                    InlineKeyboardButton("Add Me to Your Group", url=_telegram_url(Config.BOT_USERNAME, "?startgroup=new")),
                 ],
                 [InlineKeyboardButton("Back", callback_data="start_back")],
             ],

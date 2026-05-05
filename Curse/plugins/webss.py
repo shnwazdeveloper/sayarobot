@@ -5,10 +5,11 @@ from pyrogram import filters
 from pyrogram.types import Message
 from pySmartDL import SmartDL
 
+from Curse import PREFIX_HANDLER
 from Curse.bot_class import app
 from Curse.extras.localization import use_chat_lang
 
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 
 @app.on_message(filters.command(["webss"], C_HANDLER), group=1234567)
 @use_chat_lang()

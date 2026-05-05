@@ -1,6 +1,7 @@
 from pyrogram import enums, filters
 from pyrogram.types import Message
 
+from Curse import PREFIX_HANDLER
 from Curse.bot_class import app
 from Curse.database.antispam_db import GBan
 from Curse.database.approve_db import Approve
@@ -18,7 +19,7 @@ from Curse.utils.custom_filters import command
 from Curse.supports import get_support_staff
 
 SUPPORT_STAFF = get_support_staff()
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 
 @app.on_message(filters.command(["stats"], C_HANDLER), group=9696)
 async def get_stats(_, m: Message):

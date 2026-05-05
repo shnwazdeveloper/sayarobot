@@ -6,7 +6,7 @@ from pyrogram.errors import MessageTooLong, PeerIdInvalid, UserIsBlocked
 from pyrogram.types import Message
 from pyrogram import filters
 
-from Curse import LOGGER, MESSAGE_DUMP, SUPPORT_GROUP, TIME_ZONE
+from Curse import LOGGER, MESSAGE_DUMP, PREFIX_HANDLER, SUPPORT_GROUP, TIME_ZONE
 from Curse.bot_class import app
 from Curse.database.antispam_db import GBan
 from Curse.database.users_db import Users
@@ -20,7 +20,7 @@ from Curse.vars import Config
 # Initialize
 db = GBan()
 SUPPORT_STAFF = get_support_staff()
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 
 @app.on_message(filters.command(["pban", "globalban"], C_HANDLER))
 async def gban(c: app, m: Message):

@@ -3,7 +3,7 @@ from pyrogram.enums import ChatMemberStatus as CMS
 from pyrogram.errors import PeerIdInvalid, RPCError, UserNotParticipant
 from pyrogram.types import CallbackQuery, Message
 
-from Curse import LOGGER, SUPPORT_GROUP
+from Curse import LOGGER, PREFIX_HANDLER, SUPPORT_GROUP
 from Curse.bot_class import app
 from Curse.database.approve_db import Approve
 from Curse.utils.custom_filters import admin_filter, command, owner_filter
@@ -11,7 +11,7 @@ from Curse.utils.extract_user import extract_user
 from Curse.utils.kbhelpers import ikb
 from Curse.utils.parser import mention_html
 
-C_HANDLER = ["/", "harry ", "harry ", "."]
+C_HANDLER = PREFIX_HANDLER
 
 @app.on_message(filters.command(["approve"], C_HANDLER) & admin_filter)
 async def approve_user(c: app, m: Message):

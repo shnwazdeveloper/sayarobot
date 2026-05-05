@@ -6,9 +6,10 @@ from pyrogram import __version__ as pver
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
-from Curse import UPTIME
+from Curse import SUPPORT_CHANNEL, SUPPORT_GROUP, UPTIME
 from Curse.bot_class import app
 from Curse import PREFIX_HANDLER as COMMAND_HANDLER
+from Curse.vars import Config
 
 UPTIME = time()
 
@@ -28,15 +29,21 @@ MAGIC_QUOTES = [
     "📜 **“Magic is real. And so am I.”**",
 ]
 
-MAGIC_BUTTONS = [
-    [
-        InlineKeyboardButton("⚡ Support Spellbook", url="https://t.me/HarryPotterSupport"),
-        InlineKeyboardButton("📢 Magic News", url="https://t.me/hogwarts_updates"),
-    ],
-    [
-        InlineKeyboardButton("➕ Add to Group", url="https://t.me/Harry_RoxBot?startgroup=true"),
-    ],
-]
+def _telegram_url(username, query=""):
+    username = (username or "").lstrip("@")
+    return f"https://t.me/{username}{query}" if username else "https://t.me/"
+
+
+def alive_buttons():
+    return [
+        [
+            InlineKeyboardButton("⚡ Support", url=_telegram_url(SUPPORT_GROUP)),
+            InlineKeyboardButton("📢 Updates", url=_telegram_url(SUPPORT_CHANNEL)),
+        ],
+        [
+            InlineKeyboardButton("➕ Add to Group", url=_telegram_url(Config.BOT_USERNAME, "?startgroup=true")),
+        ],
+    ]
 
 @app.on_message(filters.command(["alive", "zinda", "zinda_ho"], COMMAND_HANDLER), group=4678)
 async def golden_alive(_, m: Message):
@@ -44,14 +51,12 @@ async def golden_alive(_, m: Message):
     uptime = strftime("%Hh %Mm %Ss", gmtime(time() - UPTIME))
     python_ver = f"{version_info.major}.{version_info.minor}.{version_info.micro}"
 
-    ascii_header = "╔═════════════════════╗\n║     🧙 Harry is ALIVE!    ║\n╚═════════════════════╝"
-
     await m.reply_photo(
         photo=random.choice(MAGIC_PICS),
         caption=f"""
-🧙 Harry is ALIVE!
+🧙 {Config.BOT_NAME} is ALIVE!
 
-🎩 **Bot Name:** [Harry Potter](https://t.me/Harry_RoxBot)  
+🎩 **Bot Name:** [{Config.BOT_NAME}]({_telegram_url(Config.BOT_USERNAME)})
 💠 **Status:** `🔮 Magic Online & Flowing`  
 🕓 **Uptime:** `{uptime}`  
 🐍 **Python:** `{python_ver}`  
@@ -61,5 +66,5 @@ async def golden_alive(_, m: Message):
 
 🔍 **Use `/help` to browse spells and commands.**
 """,
-        reply_markup=InlineKeyboardMarkup(MAGIC_BUTTONS),
+        reply_markup=InlineKeyboardMarkup(alive_buttons()),
     )

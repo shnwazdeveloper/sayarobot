@@ -16,6 +16,11 @@ from Curse.supports import get_support_staff
 from Curse.utils.custom_filters import admin_filter, auto_join_filter, command
 
 
+async def start_bot_markup(client):
+    bot = getattr(client, "me", None) or await client.get_me()
+    return ikm([[ikb("🔓 Start Bot", url=f"https://t.me/{bot.username}?start=start")]])
+
+
 @app.on_message(command(["joinreq"]) & admin_filter)
 async def accept_join_requests(c: app, m: Message):
     if m.chat.id == m.from_user.id:
@@ -124,7 +129,7 @@ async def join_request_handler(c: app, j: ChatJoinRequest):
                     chat,
                     f"Hey {userr.mention}.\n"
                     "Start me in Pm by clicking the button given below.",
-                    reply_markup=ikm([[ikb("🔓 Start Bot", user_id=7858576961)]])
+                    reply_markup=await start_bot_markup(c),
                 )
         except Exception as ef:
             await c.send_message(chat, f"❌ The gates jammed!\n<code>{ef}</code>")
@@ -184,7 +189,7 @@ async def accept_decline_request(c: app, q: CallbackQuery):
                     chat,
                     f"⚠️ Hey {userr.mention if userr else target_user}.\n"
                     "Start the bot in Pm to Know more.",
-                    reply_markup=ikm([[ikb("🔓 Start Bot", user_id=7858576961)]])
+                    reply_markup=await start_bot_markup(c),
                 )
         except Exception as ef:
             await c.send_message(chat, f"❌ Error granting access:\n<code>{ef}</code>")
