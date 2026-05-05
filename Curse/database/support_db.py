@@ -12,7 +12,7 @@ class SUPPORTS(MongoDB):
     """
 
     db_name = "supports"
-    
+
     def __init__(self) -> None:
         super().__init__(self.db_name)
 

@@ -28,7 +28,7 @@ def capture_err(func):
 
             cap_day = f"{day.strftime('%A')}, {tgl_now.strftime('%d %B %Y %H:%M:%S')}"
             await message.reply(
-                "😭 An Internal Error Occurred while processing your Command, the Logs have been sent to the Owners of this Bot. Sorry for Inconvenience..."
+                " An Internal Error Occurred while processing your Command, the Logs have been sent to the Owners of this Bot. Sorry for Inconvenience..."
             )
             log_file_path = f"crash_{tgl_now.strftime('%d %B %Y')}.log"
             with open(log_file_path, "w+", encoding="utf-8") as log:

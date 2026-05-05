@@ -13,8 +13,8 @@ from pyrogram.types import Message
 from pyrogram import filters, enums
 from datetime import datetime
 
-from Curse.bot_class import app 
-from Curse import DEV_USERS 
+from Curse.bot_class import app
+from Curse import DEV_USERS
 from Curse import MESSAGE_DUMP, LOGFILE, LOGGER
 from Curse.supports import get_support_staff
 from Curse.utils.custom_filters import command
@@ -37,9 +37,9 @@ async def eval(client, message):
         return
     if len(message.text.split()) < 2:
         return await message.reply_text("`Input Not Found!`")
-    
-    cmd = message.text.split(maxsplit=1)[1]     
-    status_message = await message.reply_text("Processing ...")    
+
+    cmd = message.text.split(maxsplit=1)[1]
+    status_message = await message.reply_text("Processing ...")
     start = datetime.now()
     reply_to_ = message
     if message.reply_to_message:
@@ -68,11 +68,11 @@ async def eval(client, message):
         evaluation = "Success"
     end = datetime.now()
     ping = (end-start).microseconds / 1000
-    final_output = "<b>📎 Input</b>: "
+    final_output = "<b> Input</b>: "
     final_output += f"<code>{cmd}</code>\n\n"
-    final_output += "<b>📒 Output</b>:\n"
+    final_output += "<b> Output</b>:\n"
     final_output += f"<code>{evaluation.strip()}</code> \n\n"
-    final_output += f"<b>✨ Taken Time</b>: {ping}<b>ms</b>"
+    final_output += f"<b> Taken Time</b>: {ping}<b>ms</b>"
     if len(final_output) > 4096:
         with io.BytesIO(str.encode(final_output)) as out_file:
             out_file.name = "eval.text"
@@ -81,12 +81,12 @@ async def eval(client, message):
             )
     else:
         await status_message.edit_text(final_output)
-        
+
 
 @app.on_message(filters.command("logs"))
 async def send_log(c: app, m: Message):
     if m.from_user.id not in SUPPORT_STAFF:
-        return    
+        return
     replymsg = await m.reply_text("Sending logs...!")
     await c.send_message(
         MESSAGE_DUMP,
@@ -107,7 +107,7 @@ async def send_log(c: app, m: Message):
 async def cleeeen(c:app,m:Message):
     if m.from_user.id not in CHAD:
         return
-    x = await m.reply_text("📂")
+    x = await m.reply_text("")
     try:
         z = await clean_my_db(c,True,m.from_user.id)
         try:

@@ -26,24 +26,24 @@ anti_links = []
 async def lock_types(_, m: Message):
     await m.reply_text(
         (
-            "**✪ 𝗟𝗢𝗖𝗞 𝗧𝗬𝗣𝗘𝗦:**\n"
-            " ➼ `all` = Everything\n"
-            " ➼ `msg` = Messages\n"
-            " ➼ `media` = Media, such as Photo and Video.\n"
-            " ➼ `polls` = Polls\n"
-            " ➼ `invite` = Add users to Group\n"
-            " ➼ `pin` = Pin Messages\n"
-            " ➼ `info` = Change Group Info\n"
-            " ➼ `webprev` = Web Page Previews\n"
-            " ➼ `inlinebots`, `inline` = Inline bots\n"
-            " ➼ `animations` = Animations\n"
-            " ➼ `games` = Game Bots\n"
-            " ➼ `stickers` = Stickers\n"
-            " ➼ `anonchannel` = Send as chat will be locked\n"
-            " ➼ `forwardall` = Forwarding from channel and user\n"
-            " ➼ `forwardu` = Forwarding from user\n"
-            " ➼ `forwardc` = Forwarding from channel\n"
-            " ➼ `links | url` = Lock links"
+            "** 𝗟𝗢𝗖𝗞 𝗧𝗬𝗣𝗘𝗦:**\n"
+            "  `all` = Everything\n"
+            "  `msg` = Messages\n"
+            "  `media` = Media, such as Photo and Video.\n"
+            "  `polls` = Polls\n"
+            "  `invite` = Add users to Group\n"
+            "  `pin` = Pin Messages\n"
+            "  `info` = Change Group Info\n"
+            "  `webprev` = Web Page Previews\n"
+            "  `inlinebots`, `inline` = Inline bots\n"
+            "  `animations` = Animations\n"
+            "  `games` = Game Bots\n"
+            "  `stickers` = Stickers\n"
+            "  `anonchannel` = Send as chat will be locked\n"
+            "  `forwardall` = Forwarding from channel and user\n"
+            "  `forwardu` = Forwarding from user\n"
+            "  `forwardc` = Forwarding from channel\n"
+            "  `links | url` = Lock links"
         ),
     )
     return
@@ -80,7 +80,7 @@ async def lock_perm(c: app, m: Message):
             pass
         except ChatAdminRequired:
             await m.reply_text(text="I don't have permission to do that")
-        await m.reply_text("🔒 " + "Locked <b>all</b> permission from this Chat!")
+        await m.reply_text(" " + "Locked <b>all</b> permission from this Chat!")
         await prevent_approved(m)
         return
 
@@ -206,7 +206,7 @@ Use /locktypes to get the lock types
     except ChatAdminRequired:
         await m.reply_text(text="I don't have permission to do that")
     await m.reply_text(
-        "🔒 " + f"Locked <b>{perm}</b> for this Chat.",
+        " " + f"Locked <b>{perm}</b> for this Chat.",
     )
     await prevent_approved(m)
     return
@@ -219,8 +219,8 @@ async def view_locks(_, m: Message):
 
     async def convert_to_emoji(val: bool):
         if val:
-            return "✅"
-        return "❌"
+            return ""
+        return ""
 
     anon = False
     if m.chat.id in anti_c_send:
@@ -311,7 +311,7 @@ async def unlock_perm(c: app, m: Message):
             pass
         except ChatAdminRequired:
             await m.reply_text(text="I don't have permission to do that")
-        await m.reply_text("🔓 " + "Unlocked <b>all</b> permission from this Chat!")
+        await m.reply_text(" " + "Unlocked <b>all</b> permission from this Chat!")
         await prevent_approved(m)
         return
 
@@ -451,7 +451,7 @@ async def unlock_perm(c: app, m: Message):
     except ChatAdminRequired:
         await m.reply_text(text="I don't have permission to do that")
     await m.reply_text(
-        "🔓 " + f"Unlocked <b>{uperm}</b> for this Chat.",
+        " " + f"Unlocked <b>{uperm}</b> for this Chat.",
     )
     await prevent_approved(m)
     return
@@ -553,16 +553,16 @@ __PLUGIN__ = "Locks"
 __alt_name__ = ["grouplock", "lock", "grouplocks"]
 
 __HELP__ = """
-**🔐 Locks**
+** Locks**
 
 Use this to lock group permissions.
 Allows you to lock and unlock permission types in the chat.
 
 **Usage:**
-➥ /lock `<type>`: Lock Chat permission.
-➥ /unlock `<type>`: Unlock Chat permission.
-➥ /locks: View Chat permission.
-➥ /locktypes: Check available lock types!
+ /lock `<type>`: Lock Chat permission.
+ /unlock `<type>`: Unlock Chat permission.
+ /locks: View Chat permission.
+ /locktypes: Check available lock types!
 
 **Example:**
 `/lock media`: this locks all the media messages in the chat."""

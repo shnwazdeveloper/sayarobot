@@ -29,7 +29,7 @@ async def palm_chatbot(client,message):
     if not message.text.startswith("KomiAi"):
         return
         # your code here
-    args = message.text.split(maxsplit=1)   
+    args = message.text.split(maxsplit=1)
     if len(args) < 2:
         await message.reply("Gɪᴠᴇ Mᴇ ᴀ Qᴜᴇʀʏ Tᴏ Sᴇᴀʀᴄʜ.")
         return
@@ -37,7 +37,7 @@ async def palm_chatbot(client,message):
     input_text = args[1]
 
     # Send the "giving results" message first
-    result_msg = await message.reply("🤔")
+    result_msg = await message.reply("")
 
     # Call the PALM API to get the chatbot response asynchronously
     api_params = {"model_id": MODEL_ID, "prompt": input_text}

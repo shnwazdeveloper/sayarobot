@@ -105,12 +105,12 @@ async def warn(c: app, m: Message):
     rules = Rules(m.chat.id).get_rules()
     if rules:
         kb = InlineKeyboardButton(
-            "Rules 📋",
+            "Rules ",
             url=f"https://t.me/{Config.BOT_USERNAME}?start=rules_{m.chat.id}",
         )
     else:
         kb = InlineKeyboardButton(
-            "Kick ⚠️",
+            "Kick ",
             callback_data=f"warn.kick.{user_id}",
         )
 
@@ -130,7 +130,7 @@ async def warn(c: app, m: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "Remove Warn ❌",
+                        "Remove Warn ",
                         callback_data=f"warn.remove.{user_id}",
                     ),
                 ]
@@ -311,7 +311,7 @@ async def remove_last_warn_btn(c: app, q: CallbackQuery):
             )
         except RPCError as err:
             await q.message.edit_text(
-                f"🛑 Failed to Kick\n<b>Error:</b>\n</code>{err}</code>",
+                f" Failed to Kick\n<b>Error:</b>\n</code>{err}</code>",
             )
 
     await q.answer()
@@ -374,19 +374,19 @@ __PLUGIN__ = "Warn"
 __alt_name__ = ["warn", "warning", "warns"]
 
 __HELP__ = """
-**🚫 Warns**
+** Warns**
 
 
 **Admin commands:**
-➥ /warn `<reason>`: Warn a user.
-➥ /dwarn `<reason>`: Warn a user by reply, and delete their message.
-➥ /swarn `<reason>`: Silently warn a user, and delete your message.
-➥ /warns: See a user's warnings.
-➥ /rmwarn: Remove a user's latest warning.
-➥ /resetwarn: Reset all of a user's warnings to 0.
-➥ /warnings: Get the chat's warning settings.
-➥ /warnmode `<ban/kick/mute>`: Set the chat's warn mode.
-➥ /warnlimit `<number>`: Set the number of warnings before users are punished.
+ /warn `<reason>`: Warn a user.
+ /dwarn `<reason>`: Warn a user by reply, and delete their message.
+ /swarn `<reason>`: Silently warn a user, and delete your message.
+ /warns: See a user's warnings.
+ /rmwarn: Remove a user's latest warning.
+ /resetwarn: Reset all of a user's warnings to 0.
+ /warnings: Get the chat's warning settings.
+ /warnmode `<ban/kick/mute>`: Set the chat's warn mode.
+ /warnlimit `<number>`: Set the number of warnings before users are punished.
 
 **Examples:**
 `/warn @user`: this warns a user in the chat."""

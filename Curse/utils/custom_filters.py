@@ -190,7 +190,7 @@ async def owner_check_func(_, __, m: Message or CallbackQuery):
 
     if m.chat.type not in [ChatType.SUPERGROUP, ChatType.GROUP]:
         return False
-    
+
     if not m.from_user:
         return False
 
@@ -306,7 +306,7 @@ async def can_pin_message_func(_, __, m):
         await m.reply_text("You don't have: can_pin_messages permission!")
 
     return status
-    
+
 
 async def flood_check_filter(_, __, m: Message):
     Flood = Floods()

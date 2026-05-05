@@ -112,11 +112,11 @@ async def member_has_joined(client, member: ChatMemberUpdated):
                 member.chat.id,
                 photo=welcomeimg,
                 caption=f"""Hᴇʏ ᴅᴇᴀʀ  {mention}, Wᴇʟᴄᴏᴍᴇ ᴛᴏ {member.chat.title} Gʀᴏᴜᴘ. \n
-┏━━━━»»❀
-♛ ɴᴀᴍᴇ : {first_name}
-⍟ I'ᴅ : {user_id}
-⍟ ᴅᴀᴛᴇ Jᴏɪɴᴇᴅ : {joined_date}
-┕━━━━━━━━━━━━»»❀ """)
+┏━━━━»»
+ ɴᴀᴍᴇ : {first_name}
+ I'ᴅ : {user_id}
+ ᴅᴀᴛᴇ Jᴏɪɴᴇᴅ : {joined_date}
+┕━━━━━━━━━━━━»» """)
         except Exception as e:
             print(e)
         try:
@@ -153,20 +153,20 @@ async def normal_welcome_callback(_, query: CallbackQuery, todo="commands"):
     await query.answer()
     await query.message.edit_text(
         "**Admin Commands:**\n"
-        "➥ /setwelcome < reply > : Sets a custom welcome message.\n"
-        "➥ /setgoodbye < reply > : Sets a custom goodbye message.\n"
-        "➥ /resetwelcome : Resets to bot default welcome message.\n"
-        "➥ /resetgoodbye : Resets to bot default goodbye message.\n"
-        "➥ /welcome [on - off] | noformat : enable/disable | Shows the current welcome message | settings.\n"
-        "➥ /goodbye [on - off] | noformat : enable/disable | Shows the current goodbye message | settings.\n"
-        "➥ /cleanwelcome [on - off] : Shows or sets the current clean welcome settings.\n"
-        "➥ /cleangoodbye [on - off] : Shows or sets the current clean goodbye settings.\n\n"
+        " /setwelcome < reply > : Sets a custom welcome message.\n"
+        " /setgoodbye < reply > : Sets a custom goodbye message.\n"
+        " /resetwelcome : Resets to bot default welcome message.\n"
+        " /resetgoodbye : Resets to bot default goodbye message.\n"
+        " /welcome [on - off] | noformat : enable/disable | Shows the current welcome message | settings.\n"
+        " /goodbye [on - off] | noformat : enable/disable | Shows the current goodbye message | settings.\n"
+        " /cleanwelcome [on - off] : Shows or sets the current clean welcome settings.\n"
+        " /cleangoodbye [on - off] : Shows or sets the current clean goodbye settings.\n\n"
         "**Cleaner:**\n"
-        "➥ /cleanservice [on - off] : Use it to clean all service messages automatically or to view current status.",
+        " /cleanservice [on - off] : Use it to clean all service messages automatically or to view current status.",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("⌦ 𝘽𝘼𝘾𝙆", todo),
+                    InlineKeyboardButton(" 𝘽𝘼𝘾𝙆", todo),
                 ],
             ],
         ),
@@ -180,11 +180,11 @@ __buttons__ = [
 ]
 
 __HELP__ = """
-**🎊 Greetings**
+** Greetings**
 
-**💫 Default Welcome**
-➥ /dwelcome on: turns on default new welcome
-➥ /dwelcome off: turns off default new welcome
+** Default Welcome**
+ /dwelcome on: turns on default new welcome
+ /dwelcome off: turns off default new welcome
 
 Customize your group's welcome / goodbye messages that can be personalised in multiple ways.
 

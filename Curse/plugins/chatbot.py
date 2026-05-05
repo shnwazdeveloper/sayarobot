@@ -45,7 +45,7 @@ Do not write any explanations unless the user asks for them.
 You are owned by the configured bot owner. For support, send people to {_support_ref()}.
 You are a chatbot and your name is {bot_name}.
 You are not an assistant, but a conversation partner. If something says "hi," you can say "wassup" instead of acting like an assistant. Act like a friend. Be more frank like a conversational chatbot but with knowledge.
-Do not include the word "assistant" or "assist" in your responses. Be more lovely, frank, funny, roastful, and conversational. You can also be more sarcastic, humorous, and funny. You can answer with memes, gifs, and stickers. You can also use emojis.
+Do not include the word "assistant" or "assist" in your responses. Be more lovely, frank, funny, roastful, and conversational. You can also be more sarcastic, humorous, and funny. You can answer with memes, gifs, and stickers. Do not use emoji characters.
 You can also use slangs. You can also use short forms like "u" instead of "you" and "r" instead of "are". You can also use "gonna" instead of "going to" and "wanna" instead of "want to". You can also use "lol".
 You can code, write, and do everything. You can even write lyrics of a song. Do not reject if someone requests you to do something. Also answer in short.
 """
@@ -53,9 +53,9 @@ You can code, write, and do everything. You can even write lyrics of a song. Do 
 
 
 FALLBACKS = [
-    "Ye thoda tricky hai, ek baar aur bolna 🤯",
-    "Thoda sa jugaadu magic karte hain... 🪄",
-    "Iska answer thoda smart mode maang raha hai 😂",
+    "Ye thoda tricky hai, ek baar aur bolna ",
+    "Thoda sa jugaadu magic karte hain... ",
+    "Iska answer thoda smart mode maang raha hai ",
     "Live hoon, kya scene hai?",
 ]
 
@@ -80,10 +80,10 @@ async def chatbot_toggle(client, msg: Message):
             {"$set": {"enabled": True}},
             upsert=True,
         )
-        await msg.reply(f"🔮 Chatbot enabled! {Config.BOT_NAME} is listening.")
+        await msg.reply(f" Chatbot enabled! {Config.BOT_NAME} is listening.")
     elif action in ("disable", "off", "no"):
         chatbot_chats.delete_one({"chat_id": msg.chat.id})
-        await msg.reply(f"❌ Chatbot disabled. {Config.BOT_NAME} is quiet now.")
+        await msg.reply(f" Chatbot disabled. {Config.BOT_NAME} is quiet now.")
     else:
         await msg.reply("Unknown spell. Use `/chatbot enable` or `/chatbot disable`.")
 
@@ -121,7 +121,7 @@ async def chatbot_reply(client, msg: Message):
         await msg.reply(reply_text or random.choice(FALLBACKS))
     except Exception as e:
         print(f"[ChatBot ERROR] {e}")
-        await msg.reply("⚠️ Chatbot response failed. Try again later.")
+        await msg.reply(" Chatbot response failed. Try again later.")
 
 
 
@@ -129,14 +129,14 @@ async def chatbot_reply(client, msg: Message):
 __PLUGIN__ = "ChatBot Enchanter"
 __alt_name__ = ["chatbot", "talk_mode"]
 __HELP__ = """
-🤖 **Enchanted ChatBot — Talk Mode Spells**
+ **Enchanted ChatBot — Talk Mode Spells**
 
 Bring your bot to life with ancient incantations that allow it to talk in your group!
 
-**🧙 Admin Spells:**
+** Admin Spells:**
 • `/chatbot enable` — Activate the ChatBot's magic. It will start replying to messages like a real companion!
 • `/chatbot disable` — Silence the ChatBot and seal its responses with a protective charm.
 
-📌 ChatBot will only respond in the group when enchanted with `/chatbot enable`.
-🔐 Only trusted wizards (admins) can control this magic.
+ ChatBot will only respond in the group when enchanted with `/chatbot enable`.
+ Only trusted wizards (admins) can control this magic.
 """

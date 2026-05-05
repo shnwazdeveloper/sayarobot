@@ -137,7 +137,7 @@ async def clear_rules(_, m: Message):
     await m.reply_text(
         text="Are you sure you want to clear rules?",
         reply_markup=ikb(
-            [[("⚠️ Confirm", "clear_rules"), ("❌ Cancel", "close_admin")]],
+            [[(" Confirm", "clear_rules"), (" Cancel", "close_admin")]],
         ),
     )
     return
@@ -157,16 +157,16 @@ __PLUGIN__ = "Rules"
 __alt_name__ = ["rule"]
 
 __HELP__ = """
-**📕 Rules**
+** Rules**
 
 **Set rules for you chat so that members know what to do and what not to do in your group!**
 
-➥ /rules: get the rules for current chat.
+ /rules: get the rules for current chat.
 
 **Admin only:**
-➥ /setrules `< rules message >`: Set the rules for this chat, also works as a reply to a message.
-➥ /clearrules: Clear the rules for this chat.
-➥ /privaterules , /pmrules `<on/yes/no/off>`: Turns on/off the option to send the rules to PM of user or group.
+ /setrules `< rules message >`: Set the rules for this chat, also works as a reply to a message.
+ /clearrules: Clear the rules for this chat.
+ /privaterules , /pmrules `<on/yes/no/off>`: Turns on/off the option to send the rules to PM of user or group.
 
 **Note Format**
     Check /markdownhelp for help related to formatting!

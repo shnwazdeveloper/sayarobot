@@ -4,7 +4,7 @@ import math
 import os
 import requests
 
-from Curse.bot_class import app 
+from Curse.bot_class import app
 
 @app.on_message(filters.left_chat_member)
 async def _left_mem(client, message):
@@ -19,7 +19,7 @@ async def _left_mem(client, message):
     video_url = "https://envs.sh/Lwt.mp4"
 
     text = f"Good bye {user_link}"
-    
+
     await client.send_video(
         chat_id=message.chat.id,
         video=video_url,

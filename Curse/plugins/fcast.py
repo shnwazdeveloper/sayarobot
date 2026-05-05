@@ -75,7 +75,7 @@ async def chat_broadcast(c: app, m: Message):
             continue
 
     await exmsg.edit_text(
-        f"Done broadcasting ✅\nSent message to {done_broadcast} chats",
+        f"Done broadcasting \nSent message to {done_broadcast} chats",
     )
 
     if err_str:
@@ -95,7 +95,7 @@ async def forward_type_broadcast(c: app, m: Message):
         await m.reply_text("Please reply to message to broadcast it")
         return
     split = m.command
-    
+
     chat = Chats.list_chats_by_id()
     user = [i["_id"] for i in Users.list_users()]
     alll = chat + user
@@ -117,7 +117,7 @@ async def forward_type_broadcast(c: app, m: Message):
         peers = user
     else:
         peers = alll
-    
+
     xx = await m.reply_text("Broadcasting...")
 
     failed = 0

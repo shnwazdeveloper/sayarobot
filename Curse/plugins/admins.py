@@ -83,10 +83,10 @@ async def adminlist_show(_, m: Message):
             for admin in bot_admins
         ]
         mention_bots.sort(key=lambda x: x[1])
-        adminstr += "<b>🚓 𝗨𝘀𝗲𝗿 𝗔𝗱𝗺𝗶𝗻𝘀:</b>\n"
-        adminstr += "\n".join(f"╰─➼ {i}" for i in mention_users)
-        adminstr += "\n\n<b>🤖 𝗕𝗼𝘁𝘀:</b>\n"
-        adminstr += "\n".join(f"╰─➼ {i}" for i in mention_bots)
+        adminstr += "<b> 𝗨𝘀𝗲𝗿 𝗔𝗱𝗺𝗶𝗻𝘀:</b>\n"
+        adminstr += "\n".join(f"╰─ {i}" for i in mention_users)
+        adminstr += "\n\n<b> 𝗕𝗼𝘁𝘀:</b>\n"
+        adminstr += "\n".join(f"╰─ {i}" for i in mention_bots)
         await m.reply_text(adminstr + "\n\n" + note)
         LOGGER.info(f"Adminlist cmd use in {m.chat.id} by {m.from_user.id}")
     except Exception as ef:
@@ -585,22 +585,22 @@ __alt_name__ = [
     "zombies",
 ]
 __HELP__ = """
-**👮 Admin**
+** Admin**
 
 **User Commands:**
-➥ /adminlist: List all the admins in the Group.
+ /adminlist: List all the admins in the Group.
 
 **Admin only:**
-➥ /invitelink: Gets chat invitelink.
-➥ /promote: Promotes the user replied to or tagged (supports with title).
-➥ /fullpromote: Fully Promotes the user replied to or tagged (supports with title).
-➥ /demote: Demotes the user replied to or tagged.
-➥ /setgpic: Set group picture.
-➥ /admincache: Reloads the List of all the admins in the Group.
-➥ /zombies: Bans all the deleted accounts. (owner only)
-➥ /title: sets a custom title for an admin that the bot promoted.
-➥ /enable <item name>: Allow users from using "commandname" in this group.
-➥ /disabledel <yes/off>: Delete disabled commands when used by non-admins.
-➥ /enableall: enable all disabled commands.
+ /invitelink: Gets chat invitelink.
+ /promote: Promotes the user replied to or tagged (supports with title).
+ /fullpromote: Fully Promotes the user replied to or tagged (supports with title).
+ /demote: Demotes the user replied to or tagged.
+ /setgpic: Set group picture.
+ /admincache: Reloads the List of all the admins in the Group.
+ /zombies: Bans all the deleted accounts. (owner only)
+ /title: sets a custom title for an admin that the bot promoted.
+ /enable <item name>: Allow users from using "commandname" in this group.
+ /disabledel <yes/off>: Delete disabled commands when used by non-admins.
+ /enableall: enable all disabled commands.
 **Example:**
 `/promote @username`: this promotes a user to admin."""

@@ -32,7 +32,7 @@ def ikb(rows=None, back=False, todo="start_back"):
             button = btn(*button)  # InlineKeyboardButton
             line.append(button)
         lines.append(line)
-    if back: 
+    if back:
         back_btn = [(btn("𝗕𝗔𝗖𝗞", todo))]
         lines.append(back_btn)
     return InlineKeyboardMarkup(inline_keyboard=lines)

@@ -1,6 +1,6 @@
 import requests as r
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup 
-from pyrogram import filters 
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram import filters
 from Curse.bot_class import app
 
 
@@ -33,7 +33,7 @@ async def hanime(app, message):
     g = rs['data'][1]['url']
     h = rs['data'][1]['filename']
     TEXT1 = f"ID: {e}\nNAME: {h}\nSIZE: {f} MB\nQUALITY: 720P\nDOWNLOAD LINK: {g}"
-    await message.reply_photo(d , caption= TEXT, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("DOWNLOAD", callback_data = f"hdownload#{a}")],[InlineKeyboardButton ("❌", callback_data=f"hclose#{message.from_user.id}")]]))
+    await message.reply_photo(d , caption= TEXT, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("DOWNLOAD", callback_data = f"hdownload#{a}")],[InlineKeyboardButton ("", callback_data=f"hclose#{message.from_user.id}")]]))
 
 #DOWNLOADS CALLBACK
 @app.on_callback_query(filters.regex("hdownload"))
@@ -45,7 +45,7 @@ async def dhanime(_, cq):
     g = rs['data'][1]['url']
     h = rs['data'][1]['filename']
     TEXT1 = f"**ID:** {e}\n**NAME:** {h}\n**SIZE:** {f} MB\n**QUALITY: 720P**"
-    await cq.message.edit(TEXT1, reply_markup=InlineKeyboardMarkup ([[InlineKeyboardButton ("DOWNLOAD LINK", url = f"{g}")],[InlineKeyboardButton ("❌", callback_data=f"hclose#{cq.message.from_user.id}")]]))
+    await cq.message.edit(TEXT1, reply_markup=InlineKeyboardMarkup ([[InlineKeyboardButton ("DOWNLOAD LINK", url = f"{g}")],[InlineKeyboardButton ("", callback_data=f"hclose#{cq.message.from_user.id}")]]))
 
 #DELETE CALLBACK
 @app.on_callback_query(filters.regex("hclose"))

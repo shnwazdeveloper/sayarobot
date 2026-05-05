@@ -138,7 +138,7 @@ async def load_cmds(all_plugins):
             imported_module = imp_mod(f"Curse.plugins.{single}")
             if not hasattr(imported_module, "__PLUGIN__"):
                 continue
-            
+
             plugin_name = imported_module.__PLUGIN__.lower()
             plugin_dict_name = f"plugins.{plugin_name}"
             plugin_help = imported_module.__HELP__

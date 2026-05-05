@@ -1,6 +1,6 @@
 from traceback import format_exc
 import requests
-from requests import get 
+from requests import get
 import json
 from pyrogram import filters, Client
 from pyrogram.types import InputMediaPhoto, Message
@@ -26,7 +26,7 @@ async def g_search(c: app, m: Message):
     split = m.text.split(None, 1)
     if len(split) == 1:
         return await m.reply_text("ʜᴇʏ ɢɪᴠᴇ me a Querry to search")
-    to_del = await m.reply_text("⏳")
+    to_del = await m.reply_text("")
     query = split[1]
     try:
         result = await gsearch.async_search(query)
@@ -106,9 +106,9 @@ async def pinterest(_, message):
     try:
         query = message.text.split(None, 1)[1]
     except:
-        return await message.reply("Input image name for search 🔍")
+        return await message.reply("Input image name for search ")
 
-    search_message = await message.reply("💫")
+    search_message = await message.reply("")
 
     try:
         response = await fetch.get(f"https://pinterest-api-one.vercel.app/?q={query}")
@@ -160,7 +160,7 @@ async def bingimg_search(client: Client, message: Message):
             "Provide me a query to search!"
         )  # Return error if no query is provided
 
-    search_message = await message.reply_text("🔎")  # Display searching message
+    search_message = await message.reply_text("")  # Display searching message
 
     # Send request to Bing image search API using fetch function
     bingimg_url = "https://sugoi-api.vercel.app/bingimg?keyword=" + text
@@ -197,7 +197,7 @@ async def googleimg_search(client: Client, message: Message):
             "Provide me a query to search!"
         )  # Return error if no query is provided
 
-    search_message = await message.reply_text("💭")  # Display searching message
+    search_message = await message.reply_text("")  # Display searching message
 
     # Send request to Google image search API using fetch function
     googleimg_url = "https://sugoi-api.vercel.app/googleimg?keyword=" + text
@@ -233,11 +233,11 @@ __HELP__ = """
 **Search**
 
 **Available commands:**
-➥ /google `<query>` : Search the google for the given query.
-➥ /img (/pinterest) `<query>` : It retrieves and displays images obtained through a pinterest image search.
-➥ /googleimg <search query>: It retrieves and displays images obtained through a Google image search.
-➥ /bingimg <search query>: It retrieves and displays images obtained through a Bing image search.
-➥ /ig (/instagram , /insta) <reel's url> : Download reel from it's url
+ /google `<query>` : Search the google for the given query.
+ /img (/pinterest) `<query>` : It retrieves and displays images obtained through a pinterest image search.
+ /googleimg <search query>: It retrieves and displays images obtained through a Google image search.
+ /bingimg <search query>: It retrieves and displays images obtained through a Bing image search.
+ /ig (/instagram , /insta) <reel's url> : Download reel from it's url
 
 **Example:**
 `/google SEX`: return top 5 reuslts.

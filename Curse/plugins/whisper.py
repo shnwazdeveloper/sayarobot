@@ -158,5 +158,5 @@ __HELP__ = """
 
 `botname @username OR UserID < your message >`
 
-❗ Note: When using UserID, the user must have started the bot before to receive whispers.
+ Note: When using UserID, the user must have started the bot before to receive whispers.
 """

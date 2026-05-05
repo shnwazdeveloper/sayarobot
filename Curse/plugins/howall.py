@@ -4,7 +4,7 @@ from pyrogram import filters
 from Curse import pbot
 
 
-CMDS = [ 'howall', 'sex', 'beauty', 'boobs', 'dick', 'horny', 'gay', 'lezbian', 'noob', 'idiot', 'nigga', 'pro'] 
+CMDS = [ 'howall', 'sex', 'beauty', 'boobs', 'dick', 'horny', 'gay', 'lezbian', 'noob', 'idiot', 'nigga', 'pro']
 
 sex_string = [
   'Wanna sex with me? {}.',
@@ -45,7 +45,7 @@ async def howall(_, message):
           for i, string in enumerate(CMDS):
              text += f"{i+1}, {string}\n"
           return await reply_func.reply_text(text)
-      
+
     elif query == 'sex':
           return await reply_func.reply_text(random.choice(sex_string).format(mention))
     else:

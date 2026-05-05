@@ -297,7 +297,7 @@ async def lego(client, message):
         img.save(fname, "png")
 
         credit = f"@{Config.BOT_USERNAME}" if Config.BOT_USERNAME else Config.BOT_NAME
-        await client.send_photo(message.chat.id, photo=fname, caption=f"🎨 𝗠𝗮𝗱𝗲 𝗕𝘆 **{credit}**")
+        await client.send_photo(message.chat.id, photo=fname, caption=f" 𝗠𝗮𝗱𝗲 𝗕𝘆 **{credit}**")
 
         await pesan.delete()
 
@@ -312,7 +312,7 @@ async def lego(client, message):
 __PLUGIN__ = "Logo"
 
 __HELP__ = """
-**🎨 Logo Maker**
+** Logo Maker**
 
-➥ /logo <with text> : To draw a logo.
+ /logo <with text> : To draw a logo.
 """

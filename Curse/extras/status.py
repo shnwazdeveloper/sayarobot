@@ -1,4 +1,4 @@
-from functools import wraps 
+from functools import wraps
 from pyrogram import Client
 from pyrogram.enums import ChatType
 from pyrogram.types import Message
@@ -60,7 +60,7 @@ async def user_has_permission(chat_title : str, chat_id: int, user_id: int, perm
             elif permission == "can_invite_users":
                 have_permission = chat_permissions.can_invite_users
             elif permission == "can_pin_messages":
-                have_permission = chat_permissions.can_pin_messages    
+                have_permission = chat_permissions.can_pin_messages
             else:
                 have_permission = False
 
@@ -84,10 +84,10 @@ def bot_admin(func):
         chat_type = message.chat.type
         if chat_type == ChatType.PRIVATE:
             return await message.reply("ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ ᴡᴀs ᴍᴀᴅᴇ ᴜᴘ ғᴏʀ ɢʀᴏᴜᴘs ɴᴏᴛ ғᴏʀ ᴘʀɪᴠᴀᴛᴇ")
-        BOT = await app.get_chat_member(message.chat.id,BOT_ID)                 
-        if BOT.status != ChatMemberStatus.ADMINISTRATOR:                                       
+        BOT = await app.get_chat_member(message.chat.id,BOT_ID)
+        if BOT.status != ChatMemberStatus.ADMINISTRATOR:
             await message.reply_text(f"ʜᴇʏ ʙᴀʙᴇs ɪ'ᴍ ɴᴏᴛ ᴀᴅᴍɪɴ ɪɴ **{message.chat.title}**")
-            return 
+            return
         return await func(app,message,*args,**kwargs)
     return is_bot_admin
 
@@ -95,10 +95,10 @@ def bot_can_ban(func):
     @wraps(func)
     async def can_restrict(app : Client, message : Message,*args,**kwargs):
         BOT = await app.get_chat_member(message.chat.id,BOT_ID)
-                 
-        if not BOT.privileges.can_restrict_members:                        
-            await message.reply_text(f"ʜᴇʏ ʙᴀʙʏ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ ʀᴇsᴛʀɪᴄᴛ ᴜsᴇʀ ɪɴ **{message.chat.title}**. ᴄʜᴇᴄᴋ ᴀɴᴅ ɢɪᴠᴇ ᴍᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴘʟᴇᴀsᴇ.🥺")
-            return 
+
+        if not BOT.privileges.can_restrict_members:
+            await message.reply_text(f"ʜᴇʏ ʙᴀʙʏ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ ʀᴇsᴛʀɪᴄᴛ ᴜsᴇʀ ɪɴ **{message.chat.title}**. ᴄʜᴇᴄᴋ ᴀɴᴅ ɢɪᴠᴇ ᴍᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴘʟᴇᴀsᴇ.")
+            return
         return await func(app,message,*args,**kwargs)
     return can_restrict
 
@@ -107,9 +107,9 @@ def bot_can_change_info(func):
     async def can_change_info(app : Client, message : Message,*args,**kwargs):
         BOT = await app.get_chat_member(message.chat.id,BOT_ID)
 
-        if not BOT.privileges.can_change_info:                         
-            await message.reply_text(f"ʜᴇʏ ʙᴀʙʏ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ ᴄʜᴀɴɢᴇ ɪɴғᴏ ᴏғ **{message.chat.title}**. ᴄʜᴇᴄᴋ ᴀɴᴅ ɢɪᴠᴇ ᴍᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴘʟᴇᴀsᴇ.🥺")
-            return 
+        if not BOT.privileges.can_change_info:
+            await message.reply_text(f"ʜᴇʏ ʙᴀʙʏ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ ᴄʜᴀɴɢᴇ ɪɴғᴏ ᴏғ **{message.chat.title}**. ᴄʜᴇᴄᴋ ᴀɴᴅ ɢɪᴠᴇ ᴍᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴘʟᴇᴀsᴇ.")
+            return
         return await func(app,message,*args,**kwargs)
     return can_change_info
 
@@ -119,9 +119,9 @@ def bot_can_promote(func):
     async def can_promote(app : Client, message : Message,*args,**kwargs):
         BOT = await app.get_chat_member(message.chat.id,BOT_ID)
 
-        if not BOT.privileges.can_promote_members:                         
+        if not BOT.privileges.can_promote_members:
             await message.reply_text(f"ʜᴇʏ ʙᴀʙʏ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ **ᴘʀᴏᴍᴏᴛᴇ ᴜsᴇʀs** ɪɴ **{message.chat.title}**. ᴄʜᴇᴄᴋ ᴀɴᴅ ɢɪᴠᴇ ᴍᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴘʟᴇᴀsᴇ.")
-            return 
+            return
         return await func(app,message,*args,**kwargs)
     return can_promote
 
@@ -131,9 +131,9 @@ def bot_can_pin(func):
     async def can_pin(app : Client, message : Message,*args,**kwargs):
         BOT = await app.get_chat_member(message.chat.id,BOT_ID)
 
-        if not BOT.privileges.can_pin_messages:                         
+        if not BOT.privileges.can_pin_messages:
             await message.reply_text(f"ʜᴇʏ ʙᴀʙʏ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ **ᴘɪɴ ᴍᴇssᴀɢᴇs** ɪɴ **{message.chat.title}**. ᴄʜᴇᴄᴋ ᴀɴᴅ ɢɪᴠᴇ ᴍᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴘʟᴇᴀsᴇ.")
-            return 
+            return
         return await func(app,message,*args,**kwargs)
     return can_pin
 
@@ -142,9 +142,9 @@ def bot_can_del(func):
     async def can_delete(app : Client, message : Message,*args,**kwargs):
         BOT = await app.get_chat_member(message.chat.id,BOT_ID)
 
-        if not BOT.privileges.can_delete_messages:                         
+        if not BOT.privileges.can_delete_messages:
             await message.reply_text(f"ʜᴇʏ ʙᴀʙʏ ɪ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛs ᴛᴏ **ᴅᴇʟᴇᴛᴇ ᴍᴇssᴀɢᴇs** ɪɴ **{message.chat.title}**. ᴄʜᴇᴄᴋ ᴀɴᴅ ɢɪᴠᴇ ᴍᴇ ᴛʜᴇ ʀɪɢʜᴛ ᴘʟᴇᴀsᴇ.")
-            return 
+            return
         return await func(app,message,*args,**kwargs)
     return can_delete
 
@@ -159,15 +159,15 @@ def user_admin(mystic):
                 return await message.reply("ʏᴏᴜ ᴀʀᴇ ᴀɴ ᴀɴᴏɴʏᴍᴏᴜs ᴀᴅᴍɪɴ. I ᴄᴀɴɴᴏᴛ ᴘᴇʀғᴏʀᴍ ʏᴏᴜʀ ᴛᴀsᴋ. ᴘʟᴇᴀsᴇ ᴜsᴇ ᴀ ʀᴇᴀʟ ID.")
             else:
                 return await message.reply_text("sᴛᴀʏ ɪɴ ʏᴏᴜʀ ʟɪᴍɪᴛs. ʙᴇᴄᴏᴍᴇ **ᴀᴅᴍɪɴ** ғɪʀsᴛ.")
-                
+
         else:
-            user_id = message.from_user.id    
+            user_id = message.from_user.id
             chat_id = message.chat.id
-            user = await app.get_chat_member(chat_id,user_id) 
-        
+            user = await app.get_chat_member(chat_id,user_id)
+
             if (user.status not in COMMANDERS) and user_id not in SUPPORT_STAFF:
                 return await message.reply_text("sᴛᴀʏ ɪɴ ʏᴏᴜʀ ʟɪᴍɪᴛs. ʙᴇᴄᴏᴍᴇ **ᴀᴅᴍɪɴ** ғɪʀsᴛ.")
-                                                                            
+
         return await mystic(app,message,*args,**kwargs)
 
     return wrapper
@@ -178,11 +178,11 @@ def user_can_ban(mystic):
         user_id = message.from_user.id
         chat_id = message.chat.id
         user = await app.get_chat_member(chat_id,user_id)
-        
-        if (user.privileges and not user.privileges.can_restrict_members) and user_id not in SUPPORT_STAFF: 
 
-            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ʀᴇsᴛʀɪᴄᴛ ᴜsᴇʀs**. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.") 
-                                                    
+        if (user.privileges and not user.privileges.can_restrict_members) and user_id not in SUPPORT_STAFF:
+
+            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ʀᴇsᴛʀɪᴄᴛ ᴜsᴇʀs**. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.")
+
         return await mystic(app,message,*args,**kwargs)
     return wrapper
 
@@ -192,13 +192,13 @@ def user_can_del(mystic):
         user_id = message.from_user.id
         chat_id = message.chat.id
         user = await app.get_chat_member(chat_id,user_id)
-        
-        if (user.status in COMMANDERS and not user.privileges.can_delete_messages) and user_id not in SUPPORT_STAFF:                     
-            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ᴅᴇʟᴇᴛᴇ ᴍᴇssᴀɢᴇs**. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.") 
-                                                    
+
+        if (user.status in COMMANDERS and not user.privileges.can_delete_messages) and user_id not in SUPPORT_STAFF:
+            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ᴅᴇʟᴇᴛᴇ ᴍᴇssᴀɢᴇs**. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ.")
+
         return await mystic(app,message,*args,**kwargs)
     return wrapper
-            
+
 
 def user_can_change_info(mystic):
     @wraps(mystic)
@@ -206,23 +206,23 @@ def user_can_change_info(mystic):
         user_id = message.from_user.id
         chat_id = message.chat.id
         user = await app.get_chat_member(chat_id,user_id)
-        
-        if (user.status in COMMANDERS and not user.privileges.can_change_info) and user_id not in SUPPORT_STAFF:                     
-            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ᴄʜᴀɴɢᴇ ɪɴғᴏ** ᴏғ ᴛʜɪs ɢʀᴏᴜᴘ. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ") 
-                                                    
+
+        if (user.status in COMMANDERS and not user.privileges.can_change_info) and user_id not in SUPPORT_STAFF:
+            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ᴄʜᴀɴɢᴇ ɪɴғᴏ** ᴏғ ᴛʜɪs ɢʀᴏᴜᴘ. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ")
+
         return await mystic(app,message,*args,**kwargs)
     return wrapper
-            
+
 def user_can_promote(mystic):
     @wraps(mystic)
     async def wrapper(app : Client, message : Message,*args,**kwargs):
         user_id = message.from_user.id
         chat_id = message.chat.id
         user = await app.get_chat_member(chat_id,user_id)
-        
-        if (user.status in COMMANDERS and not user.privileges.can_promote_members) and user_id not in SUPPORT_STAFF:                     
-            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ᴘʀᴏᴍᴏᴛᴇ ᴜsᴇʀs** ᴏғ ᴛʜɪs ɢʀᴏᴜᴘ. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ") 
-                                                    
+
+        if (user.status in COMMANDERS and not user.privileges.can_promote_members) and user_id not in SUPPORT_STAFF:
+            return await message.reply_text("ʜᴇʏ ɴᴏᴏʙ ʏᴏᴜ ᴅᴏɴ'ᴛ ʜᴀᴠᴇ ʀɪɢʜᴛ ᴛᴏ **ᴘʀᴏᴍᴏᴛᴇ ᴜsᴇʀs** ᴏғ ᴛʜɪs ɢʀᴏᴜᴘ. ʏᴏᴜ ᴄᴀɴ'ᴛ ᴜsᴇ ᴛʜɪs ᴄᴏᴍᴍᴀɴᴅ")
+
         return await mystic(app,message,*args,**kwargs)
     return wrapper
-            
+

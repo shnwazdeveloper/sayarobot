@@ -31,19 +31,19 @@ today = str(dt()[0])
 
 COUPLES_PIC = "https://telegra.ph/file/e458d20773173645b795a-c9c15cf9964bd72681.jpg"
 C = """
-💌 ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ : :\n
-{} + ( Shouko + 花火 + ゼロツー ) = 💘\n
+ ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ : :\n
+{} + ( Shouko + 花火 + ゼロツー ) = \n
 ɴᴇᴡ ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ ᴄᴀɴ ʙᴇ ᴄʜᴏsᴇɴ ᴀᴛ 12AM {}
 """
 CAP = """
-💌 ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ : :\n
-{} + {} = 💘\n
+ ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ : :\n
+{} + {} = \n
 ɴᴇᴡ ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ ᴄᴀɴ ʙᴇ ᴄʜᴏsᴇɴ ᴀᴛ 12AM {}
 """
 
 CAP2 = """
-💌 ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ : :\n
-{} + {} = 💘\n
+ ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ : :\n
+{} + {} = \n
 ɴᴇᴡ ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ ᴄᴀɴ ʙᴇ ᴄʜᴏsᴇɴ ᴀᴛ 12AM {}
 """
 
@@ -89,8 +89,8 @@ async def nibba_nibbi(_: Client, message):
                 c1_name = (await _.get_users(c1_id)).first_name
                 c2_name = (await _.get_users(c2_id)).first_name
                 print(c1_id, c2_id, c1_name, c2_name)
-                couple_selection_message = f"""💌 ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ :
-[{c1_name}](tg://openmessage?user_id={c1_id}) + [{c2_name}](tg://openmessage?user_id={c2_id}) = 💞
+                couple_selection_message = f""" ᴄᴏᴜᴘʟᴇs ᴏғ ᴛʜᴇ ᴅᴀʏ :
+[{c1_name}](tg://openmessage?user_id={c1_id}) + [{c2_name}](tg://openmessage?user_id={c2_id}) =
 ɴᴇᴡ ᴄᴏᴜᴘʟᴇ ᴏғ ᴛʜᴇ ᴅᴀʏ ᴄᴀɴ ʙᴇ ᴄʜᴏsᴇɴ ᴀᴛ 12AM {tomorrow}"""
                 await _.send_photo(
                     message.chat.id,
@@ -104,7 +104,7 @@ async def nibba_nibbi(_: Client, message):
 __PLUGIN__ = "Couples"
 
 __HELP__ = """
-💘 Choose couples in your chat.
+ Choose couples in your chat.
 
-➥ /couple, /couples, /shipping : Choose 2 users and send their names as couples in your chat.
+ /couple, /couples, /shipping : Choose 2 users and send their names as couples in your chat.
 """

@@ -43,7 +43,7 @@ close_kb = InlineKeyboardMarkup(
     [
         [
             InlineKeyboardButton(
-                "Close ❌",
+                "Close ",
                 callback_data="f_close"
             )
         ]
@@ -54,31 +54,31 @@ action_kb = InlineKeyboardMarkup(
     [
         [
             InlineKeyboardButton(
-                "Mute 🔇",
+                "Mute ",
                 callback_data="f_mute"
             ),
             InlineKeyboardButton(
-                "Ban 🚷",
+                "Ban ",
                 callback_data="f_ban"
             ),
             InlineKeyboardButton(
-                "Kick 🦿",
+                "Kick ",
                 callback_data="f_kick"
             )
         ],
         [
             InlineKeyboardButton(
-                "Temp Mute 🔇",
+                "Temp Mute ",
                 "f_temp_mute"
             ),
             InlineKeyboardButton(
-                "Temp Ban 🚷",
+                "Temp Ban ",
                 "f_temp_ban"
             )
         ],
         [
             InlineKeyboardButton(
-                "➡️ Skip",
+                " Skip",
                 callback_data="f_skip"
             )
         ]
@@ -103,7 +103,7 @@ within_kb = InlineKeyboardMarkup(
         ],
         [
             InlineKeyboardButton(
-                "➡️ Skip",
+                " Skip",
                 callback_data="f_f_skip"
             )
         ]
@@ -128,7 +128,7 @@ limit_kb = InlineKeyboardMarkup(
         ],
         [
             InlineKeyboardButton(
-                "➡️ Skip",
+                " Skip",
                 callback_data="f_f_f_skip"
             )
         ]
@@ -344,7 +344,7 @@ async def reverse_callbacks(c: app, q: CallbackQuery):
     user_id = int(q.data.split("=")[1])
     SUPPORT_STAFF = get_support_staff()
     if not q.from_user:
-        return q.answer("Looks like you are not an user 👀")
+        return q.answer("Looks like you are not an user ")
     if action == "ban":
         user = await q.message.chat.get_member(q.from_user.id)
         if user.privileges and not user.privileges.can_restrict_members and q.from_user.id not in SUPPORT_STAFF:

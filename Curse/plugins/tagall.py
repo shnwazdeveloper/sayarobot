@@ -32,7 +32,7 @@ async def tag_all_users(_, message: Message):
     """Mention every member of the group in chunks, respecting flood‑waits & cancellation."""
 
     if message.chat.id in ACTIVE_TAGS:
-        return await message.reply_text("❗ A tag‑all is already running. Use /cancel to stop it first.")
+        return await message.reply_text(" A tag‑all is already running. Use /cancel to stop it first.")
 
     # Determine custom text & reply context
     if len(message.command) > 1:
@@ -91,9 +91,9 @@ async def cancel_tag(_, message: Message):
     chat_id = message.chat.id
     if chat_id in ACTIVE_TAGS:
         ACTIVE_TAGS.remove(chat_id)
-        await message.reply_text("✅ Tagall stopped.")
+        await message.reply_text(" Tagall stopped.")
     else:
-        await message.reply_text("❕ No tag‑all is currently running.")
+        await message.reply_text(" No tag‑all is currently running.")
 
 
 __PLUGIN__ = "Tagall"

@@ -153,7 +153,7 @@ async def rm_allfilters(_, m: Message):
     return await m.reply_text(
         "Are you sure you want to clear all filters?",
         reply_markup=ikb(
-            [[("⚠️ Confirm", "rm_allfilters"), ("❌ Cancel", "close_admin")]],
+            [[(" Confirm", "rm_allfilters"), (" Cancel", "close_admin")]],
         ),
     )
 
@@ -300,24 +300,24 @@ async def filters_watcher(c: app, m: Message):
 # Help Text for Filters Plugin
 __PLUGIN__ = "Filters"
 __HELP__ = """
-<b>💠 Filters Plugin</b>
+<b> Filters Plugin</b>
 
-🎯 <b>What are filters?</b>
+ <b>What are filters?</b>
 When a user sends a message that matches a filter keyword, the bot will respond with a saved reply — text, photo, sticker, etc.
 
-<b>🧾 User Commands:</b>
+<b> User Commands:</b>
 • <code>/filters</code> – Show all active filters in this chat.
 
-<b>🔐 Admin Commands:</b>
+<b> Admin Commands:</b>
 • <code>/filter "keyword"</code> <i>reply message</i> – Add a filter.
 • <code>/stop keyword</code> – Remove a filter.
 • <code>/removeallfilters</code> – Remove all filters (owner only).
 
-<b>📌 Examples:</b>
+<b> Examples:</b>
 • <code>/filter "hello" Hello there!</code>
-• <code>/filter "hi|hey" 👋 Hi there!</code>
+• <code>/filter "hi|hey"  Hi there!</code>
 
-<b>⚠️ Notes:</b>
+<b> Notes:</b>
 • Max 50 filters & 120 aliases per chat.
 • Keywords are matched in lowercase.
 • Reply to a sticker or media to make it a media filter.

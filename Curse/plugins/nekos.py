@@ -112,7 +112,7 @@ async def normal_welcome_callback(_, query: CallbackQuery, todo="commands"):
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("⌦ 𝘽𝘼𝘾𝙆", todo),
+                    InlineKeyboardButton(" 𝘽𝘼𝘾𝙆", todo),
                 ],
             ],
         ),
@@ -125,10 +125,10 @@ __buttons__ = [
 ]
 
 __HELP__ = """
-**✨ Sends fun Gifs**
+** Sends fun Gifs**
 
-➥ /nekomode on : Enables fun neko mode.
-➥ /nekomode off : Disables fun neko mode
+ /nekomode on : Enables fun neko mode.
+ /nekomode off : Disables fun neko mode
 
 • /bully: sends random bully gifs.
 • /neko: sends random neko gifs.

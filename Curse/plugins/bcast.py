@@ -77,7 +77,7 @@ async def broadcast_post(_, message: Message):
     # --- broadcast to users ----------------------------------
     if target_users:
         user_ids = [user["_id"] for user in Users.list_users()]
-        text = "📢 New broadcast message:"
+        text = " New broadcast message:"
         for uid in user_ids:
             ok = await _safe_send(pbot, uid, text, reply_id=src_msg_id)
             if not ok:
@@ -90,4 +90,4 @@ async def broadcast_post(_, message: Message):
     if target_users:
         summary.append(f"Users failed: {failed_users}")
 
-    await message.reply_text("✅ Broadcast finished.\n" + "\n".join(summary))
+    await message.reply_text(" Broadcast finished.\n" + "\n".join(summary))

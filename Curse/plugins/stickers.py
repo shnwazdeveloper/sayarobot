@@ -67,7 +67,7 @@ async def getsticker_(self: Client, ctx: Message, strings):
     with tempfile.TemporaryDirectory() as tempdir:
         path = os.path.join(tempdir, "getsticker")
         os.makedirs(path, exist_ok=True)
-        
+
         sticker_file = await self.download_media(
             message=ctx.reply_to_message,
             file_name=os.path.join(path, f"{sticker.file_unique_id}.png"),
@@ -151,7 +151,7 @@ async def kang_sticker(self: Client, ctx: Message, strings):
 
     prog_msg = await ctx.reply(strings("kang_msg"))
 
-    sticker_emoji = "✔️"
+    sticker_emoji = ""
     packnum = 0
     packname_found = False
     resize = False
@@ -510,19 +510,19 @@ async def give_st_info(c: app, m: Message):
     elif st_in.is_video:
         st_type = "Video"
     st_to_gib = f"""[Sticker]({m.reply_to_message.link}) info:
-➼ 𝗙𝗜𝗟𝗘 𝗜𝗗 : `{st_in.file_id}`
-➼ 𝗙𝗜𝗟𝗘 𝗡𝗔𝗠𝗘 : {st_in.file_name}
-➼ 𝗙𝗜𝗟𝗘 𝗨𝗡𝗜𝗤𝗨𝗘 𝗜𝗗 : `{st_in.file_unique_id}`
-➼ 𝗗𝗔𝗧𝗘 𝗔𝗡𝗗 𝗧𝗜𝗠𝗘 𝗢𝗙 𝗦𝗧𝗜𝗖𝗞𝗘𝗥 𝗖𝗥𝗘𝗔𝗧𝗘𝗗 : `{st_in.date}`
-➼ 𝗦𝗧𝗜𝗖𝗞𝗘𝗥 𝗧𝗬𝗣𝗘 : `{st_type}`
-➼ 𝗘𝗠𝗢𝗝𝗜 : {st_in.emoji}
-➼ 𝗣𝗔𝗖𝗞 𝗡𝗔𝗠𝗘 : {st_in.set_name}
+ 𝗙𝗜𝗟𝗘 𝗜𝗗 : `{st_in.file_id}`
+ 𝗙𝗜𝗟𝗘 𝗡𝗔𝗠𝗘 : {st_in.file_name}
+ 𝗙𝗜𝗟𝗘 𝗨𝗡𝗜𝗤𝗨𝗘 𝗜𝗗 : `{st_in.file_unique_id}`
+ 𝗗𝗔𝗧𝗘 𝗔𝗡𝗗 𝗧𝗜𝗠𝗘 𝗢𝗙 𝗦𝗧𝗜𝗖𝗞𝗘𝗥 𝗖𝗥𝗘𝗔𝗧𝗘𝗗 : `{st_in.date}`
+ 𝗦𝗧𝗜𝗖𝗞𝗘𝗥 𝗧𝗬𝗣𝗘 : `{st_type}`
+ 𝗘𝗠𝗢𝗝𝗜 : {st_in.emoji}
+ 𝗣𝗔𝗖𝗞 𝗡𝗔𝗠𝗘 : {st_in.set_name}
 """
     kb = IKM(
         [
             [
                 IKB(
-                    "➕ 𝗔𝗱𝗱 𝘀𝘁𝗶𝗰𝗸𝗲𝗿 𝗽𝗮𝗰𝗸",
+                    " 𝗔𝗱𝗱 𝘀𝘁𝗶𝗰𝗸𝗲𝗿 𝗽𝗮𝗰𝗸",
                     url=f"https://t.me/addstickers/{st_in.set_name}",
                 )
             ]
@@ -536,19 +536,19 @@ __PLUGIN__ = "Stickers"
 __alt_name__ = ["sticker", "kang"]
 
 __HELP__ = """
-**👨‍🏫 User Commands:**
+** User Commands:**
 
-➥ /kang (/steal) < emoji >: Reply to a sticker or any supported media.
-➥ /pkang: Reply to a image type sticker to get full pack.
-➥ /stickerinfo (/stinfo) : Reply to any sticker to get it's info.
-➥ /stickerid Reply to a sticker message to get the sticker ID and emoji.
-➥ /stickers < query >: Search for sticker packs based on the given query.
-➥ /getsticker: Reply to a sticker message to get the sticker as a document.
-➥ /getvidsticker: Reply to a video sticker message to get the video as an animation.
-➥ /getvideo: Reply to a GIF message to get the GIF as a video.
-➥ /unkang: Reply to a sticker created by the bot to remove it from your pack.
-➥ /mmf < your text >: Reply to a normal sticker or a photo or video file to memify it. If you want to right text at bottom use `;right your message`
-    ■ For e.g. 
+ /kang (/steal) < emoji >: Reply to a sticker or any supported media.
+ /pkang: Reply to a image type sticker to get full pack.
+ /stickerinfo (/stinfo) : Reply to any sticker to get it's info.
+ /stickerid Reply to a sticker message to get the sticker ID and emoji.
+ /stickers < query >: Search for sticker packs based on the given query.
+ /getsticker: Reply to a sticker message to get the sticker as a document.
+ /getvidsticker: Reply to a video sticker message to get the video as an animation.
+ /getvideo: Reply to a GIF message to get the GIF as a video.
+ /unkang: Reply to a sticker created by the bot to remove it from your pack.
+ /mmf < your text >: Reply to a normal sticker or a photo or video file to memify it. If you want to right text at bottom use `;right your message`
+    ■ For e.g.
     ○ /mmf Hello freinds : this will add text to the top
     ○ /mmf Hello ; freinds : this will add Hello to the top and freinds at the bottom
     ○ /mmf ; Hello friends : this will add text at the bottom

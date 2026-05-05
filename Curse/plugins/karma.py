@@ -18,7 +18,7 @@ karma_negative_group = 4
     & filters.incoming
     & filters.reply
     & filters.regex(
-        r"^((?i)\+|\+\+|\+1|\+69|thx|thanx|thanks|🖤|❣️|💝|💖|💕|❤|💘|cool|good|👍|baby|thankyou|love|pro)$"
+        r"^((?i)\+|\+\+|\+1|\+69|thx|thanx|thanks||||||||cool|good||baby|thankyou|love|pro)$"
     )
     & ~filters.via_bot
     & ~filters.bot,
@@ -46,7 +46,7 @@ async def upvote(_, message):
     new_karma = {"karma": karma}
     await update_karma(chat_id, await int_to_alpha(user_id), new_karma)
     await message.reply_text(
-        f"Incremented karma of {user_mention} by 1.\n**⭐️ 𝗧𝗢𝗧𝗔𝗟 𝗣𝗢𝗜𝗡𝗧𝗦:** {karma}"
+        f"Incremented karma of {user_mention} by 1.\n** 𝗧𝗢𝗧𝗔𝗟 𝗣𝗢𝗜𝗡𝗧𝗦:** {karma}"
     )
 
 
@@ -55,7 +55,7 @@ async def upvote(_, message):
     & filters.group
     & filters.incoming
     & filters.reply
-    & filters.regex(r"^(\-|\-\-|\-1|👎|💔|noob|weak|fuck off|nub|gey|kid|shit|mf)$")
+    & filters.regex(r"^(\-|\-\-|\-1|||noob|weak|fuck off|nub|gey|kid|shit|mf)$")
     & ~filters.via_bot
     & ~filters.bot,
     group=karma_negative_group,
@@ -81,7 +81,7 @@ async def downvote(_, message):
     new_karma = {"karma": karma}
     await update_karma(message.chat.id, await int_to_alpha(user_id), new_karma)
     await message.reply_text(
-        f"Decremented karma of {user_mention} by 1.\n**⭐️ 𝗧𝗢𝗧𝗔𝗟 𝗣𝗢𝗜𝗡𝗧𝗦:** {karma}"
+        f"Decremented karma of {user_mention} by 1.\n** 𝗧𝗢𝗧𝗔𝗟 𝗣𝗢𝗜𝗡𝗧𝗦:** {karma}"
     )
 
 
@@ -94,7 +94,7 @@ async def karma(_, message):
         if not karma:
             await m.edit_text("No karma in the database for this chat.")
             return
-        msg = f"**🎖 𝗞𝗔𝗥𝗠𝗔 𝗟𝗜𝗦𝗧 𝗢𝗙 {message.chat.title} :**\n"
+        msg = f"** 𝗞𝗔𝗥𝗠𝗔 𝗟𝗜𝗦𝗧 𝗢𝗙 {message.chat.title} :**\n"
         limit = 0
         karma_dicc = {}
         for i in karma:
@@ -125,7 +125,7 @@ async def karma(_, message):
         user_id = message.reply_to_message.from_user.id
         karma = await get_karma(message.chat.id, await int_to_alpha(user_id))
         karma = karma["karma"] if karma else 0
-        await message.reply_text(f"**⭐️ 𝗧𝗢𝗧𝗔𝗟 𝗣𝗢𝗜𝗡𝗧𝗦:** {karma}")
+        await message.reply_text(f"** 𝗧𝗢𝗧𝗔𝗟 𝗣𝗢𝗜𝗡𝗧𝗦:** {karma}")
 
 
 @app.on_message(filters.command("karma") & admin_filter)

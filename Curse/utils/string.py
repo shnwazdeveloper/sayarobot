@@ -26,7 +26,7 @@ async def extract_time(m: Message, time_val: str):
         elif unit == "h":
             bantime = initial_time + timedelta(hours=int(time_num))
         elif unit == "d":
-            bantime = initial_time + timedelta(days=int(time_num)) 
+            bantime = initial_time + timedelta(days=int(time_num))
         else:
             # how even...?
             return ""

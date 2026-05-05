@@ -66,13 +66,13 @@ async def write_handler(_, message: Message):
     else:
         return await message.reply_text("Reply to text or use `/write <text>`.")
 
-    m = await message.reply_text("Writing your text... ✍️")
+    m = await message.reply_text("Writing your text... ")
     response = requests.get(f"https://apis.xditya.me/write?text={quote_plus(text)}").url
     caption = f"""
-✨ ᴛᴇxᴛ ᴡʀɪᴛᴛᴇɴ sᴜᴄᴄᴇssғᴜʟʟʏ
+ ᴛᴇxᴛ ᴡʀɪᴛᴛᴇɴ sᴜᴄᴄᴇssғᴜʟʟʏ
 
-❤️ ʙᴏᴛ: [{Config.BOT_NAME}](https://t.me/{Config.BOT_USERNAME})
-✨ ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ: {message.from_user.mention}
+ ʙᴏᴛ: [{Config.BOT_NAME}](https://t.me/{Config.BOT_USERNAME})
+ ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ: {message.from_user.mention}
 """
     await m.delete()
     await message.reply_photo(photo=response, caption=caption)
@@ -87,11 +87,11 @@ __HELP__ = """
 
 Upload media/text to various services:
 
-🌍 **Media Uploaders**
+ **Media Uploaders**
 • `/envs` – Upload any file or text to envs.sh
 • `/catbox` – Upload file to catbox.moe (no DMCA)
 
-🧰 **Extra Tools**
+ **Extra Tools**
 • `/rmbg` – Remove background from a photo
 • `/write` – Convert replied text to handwriting style image
 """

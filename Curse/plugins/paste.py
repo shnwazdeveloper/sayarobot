@@ -1,5 +1,5 @@
 import requests
-import asyncio 
+import asyncio
 import os
 
 from Curse import pbot as app
@@ -7,9 +7,9 @@ from Curse.vars import Config as config
 from Curse.extras.pastebin import spacebin, batbin
 from pyrogram import filters, enums
 
-string = "🌠 Spacebin: [click here]({})\n😼 Batbin: [click here]({})\n💀 Raw View: [click here]({})"
+string = " Spacebin: [click here]({})\n Batbin: [click here]({})\n Raw View: [click here]({})"
 
-    
+
 
 @app.on_message(~filters.bot & filters.command("paste",config.PREFIX_HANDLER))
 async def paste_code(_, message):
@@ -23,12 +23,12 @@ async def paste_code(_, message):
                msg = await message.edit("Eg: .p reply|{text/doc}")
                await asyncio.sleep(5)
                await msg.delete()
-               return           
+               return
           mm = await spacebin(text)
           bb = await batbin(text)
-      
+
           link = mm["result"]["link"]
-          raw = mm["result"]["raw"]          
+          raw = mm["result"]["raw"]
           return await msg.edit(string.format(sb, bb, raw), parse_mode=enums.ParseMode.MARKDOWN, disable_web_page_preview=True)
 
     elif (message.reply_to_message.document and bool(message.reply_to_message.document.mime_type.startswith("text/"))):
@@ -40,7 +40,7 @@ async def paste_code(_, message):
 
            mm = await spacebin(text)
            bb = await batbin(text)
-      
+
            sb = mm["result"]["link"]
            raw = mm["result"]["raw"]
 
@@ -51,10 +51,10 @@ async def paste_code(_, message):
                  text = message.reply_to_message.text
            elif message.reply_to_message.caption:
                  text = message.reply_to_message.caption
-        
+
            mm = await spacebin(text)
            bb = await batbin(text)
-      
+
            sb = mm["result"]["link"]
            raw = mm["result"]["raw"]
 

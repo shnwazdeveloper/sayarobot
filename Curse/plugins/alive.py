@@ -18,15 +18,15 @@ MAGIC_PICS = [
     "https://files.catbox.moe/tuld2x.jpg",
     "https://files.catbox.moe/mk6j3p.jpg",
     "https://files.catbox.moe/fzpvz0.jpg",
-    "https://files.catbox.moe/rqe5i1.jpg", 
+    "https://files.catbox.moe/rqe5i1.jpg",
 ]
 
 MAGIC_QUOTES = [
-    "🪄 **“Magic is not a tool, it’s a responsibility.”** – Dumbledore",
-    "🧙 **“I'm not just alive, I'm enchantingly operational!”**",
-    "⚡ **“Even Voldemort can’t shut me down.”**",
-    "🧹 **“Ready to fly on my Firebolt anytime!”**",
-    "📜 **“Magic is real. And so am I.”**",
+    " **“Magic is not a tool, it’s a responsibility.”** – Dumbledore",
+    " **“I'm not just alive, I'm enchantingly operational!”**",
+    " **“Even Voldemort can’t shut me down.”**",
+    " **“Ready to fly on my Firebolt anytime!”**",
+    " **“Magic is real. And so am I.”**",
 ]
 
 def _telegram_url(username, query=""):
@@ -37,11 +37,11 @@ def _telegram_url(username, query=""):
 def alive_buttons():
     return [
         [
-            InlineKeyboardButton("⚡ Support", url=_telegram_url(SUPPORT_GROUP)),
-            InlineKeyboardButton("📢 Updates", url=_telegram_url(SUPPORT_CHANNEL)),
+            InlineKeyboardButton(" Support", url=_telegram_url(SUPPORT_GROUP)),
+            InlineKeyboardButton(" Updates", url=_telegram_url(SUPPORT_CHANNEL)),
         ],
         [
-            InlineKeyboardButton("➕ Add to Group", url=_telegram_url(Config.BOT_USERNAME, "?startgroup=true")),
+            InlineKeyboardButton(" Add to Group", url=_telegram_url(Config.BOT_USERNAME, "?startgroup=true")),
         ],
     ]
 
@@ -54,17 +54,17 @@ async def golden_alive(_, m: Message):
     await m.reply_photo(
         photo=random.choice(MAGIC_PICS),
         caption=f"""
-🧙 {Config.BOT_NAME} is ALIVE!
+ {Config.BOT_NAME} is ALIVE!
 
-🎩 **Bot Name:** [{Config.BOT_NAME}]({_telegram_url(Config.BOT_USERNAME)})
-💠 **Status:** `🔮 Magic Online & Flowing`  
-🕓 **Uptime:** `{uptime}`  
-🐍 **Python:** `{python_ver}`  
-📦 **Pyrogram:** `{pver}`
+ **Bot Name:** [{Config.BOT_NAME}]({_telegram_url(Config.BOT_USERNAME)})
+ **Status:** ` Magic Online & Flowing`
+ **Uptime:** `{uptime}`
+ **Python:** `{python_ver}`
+ **Pyrogram:** `{pver}`
 
 {random.choice(MAGIC_QUOTES)}
 
-🔍 **Use `/help` to browse spells and commands.**
+ **Use `/help` to browse spells and commands.**
 """,
         reply_markup=InlineKeyboardMarkup(alive_buttons()),
     )

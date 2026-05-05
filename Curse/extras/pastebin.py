@@ -17,7 +17,7 @@ async def batbin(text: str):
     req = await post(url, data=text)
     if req['success']:
         return url.split('api')[0] + req['message']
-    return False    
+    return False
 
 async def spacebin(text: str):
     url = "https://spaceb.in/api/v1/documents/"

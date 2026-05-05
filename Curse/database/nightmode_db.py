@@ -3,8 +3,8 @@ from Curse.database.dbname import dbname
 nightdb = dbname.nightmode
 
 async def nightmode_on(chat_id : int) :
-    return nightdb.insert_one({"chat_id" : chat_id})     
-    
+    return nightdb.insert_one({"chat_id" : chat_id})
+
 async def nightmode_off(chat_id : int):
     return nightdb.delete_one({"chat_id" : chat_id})
 

@@ -15,15 +15,15 @@ async def translate_handler(_, message: Message):
     • /tr hi           → Auto-detect → Hindi
     • /tr es//en       → Spanish → English
     """
-    working = await message.reply("🔎 Translating…")
+    working = await message.reply(" Translating…")
 
     reply = message.reply_to_message
     if not reply:
-        return await working.edit("❗ Reply to a text message to translate it.")
+        return await working.edit(" Reply to a text message to translate it.")
 
     to_translate = reply.text or reply.caption
     if not to_translate:
-        return await working.edit("❗ No text found to translate.")
+        return await working.edit(" No text found to translate.")
 
     try:
         raw_args = message.text.split(maxsplit=1)[1].strip().lower()
@@ -38,7 +38,7 @@ async def translate_handler(_, message: Message):
             src_lang = detection.lang
             dest_lang = raw_args or "en"
     except Exception as e:
-        return await working.edit(f"❌ Detection error: `{e}`")
+        return await working.edit(f" Detection error: `{e}`")
 
     try:
         result = await translator.translate(to_translate, src=src_lang, dest=dest_lang)
@@ -48,4 +48,4 @@ async def translate_handler(_, message: Message):
         )
         await working.edit(text, parse_mode=enums.ParseMode.MARKDOWN)
     except Exception as e:
-        await working.edit(f"❌ Translation failed: `{e}`")
+        await working.edit(f" Translation failed: `{e}`")

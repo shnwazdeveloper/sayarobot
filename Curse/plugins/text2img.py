@@ -139,7 +139,7 @@ async def creative_handler(client, message):
 __PLUGIN__ = "AI"
 
 __HELP__ = """
-🧠 Artificial Intelligence Functions:
+ Artificial Intelligence Functions:
 
 Command: /meinamix
   • Description: Generates an image using the meinamix model.

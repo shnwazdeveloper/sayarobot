@@ -15,7 +15,7 @@ UNAVAILABLE_TEXT = (
 
 @app.on_message(
     (
-        filters.sticker 
+        filters.sticker
         | filters.photo
         | filters.document
         | filters.animation
@@ -59,12 +59,12 @@ async def nsfw_enable_disable(_, message):
 __PLUGIN__ = "Anti-NSFW"
 
 __HELP__ = """
-**🔞 Anti-NSFW scanning is currently unavailable.**
+** Anti-NSFW scanning is currently unavailable.**
 
 The old ARQ API used by this feature is no longer working and has been removed.
 
 **Usage:**
 
-➥ /antinsfw off: Disables Anti-NSFW for the current chat
-➥ /nsfwscan: Shows the unavailable message
+ /antinsfw off: Disables Anti-NSFW for the current chat
+ /nsfwscan: Shows the unavailable message
 """

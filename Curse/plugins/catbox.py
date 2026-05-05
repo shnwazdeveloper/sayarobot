@@ -37,17 +37,17 @@ async def get_link_group(client, message):
         return await message.reply_text("Please provide a media file under 200mb")
 
     try:
-        text = await message.reply("processing...⌛")
+        text = await message.reply("processing...")
 
         async def progress(current, total):
             try:
-                await text.edit_text(f"Downloading... {current * 100 / total:.1f}% 📥")
+                await text.edit_text(f"Downloading... {current * 100 / total:.1f}% ")
             except Exception:
                 pass
 
         try:
             local_path = await media.download(progress=progress)
-            await text.edit_text("uploading 📤")
+            await text.edit_text("uploading ")
 
             success, upload_path = upload_file(local_path)
 

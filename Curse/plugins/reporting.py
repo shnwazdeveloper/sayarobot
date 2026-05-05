@@ -84,7 +84,7 @@ async def report_watcher(c: app, m: Message):
 
         if m.chat.username:
             msg = (
-                f"<b>⚠️ Report: </b>{m.chat.title}\n"
+                f"<b> Report: </b>{m.chat.title}\n"
                 f"<b> • Report by:</b> {(await mention_html(m.from_user.first_name, m.from_user.id))} (<code>{m.from_user.id}</code>)\n"
                 f"<b> • Reported user:</b> {(await mention_html(reported_user.first_name, reported_user.id))} (<code>{reported_user.id}</code>)\n"
             )
@@ -98,20 +98,20 @@ async def report_watcher(c: app, m: Message):
 
         reply_markup = ikb(
             [
-                [("➡ Message", link, "url")],
+                [(" Message", link, "url")],
                 [
                     (
-                        "⚠ Kick",
+                        " Kick",
                         f"report_{m.chat.id}=kick={reported_user.id}={reported_msg_id}",
                     ),
                     (
-                        "⛔️ Ban",
+                        " Ban",
                         f"report_{m.chat.id}=ban={reported_user.id}={reported_msg_id}",
                     ),
                 ],
                 [
                     (
-                        "❎ Delete Message",
+                        " Delete Message",
                         f"report_{m.chat.id}=del={reported_user.id}={reported_msg_id}",
                     ),
                 ],
@@ -158,28 +158,28 @@ async def report_buttons(c: app, q: CallbackQuery):
     if action == "kick":
         try:
             await c.ban_chat_member(chat_id, user_id)
-            await q.answer("✅ Successfully kicked")
+            await q.answer(" Successfully kicked")
             await c.unban_chat_member(chat_id, user_id)
             return
         except RPCError as err:
             await q.answer(
-                f"🛑 Failed to Kick\n<b>Error:</b>\n</code>{err}</code>", show_alert=True
+                f" Failed to Kick\n<b>Error:</b>\n</code>{err}</code>", show_alert=True
             )
     elif action == "ban":
         try:
             await c.ban_chat_member(chat_id, user_id)
-            await q.answer("✅ Successfully Banned")
+            await q.answer(" Successfully Banned")
             return
         except RPCError as err:
-            await q.answer(f"🛑 Failed to Ban\n<b>Error:</b>\n`{err}`", show_alert=True)
+            await q.answer(f" Failed to Ban\n<b>Error:</b>\n`{err}`", show_alert=True)
     elif action == "del":
         try:
             await c.delete_messages(chat_id, message_id)
-            await q.answer("✅ Message Deleted")
+            await q.answer(" Message Deleted")
             return
         except RPCError as err:
             await q.answer(
-                f"🛑 Failed to delete message!\n<b>Error:</b>\n`{err}`", show_alert=True
+                f" Failed to delete message!\n<b>Error:</b>\n`{err}`", show_alert=True
             )
     return
 
@@ -189,14 +189,14 @@ __PLUGIN__ = "Report"
 __alt_name__ = ["reports", "report"]
 
 __HELP__ = """
-**🚸 Report**
+** Report**
 
-➥ /report `<reason>`: reply to a message to report it to admins.
+ /report `<reason>`: reply to a message to report it to admins.
 × @admin: reply to a message to report it to admins.
 
 **NOTE:** Neither of these will get triggered if used by admins.
 
 **Admins Only:**
-➥ /reports `<on/off/yes/no>`: change report setting, or view current status.
+ /reports `<on/off/yes/no>`: change report setting, or view current status.
     ‣ If done in PM, toggles your status.
     ‣ If in group, toggles that groups's status."""

@@ -141,7 +141,7 @@ async def who_is_next(c: app, m: Message):
         await m.reply_text("Use it in a group")
         return
     curr = datetime.now(TIME_ZONE).date()
-    xx = await m.reply_text("📆")
+    xx = await m.reply_text("")
     users = []
     today_users = []  # Users with birthday today
 
@@ -177,7 +177,7 @@ async def who_is_next(c: app, m: Message):
     # Combine today's users with the rest of the users list
     users = today_users + users
 
-    txt = "🎊 Upcoming Birthdays 🎊\n\n"
+    txt = " Upcoming Birthdays \n\n"
     for i in users:
         user_id = i["user_id"]
         try:
@@ -228,11 +228,11 @@ async def cant_recall_it(c: app, m: Message):
     if u_dob.month < curr.month:
         next_b = date(curr.year + 1, u_dob.month, u_dob.day)
         days_left = (next_b - curr).days
-        txt = f"{men} 's birthday is passed 🫤\nDays left until next one {days_left}"
+        txt = f"{men} 's birthday is passed \nDays left until next one {days_left}"
     else:
         u_dobm = date(curr.year, u_dob.month, u_dob.day)
         days_left = (u_dobm - curr).days
-        txt = f"User's birthday is coming🥳\nDays left : {days_left}"
+        txt = f"User's birthday is coming\nDays left : {days_left}"
     await m.reply_text(txt)
     return
 
@@ -321,7 +321,7 @@ async def send_wishish(JJK: app):
                         ChatMemberStatus.OWNER,
                     ]:
                         xXx = await JJK.send_message(
-                            j, f"Happy {agee} birthday {U.user.mention}🥳\n{wish}"
+                            j, f"Happy {agee} birthday {U.user.mention}\n{wish}"
                         )
                         try:
                             await xXx.pin()
@@ -334,7 +334,7 @@ async def send_wishish(JJK: app):
 """"
 from datetime import date, datetime
 
-#form = 
+#form =
 num = "18/05/2005"
 st = "18 May 2005"
 timm = datetime.strptime(num,"%d/%m/%Y").date()
@@ -354,12 +354,12 @@ __PLUGIN__ = "Birthday"
 
 __HELP__ = """
 
-➥ /remember [reply to user] [DOB] : To registers user date of birth in my database. If not replied to user then the DOB givien will be treated as yours
-➥ /nextbdays (/nbdays,/brithdays,/bdays) : Return upcoming birthdays of 10 users
-➥ /removebday (/rmbday) : To remove birthday from database (One can only remove their data from database not of others)
-➥ /settingbday (/sbday) : To configure the settings for wishing and all for the chat
-➥ /getbday (/gbday,/mybirthday,/mybday) [reply to user] : If replied to user get the replied user's birthday else returns your birthday
+ /remember [reply to user] [DOB] : To registers user date of birth in my database. If not replied to user then the DOB givien will be treated as yours
+ /nextbdays (/nbdays,/brithdays,/bdays) : Return upcoming birthdays of 10 users
+ /removebday (/rmbday) : To remove birthday from database (One can only remove their data from database not of others)
+ /settingbday (/sbday) : To configure the settings for wishing and all for the chat
+ /getbday (/gbday,/mybirthday,/mybday) [reply to user] : If replied to user get the replied user's birthday else returns your birthday
 
-🎂 DOB should be in format of dd/mm/yyyy
+ DOB should be in format of dd/mm/yyyy
 Year is optional it is not necessary to pass it
 """

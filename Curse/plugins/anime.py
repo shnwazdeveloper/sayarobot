@@ -1261,7 +1261,7 @@ async def uidata(id_):
         if data["bl"] is None:
             bullet = ""
         return bullet, data["cs"]
-    return ["➤ ", "UPPER"]
+    return [" ", "UPPER"]
 
 
 async def get_ui_text(case):
@@ -1316,8 +1316,8 @@ ANIME_TEMPLATE = """{name}
 {bl}**{ptype}:** `{formats}`{avscd}{dura}{user_data}
 {status_air}{gnrs_}{tags_}
 
-🎬 {trailer_link}
-📖 <a href="{url}">Official Site</a>
+ {trailer_link}
+ <a href="{url}">Official Site</a>
 
 {additional}"""
 
@@ -1524,7 +1524,7 @@ mutation ($id: Int) {
             }
         }
     }
-}   
+}
 """
 
 MANGA_MUTATION = """
@@ -1601,7 +1601,7 @@ query ($search: String, $page: Int) {
         pageInfo {
             total
             hasNextPage
-        } 
+        }
         media (search: $search, type: ANIME) {
             id
             title {
@@ -1998,7 +1998,7 @@ async def get_studios(qry, page, user, duser=None, auth: bool = False):
     data = result["data"]["Page"]["studios"][0]
     isFav = data["isFavourite"]
     msg = (
-        f"**{data['name']}**{', ♥️' if isFav is True else ''}"
+        f"**{data['name']}**{', ' if isFav is True else ''}"
         + f"\n\n**ID:** {data['id']}\n[Website]({data['siteUrl']})"
     )
     if not duser:
@@ -2065,7 +2065,7 @@ async def get_studio_animes(id_, page, qry, rp, user, duser=None, auth: bool = F
     msg = f"List of animes by {result['data']['Studio']['name']} studio\n"
     for i in data:
         msg += (
-            f"\n⚬ `{i['node']['title']['romaji']}`"
+            f"\n `{i['node']['title']['romaji']}`"
             + f" __({i['node']['seasonYear']})__"
         )
     btns = []
@@ -2160,7 +2160,7 @@ async def get_user_activity(id_, user, duser=None):
             name = f"[{i['media']['title']['romaji']}]" + f"({i['media']['siteUrl']})"
             if i["status"] in ["watched episode", "read chapter"]:
                 msg += (
-                    f"⚬ {str(i['status']).capitalize()} "
+                    f" {str(i['status']).capitalize()} "
                     + f"{i['progress']} of {name}\n"
                 )
             else:
@@ -2169,7 +2169,7 @@ async def get_user_activity(id_, user, duser=None):
                 if i["status"] == "dropped":
                     of = "at"
                 msg += (
-                    f"⚬ {str(i['status']).capitalize()}"
+                    f" {str(i['status']).capitalize()}"
                     + f"{f'{progress} {of} ' if progress is not None else ' '}"
                     + f"{name}\n"
                 )
@@ -2198,9 +2198,9 @@ async def get_recommendations(id_):
     outstr = "Recommended animes:\n\n"
     for i in rc_ls:
         outstr += (
-            f"**{i[0]}**\n ➥[Synopsis]"
+            f"**{i[0]}**\n [Synopsis]"
             + f"(https://t.me/{BOT_USERNAME}?astart=anime_{i[1]})"
-            + f"\n ➥[Official Site]({i[2]})\n\n"
+            + f"\n [Official Site]({i[2]})\n\n"
         )
     return outstr
 
@@ -2225,7 +2225,7 @@ async def get_top_animes(gnr: str, page, user):
         nsfw = True if gnr.lower() in nsls.lower() else False
     data = result["data"]["Page"]
     for i in data["media"]:
-        msg += f"⚬ `{i['title']['romaji']}`\n"
+        msg += f" `{i['title']['romaji']}`\n"
     msg += f"\nTotal available animes: `{data['pageInfo']['total']}`"
     btn = []
     if int(page) == 1:
@@ -2285,7 +2285,7 @@ async def get_user_favourites(id_, user, req, page, sighs, duser=None):
         node_name = (
             i["node"]["title"]["romaji"] if req != "CHAR" else i["node"]["name"]["full"]
         )
-        msg += f"⚬ [{node_name}]({i['node']['siteUrl']})\n"
+        msg += f" [{node_name}]({i['node']['siteUrl']})\n"
     btn = []
     if duser is None:
         duser = user
@@ -2451,7 +2451,7 @@ async def get_anime(vars_, auth: bool = False, user: int = None, cid: int = None
     bl, cs = await uidata(cid)
     text = await get_ui_text(cs)
     psrc, ptype = text[0], text[1]
-    avscd = f"\n{bl}**{text[2]}:** `{score}%` 🌟" if score is not None else ""
+    avscd = f"\n{bl}**{text[2]}:** `{score}%` " if score is not None else ""
     tags = []
     for i in data["tags"]:
         tags.append(i["name"])
@@ -2567,7 +2567,7 @@ async def get_anilist(qdb, page, auth: bool = False, user: int = None, cid: int 
         gnrs_ = f"\n{bl}**{text[7]}:** `{gnrs}`"
     fav = ", in Favourites" if isfav is True else ""
     score = data["averageScore"]
-    avscd = f"\n{bl}**{text[2]}:** `{score}%` 🌟" if score is not None else ""
+    avscd = f"\n{bl}**{text[2]}:** `{score}%` " if score is not None else ""
     tags = []
     for i in data["tags"]:
         tags.append(i["name"])
@@ -3477,7 +3477,7 @@ example: /airing Sword Art Online"""
 
 setting_text = """
 <b>This allows you to change group settings</b>
-        
+
 NSFW toggle switches on filtering of 18+ marked content
 
 Airing notifications notifies about airing of anime in recent
@@ -4676,7 +4676,7 @@ async def auto_unpin(client: Client, cq: CallbackQuery):
     await cq.answer()
 
 
-BULLETS = ["➤", "•", "⚬", "▲", "▸", "△", "⋟", "»", "None"]
+BULLETS = ["", "•", "", "▲", "▸", "△", "⋟", "»", "None"]
 
 
 @app.on_callback_query(filters.regex(pattern=r"cui_(.*)"))
@@ -4713,7 +4713,7 @@ async def change_ui_btn(client: Client, cq: CallbackQuery):
         if await GUI.find_one({"_id": gid}):
             await GUI.update_one({"_id": gid}, {"$set": {"cs": qry}})
         else:
-            await GUI.insert_one({"_id": gid, "bl": "➤", "cs": qry})
+            await GUI.insert_one({"_id": gid, "bl": "", "cs": qry})
     elif qry != "call":
         bullet = qry
         if qry == "None":
@@ -4722,7 +4722,7 @@ async def change_ui_btn(client: Client, cq: CallbackQuery):
             await GUI.update_one({"_id": gid}, {"$set": {"bl": bullet}})
         else:
             await GUI.insert_one({"_id": gid, "bl": bullet, "cs": "UPPER"})
-    bl = "➤"
+    bl = ""
     cs = "UPPER"
     if await GUI.find_one({"_id": gid}):
         data = await GUI.find_one({"_id": gid})
@@ -5121,11 +5121,11 @@ QUOTES_IMG = [
 
 # <================================================= HELP ======================================================>
 __HELP__ = """
-⛩ *Anime:*
+ *Anime:*
 
-➠ *Curse provides you the best anime-based commands including anime news and much more!*
+ *Curse provides you the best anime-based commands including anime news and much more!*
 
-➠ *Commands:*
+ *Commands:*
 
 » /anime: fetches info on single anime (includes buttons to look up for prequels and sequels)
 » /character: fetches info on multiple possible characters related to query
@@ -5135,7 +5135,7 @@ __HELP__ = """
 » /schedule: fetches scheduled animes
 » /browse: get popular, trending or upcoming animes
 
-➠ /animequotes: get random anime quotes
+ /animequotes: get random anime quotes
 
 » /anisettings: to toggle NSFW lock and airing notifications and other settings in groups (anime news)
 » /top: to retrieve top animes for a genre or tag

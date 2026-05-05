@@ -19,7 +19,7 @@ async def FileType(message: Message):
 @bot.on_message(filters.command("rename", PREFIX_HANDLER), group=16283)
 async def rename_file(_, message: Message):
     if not message.reply_to_message:
-        return await message.reply_text("❌ Reply to a media message to rename it.")
+        return await message.reply_text(" Reply to a media message to rename it.")
 
     # Get the desired filename from command argument, or default to "Serena"
     try:
@@ -31,28 +31,28 @@ async def rename_file(_, message: Message):
     try:
         file_type = await FileType(message.reply_to_message)
         if not file_type:
-            return await message.reply_text("❌ Cannot identify the file type.")
+            return await message.reply_text(" Cannot identify the file type.")
     except Exception as e:
-        return await message.reply_text(f"⚠️ Error getting file type:\n<code>{e}</code>")
+        return await message.reply_text(f" Error getting file type:\n<code>{e}</code>")
 
     filename = f"{new_name}.{file_type}"
-    progress = await message.reply_text("⬇️ Downloading file...")
+    progress = await message.reply_text(" Downloading file...")
 
     try:
         file_path = await message.reply_to_message.download(file_name=filename)
     except Exception as e:
-        return await progress.edit(f"❌ Download failed: <code>{e}</code>")
+        return await progress.edit(f" Download failed: <code>{e}</code>")
 
     thumb_path = "Curse/extras/Komi(1).jpg"
     if not os.path.exists(thumb_path):
         thumb_path = None  # fallback if thumbnail doesn't exist
 
-    await progress.edit("⬆️ Uploading file...")
+    await progress.edit(" Uploading file...")
 
     try:
-        await message.reply_document(document=file_path, thumb=thumb_path, caption=f"📦 Renamed to: <code>{filename}</code>")
+        await message.reply_document(document=file_path, thumb=thumb_path, caption=f" Renamed to: <code>{filename}</code>")
     except Exception as e:
-        await progress.edit(f"❌ Upload failed: <code>{e}</code>")
+        await progress.edit(f" Upload failed: <code>{e}</code>")
     else:
         await progress.delete()
     finally:

@@ -14,7 +14,7 @@ async def upscale_image(client, message):
         if message.reply_to_message and message.reply_to_message.photo:
             # Send a message indicating upscaling is in progress
             progress_msg = await message.reply_text(
-                "🌨"
+                ""
             )
 
             # Access the image file_id from the replied message

@@ -1,7 +1,7 @@
 from pyrogram import Client,filters
 import requests
 import re
-import config 
+import config
 
 SPOILER = config.SPOILER_MODE
 slangf = 'slang_words.txt'
@@ -33,7 +33,7 @@ async def slang(bot, message):
         if isslang:
             name = message.from_user.mention
             msgtxt = f"""{name} your message has been deleted due to the presence of inappropriate language. Here is a censored version of your message:
-            
+
 {sentence}
             """
             if SPOILER:

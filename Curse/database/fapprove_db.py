@@ -9,7 +9,7 @@ async def approve_user(chat_id : int,user_id : int ):
         list.append(user_id)
         return await approvedb.update_one({"chat_id": chat_id}, {"$set": {"user_ids": list}}, upsert=True)
     list = [user_id]
-    return await approvedb.update_one({"chat_id" : chat_id},{"$set" : {"user_ids" : list}}, upsert=True)   
+    return await approvedb.update_one({"chat_id" : chat_id},{"$set" : {"user_ids" : list}}, upsert=True)
 
 
 async def isApproved(chat_id : int,user_id : int) -> bool:
@@ -21,14 +21,14 @@ async def isApproved(chat_id : int,user_id : int) -> bool:
         return False
 
 async def disapprove_user(chat_id : int,user_id : int):
-    chat = await approvedb.find_one({"chat_id" : chat_id}) 
+    chat = await approvedb.find_one({"chat_id" : chat_id})
     if chat:
         list = chat.get("user_ids")
         list.remove(user_id)
-        return await approvedb.update_one({"chat_id": chat_id}, {"$set": {"user_ids": list}}, upsert=True) 
+        return await approvedb.update_one({"chat_id": chat_id}, {"$set": {"user_ids": list}}, upsert=True)
 
 async def approved_users(chat_id : int) -> list:
-    chat = await approvedb.find_one({"chat_id" : chat_id}) 
-    if chat :        
+    chat = await approvedb.find_one({"chat_id" : chat_id})
+    if chat :
         return chat["user_ids"]
     return []

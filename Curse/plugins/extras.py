@@ -25,7 +25,7 @@ async def pick_winner(_, message):
         winner = random.choice(participants)
 
         # Send the winner as a reply
-        await message.reply_text(f"🎉 The winner is: {winner}")
+        await message.reply_text(f" The winner is: {winner}")
     else:
         # If no participants are provided
         await message.reply_text("Please provide a list of participants.")
@@ -60,7 +60,7 @@ async def hyperlink_command(client, message):
         else:
             await client.send_message(
                 chat_id=message.chat.id,
-                text="❌ Invalid format! Please use the format: /hyperlink <text> <link>.",
+                text=" Invalid format! Please use the format: /hyperlink <text> <link>.",
             )
 
 
@@ -82,10 +82,10 @@ async def echo(client, message):
             disable_web_page_preview=True,
         )
     await message.delete()
-    
+
 
 @app.on_message(filters.command("ud"), group=1015)
-async def urban(_, m):  
+async def urban(_, m):
        user_id = m.from_user.id
        if len(m.text.split()) == 1:
          return await m.reply("Enter the text for which you would like to find the definition.")
@@ -94,13 +94,13 @@ async def urban(_, m):
        mm = api["list"]
        if 0 == len(mm):
            return await m.reply("=> No results Found!")
-       string = f"🔍 **Ward**: {mm[0].get('word')}\n\n📝 **Definition**: {mm[0].get('definition')}\n\n✏️ **Example**: {mm[0].get('example')}"
+       string = f" **Ward**: {mm[0].get('word')}\n\n **Definition**: {mm[0].get('definition')}\n\n **Example**: {mm[0].get('example')}"
        if 1 == len(mm):
            return await m.reply(text=string, quote=True)
        else:
            num = 0
            return await m.reply(text=string, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('next', callback_data=f"udnxt:{user_id}:{text}:{num}")]]), quote=True)
-@app.on_callback_query(filters.regex("^udnxt"))   
+@app.on_callback_query(filters.regex("^udnxt"))
 async def next(_, query):
          user_id = int(query.data.split(":")[1])
          text = str(query.data.split(":")[2])
@@ -111,19 +111,19 @@ async def next(_, query):
          mm = api["list"]
          uwu = mm[num]
          if num == len(mm)-1:
-             string = f"🔍 **Word**: {uwu.get('word')}\n\n📝 **Definition**: {uwu.get('definition')}\n\n✏️ **Example**: {uwu.get('example')}\n\n"
+             string = f" **Word**: {uwu.get('word')}\n\n **Definition**: {uwu.get('definition')}\n\n **Example**: {uwu.get('example')}\n\n"
              string += f"Page: {num+1}/{len(mm)}"
-             return await query.message.edit(text=string, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('➡️ Back', callback_data=f"udbck:{query.from_user.id}:{text}:{num}")]]))
+             return await query.message.edit(text=string, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(' Back', callback_data=f"udbck:{query.from_user.id}:{text}:{num}")]]))
          else:
-             string = f"🔍 **Word**: {uwu.get('word')}\n\n📝 **Definition**: {uwu.get('definition')}\n\n✏️ **Example**: {uwu.get('example')}\n\n"
+             string = f" **Word**: {uwu.get('word')}\n\n **Definition**: {uwu.get('definition')}\n\n **Example**: {uwu.get('example')}\n\n"
              string += f"Page: {num+1}/{len(mm)}"
              buttons = [[
-                  InlineKeyboardButton("Back ⏮️", callback_data=f"udbck:{query.from_user.id}:{text}:{num}"),
-                  InlineKeyboardButton("Next ⏭️", callback_data=f"udnxt:{query.from_user.id}:{text}:{num}") 
+                  InlineKeyboardButton("Back ", callback_data=f"udbck:{query.from_user.id}:{text}:{num}"),
+                  InlineKeyboardButton("Next ", callback_data=f"udnxt:{query.from_user.id}:{text}:{num}")
              ]]
              return await query.message.edit(text=string, reply_markup=InlineKeyboardMarkup(buttons))
 
-@app.on_callback_query(filters.regex("^udbck"))   
+@app.on_callback_query(filters.regex("^udbck"))
 async def back(_, query):
          user_id = int(query.data.split(":")[1])
          text = str(query.data.split(":")[2])
@@ -134,26 +134,26 @@ async def back(_, query):
          mm = api["list"]
          uwu = mm[num]
          if num == 0:
-             string = f"🔍 **Ward**: {uwu.get('word')}\n\n📝 **Definition**: {uwu.get('definition')}\n\n✏️ **Example**: {uwu.get('example')}\n\n"
+             string = f" **Ward**: {uwu.get('word')}\n\n **Definition**: {uwu.get('definition')}\n\n **Example**: {uwu.get('example')}\n\n"
              string += f"Page: {num+1}/{len(mm)}"
-             return await query.message.edit(text=string, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('➡️ Next', callback_data=f"udnxt:{query.from_user.id}:{text}:{num}")]]))
+             return await query.message.edit(text=string, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(' Next', callback_data=f"udnxt:{query.from_user.id}:{text}:{num}")]]))
          else:
-             string = f"🔍 **Ward**: {uwu.get('word')}\n\n📝 **Definition**: {uwu.get('definition')}\n\n✏️ **Example**: {uwu.get('example')}\n\n"
+             string = f" **Ward**: {uwu.get('word')}\n\n **Definition**: {uwu.get('definition')}\n\n **Example**: {uwu.get('example')}\n\n"
              string += f"Page: {num+1}/{len(mm)}"
              buttons = [[
-                  InlineKeyboardButton("Back ⏮️", callback_data=f"udbck:{query.from_user.id}:{text}:{num}"),
-                  InlineKeyboardButton("Next ⏭️", callback_data=f"udnxt:{query.from_user.id}:{text}:{num}") 
+                  InlineKeyboardButton("Back ", callback_data=f"udbck:{query.from_user.id}:{text}:{num}"),
+                  InlineKeyboardButton("Next ", callback_data=f"udnxt:{query.from_user.id}:{text}:{num}")
              ]]
              return await query.message.edit(text=string, reply_markup=InlineKeyboardMarkup(buttons))
 
 
 __PLUGIN__ = "Extras"
 __HELP__ = """
-**🫧 𝗘𝗫𝗧𝗥𝗔𝗦**
+** 𝗘𝗫𝗧𝗥𝗔𝗦**
 
-➥ /pickwinner <participant1> <participant2> ... : Picks a random winner from the provided list of participants.
-➥ /echo <text> : Echos the message. 
-➥ /webss [URL] - Take A Screenshot Of A Webpage.
-➥ /ud : Search Urban Dictionary. Usage: /ud [word]
+ /pickwinner <participant1> <participant2> ... : Picks a random winner from the provided list of participants.
+ /echo <text> : Echos the message.
+ /webss [URL] - Take A Screenshot Of A Webpage.
+ /ud : Search Urban Dictionary. Usage: /ud [word]
 """
 

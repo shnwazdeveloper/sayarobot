@@ -18,6 +18,7 @@ from Curse.utils.string import (
     escape_mentions_using_curly_brackets,
     parse_button,
 )
+from Curse.utils.text_style import smallcaps
 from Curse.vars import Config
 
 # Initialize
@@ -46,22 +47,22 @@ async def gen_start_kb(q: Message or CallbackQuery):
         [
             [
                 (
-                    "About Me",
+                    smallcaps("About Me"),
                     "details",
                 ),
             ],
             [
-                ("💸 Donate", "donate"),
-                ("📚 Commands", "commands"),
+                (smallcaps("Donate"), "donate"),
+                (smallcaps("Commands"), "commands"),
             ],
             [
-                ("📡 Updates", _telegram_url(Config.SUPPORT_CHANNEL), "url"),
-                ("🏪 Support", _telegram_url(Config.SUPPORT_GROUP), "url")
+                (smallcaps("Updates"), _telegram_url(Config.SUPPORT_CHANNEL), "url"),
+                (smallcaps("Support"), _telegram_url(Config.SUPPORT_GROUP), "url")
 
             ],
             [
-                ("➕ Add Bot to your Groups ➕", _telegram_url(Config.BOT_USERNAME, "?startgroup=new"), "url")
-            ], 
+                (smallcaps("Add bot to your groups"), _telegram_url(Config.BOT_USERNAME, "?startgroup=new"), "url")
+            ],
         ],
     )
 
@@ -251,7 +252,7 @@ async def get_help_msg(m: Message or CallbackQuery, help_option: str):
         else:
             mes = m
         help_msg = f"""
-☉ Here, you will find a list of all the available commands.
+ Here, you will find a list of all the available commands.
 
 ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ᴄᴀɴ ʙᴇ ᴜsᴇᴅ ᴡɪᴛʜ : /
 

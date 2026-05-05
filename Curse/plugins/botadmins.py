@@ -44,12 +44,12 @@ async def botstaff(_, m: Message):
     owner = await _get_user(app, OWNER_ID)
     if owner:
         sections.append(
-            f"🧙‍♂️ <b>⚡ SUPREME SORCERER ⚡</b>\n"
+            f" <b> SUPREME SORCERER </b>\n"
             f"• {mention_html(owner.first_name, OWNER_ID)} (<code>{OWNER_ID}</code>)"
         )
     else:
         sections.append(
-            "🧙‍♂️ <b>⚡ SUPREME SORCERER ⚡</b>\n• <i>Could not fetch owner profile.</i>"
+            " <b> SUPREME SORCERER </b>\n• <i>Could not fetch owner profile.</i>"
         )
 
     # — Ministry Developers
@@ -57,11 +57,11 @@ async def botstaff(_, m: Message):
     for uid in set(DEV_USERS) - {OWNER_ID}:
         user = await _get_user(app, uid)
         if user:
-            dev_lines.append(f"• 🛠 {mention_html(user.first_name, uid)} (<code>{uid}</code>)")
+            dev_lines.append(f"•  {mention_html(user.first_name, uid)} (<code>{uid}</code>)")
         else:
-            dev_lines.append(f"• 🛠 Unknown Dev (<code>{uid}</code>)")
+            dev_lines.append(f"•  Unknown Dev (<code>{uid}</code>)")
     sections.append(
-        "🔮 <b>MINISTRY DEVELOPERS</b> (Special‑Grade Magicians):\n"
+        " <b>MINISTRY DEVELOPERS</b> (Special‑Grade Magicians):\n"
         + ("\n".join(dev_lines) if dev_lines else "• No registered developers.")
     )
 
@@ -70,11 +70,11 @@ async def botstaff(_, m: Message):
     for uid in set(SUDO_USERS):
         user = await _get_user(app, uid)
         if user:
-            sudo_lines.append(f"• ⚔️ {mention_html(user.first_name, uid)} (<code>{uid}</code>)")
+            sudo_lines.append(f"•  {mention_html(user.first_name, uid)} (<code>{uid}</code>)")
         else:
-            sudo_lines.append(f"• ⚔️ Unknown Auror (<code>{uid}</code>)")
+            sudo_lines.append(f"•  Unknown Auror (<code>{uid}</code>)")
     sections.append(
-        "🪄 <b>AURORS</b> (Grade‑A Magicians):\n"
+        " <b>AURORS</b> (Grade‑A Magicians):\n"
         + ("\n".join(sudo_lines) if sudo_lines else "• No Aurors have been assigned.")
     )
 
@@ -83,11 +83,11 @@ async def botstaff(_, m: Message):
     for uid in WHITELIST_USERS:
         user = await _get_user(app, uid)
         if user:
-            wl_lines.append(f"• ✨ {mention_html(user.first_name, uid)} (<code>{uid}</code>)")
+            wl_lines.append(f"•  {mention_html(user.first_name, uid)} (<code>{uid}</code>)")
         else:
-            wl_lines.append(f"• ✨ Unknown Spellcaster (<code>{uid}</code>)")
+            wl_lines.append(f"•  Unknown Spellcaster (<code>{uid}</code>)")
     sections.append(
-        "📜 <b>SPELLCASTERS</b> (Whitelisted Wizards):\n"
+        " <b>SPELLCASTERS</b> (Whitelisted Wizards):\n"
         + ("\n".join(wl_lines) if wl_lines else "• No Spellcasters listed.")
     )
 

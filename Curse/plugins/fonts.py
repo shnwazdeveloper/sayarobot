@@ -43,7 +43,7 @@ async def style_buttons(c, m, cb=False):
             InlineKeyboardButton("H̆̈ă̈p̆̈p̆̈y̆̈", callback_data="style+happy"),
             InlineKeyboardButton("S̑̈ȃ̈d̑̈", callback_data="style+sad"),
         ],
-        [InlineKeyboardButton("ɴᴇxᴛ ➻", callback_data="nxt")],
+        [InlineKeyboardButton("ɴᴇxᴛ ", callback_data="nxt")],
     ]
     if not cb:
         await m.reply_text(
@@ -61,7 +61,7 @@ async def nxt(c, m):
     if m.data == "nxt":
         buttons = [
             [
-                InlineKeyboardButton("🇸 🇵 🇪 🇨 🇮 🇦 🇱 ", callback_data="style+special"),
+                InlineKeyboardButton("       ", callback_data="style+special"),
                 InlineKeyboardButton("🅂🅀🅄🄰🅁🄴🅂", callback_data="style+squares"),
                 InlineKeyboardButton(
                     "🆂︎🆀︎🆄︎🅰︎🆁︎🅴︎🆂︎", callback_data="style+squares_bold"
@@ -108,7 +108,7 @@ async def nxt(c, m):
 
 @app.on_callback_query(filters.regex("^suku_back"))
 async def neko_back(c, m):
-    await style_buttons(c, m, cb=True)           
+    await style_buttons(c, m, cb=True)
 
 
 @app.on_callback_query(filters.regex("^style"))
@@ -204,7 +204,7 @@ __PLUGIN__ = "Fonts"
 
 __HELP__ = """
 
-➻ `/font` or `/fonts` <text> : Choose a font style for the text.
+ `/font` or `/fonts` <text> : Choose a font style for the text.
 
 """
 

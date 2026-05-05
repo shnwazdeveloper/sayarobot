@@ -12,7 +12,7 @@ async def fsub_on(chat_id : int, channel: str):
 
 async def fsub_stat(chat_id : int) -> bool:
     chat = bool(await fsubdb.find_one({"chat_id" : chat_id}))
-    return chat 
+    return chat
 
 async def get_channel(chat_id : int):
     chat = await fsubdb.find_one({"chat_id" : chat_id})

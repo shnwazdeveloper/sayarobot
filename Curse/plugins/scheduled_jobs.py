@@ -71,7 +71,7 @@ async def clean_my_db(c:Client,is_cmd=False, id=None):
         txt += f"\nClean type: Auto\n\tTook {round(nums,2)} seconds to complete the process"
         await c.send_message(chat_id=MESSAGE_DUMP,text=txt)
         return txt
-    
+
 
 if BDB_URI:
     from Curse.plugins import bday_cinfo, bday_info
@@ -117,7 +117,7 @@ async def send_wishish(JJK: Client):
                     U = await JJK.get_chat_member(chat_id=j,user_id=i["user_id"])
                     wish = choice(birthday_wish)
                     if U.status in [ChatMemberStatus.MEMBER,ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER]:
-                        xXx = await JJK.send_message(j,f"Happy {agee} birthday {U.user.mention}🥳\n{wish}")
+                        xXx = await JJK.send_message(j,f"Happy {agee} birthday {U.user.mention}\n{wish}")
                         try:
                             await xXx.pin()
                         except Exception:
@@ -129,7 +129,7 @@ async def send_wishish(JJK: Client):
 """"
 from datetime import date, datetime
 
-#form = 
+#form =
 num = "2/07/2002"
 st = "2 July 2002"
 timm = datetime.strptime(num,"%d/%m/%Y").date()

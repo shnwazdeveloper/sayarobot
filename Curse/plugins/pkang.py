@@ -10,7 +10,7 @@ from Curse.bot_class import app
 @app.on_message(filters.command("pkang"), group=10203)
 async def _packkang(app, message):
     """
-    @its_damiann on telegram. who helped me in making this module.
+    original helper credits preserved by project history.
     """
     txt = await message.reply_text("Processing....")
     if not message.reply_to_message:
@@ -64,7 +64,7 @@ async def _packkang(app, message):
         )
         await txt.edit(
             f"""Your sticker has been added! For fast update remove your pack & add again\n
-🎖 𝗧𝗢𝗧𝗔𝗟 𝗦𝗧𝗜𝗖𝗞𝗘𝗥: {len(sticks)}""",
+ 𝗧𝗢𝗧𝗔𝗟 𝗦𝗧𝗜𝗖𝗞𝗘𝗥: {len(sticks)}""",
             reply_markup=InlineKeyboardMarkup(
                 [
                     [

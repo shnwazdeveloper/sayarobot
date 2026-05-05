@@ -19,6 +19,7 @@ from Curse.utils.extras import StartPic
 from Curse.utils.kbhelpers import ikb
 from Curse.utils.start_utils import (gen_cmds_kb, gen_start_kb, get_help_msg,
                                       get_private_note, get_private_rules)
+from Curse.utils.text_style import smallcaps, smallcaps_html
 from Curse.vars import Config
 from Curse.utils.paginate import paginate_modules
 
@@ -34,20 +35,23 @@ def _telegram_url(username, query=""):
 async def handle_donate_callback(_, query: CallbackQuery):
     await query.answer()
     await query.message.edit_text(
-        f"""
-        Hey dude! 😄
-So glad to hear you wanna donate! 💖
+        smallcaps(
+            f"""
+Hey dude.
+So glad to hear you want to donate.
 
 You can directly contact my developer for donation info,
-or just hop into our [support chat]({_telegram_url(Config.SUPPORT_GROUP)}) and ask there — we’ll help you out! 🙌
+or hop into our support chat and ask there.
 
-Thanks for supporting the magic! 🪄✨""",
+Thanks for supporting {Config.BOT_NAME}.
+"""
+        ),
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Support", url=_telegram_url(Config.SUPPORT_GROUP)),
+                    InlineKeyboardButton(smallcaps("Support"), url=_telegram_url(Config.SUPPORT_GROUP)),
                 ],
-                [InlineKeyboardButton("Back", callback_data="start_back")],
+                [InlineKeyboardButton(smallcaps("Back"), callback_data="start_back")],
             ],
         ),
     )
@@ -110,11 +114,13 @@ async def start(c: app, m: Message):
 
         # ── default PM /start ─────────────────────────────────────
         try:
-            caption = f"""
-Hello There, I'm {Config.BOT_NAME} 🧙
+            caption = smallcaps(
+                f"""
+Hello there, I am {Config.BOT_NAME}.
 A magic-powered Telegram bot built to manage your groups and make things fun.
 Don't forget to check out the About Me section below for all the cool stuff I can do!
 """
+            )
 
             sent = await m.reply_photo(
                 photo=str(choice(StartPic)),
@@ -130,12 +136,12 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
     # ── GROUP CONTEXT ────────────────────────────────────────────
     else:
         kb = InlineKeyboardMarkup(
-            [[InlineKeyboardButton("✨ Click here for help", url=_telegram_url(Config.BOT_USERNAME, "?start=start"))]]
+            [[InlineKeyboardButton(smallcaps("Click here for help"), url=_telegram_url(Config.BOT_USERNAME, "?start=start"))]]
         )
 
         await m.reply_photo(
             photo=str(choice(StartPic)),
-            caption=f"🧙 I’m awake! For updates and details, visit [Updates]({_telegram_url(Config.SUPPORT_CHANNEL)}).",
+            caption=smallcaps("I am awake. Use the button below for help."),
             reply_markup=kb,
             parse_mode=enums.ParseMode.MARKDOWN,
             quote=True,
@@ -146,13 +152,13 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
 async def start_back(_, q: CallbackQuery):
     try:
         cpt = f"""
-Hello There, I'm {Config.BOT_NAME} 🧙
+Hello there, I am {Config.BOT_NAME}.
 A magic-powered Telegram bot built to manage your groups and make things fun.
 Don't forget to check out the About Me section below for all the cool stuff I can do!
 """
 
         await q.edit_message_caption(
-            caption=cpt,
+            caption=smallcaps(cpt),
             reply_markup=(await gen_start_kb(q.message)),
         )
     except MessageNotModified:
@@ -166,10 +172,10 @@ async def commands_menu(_, q: CallbackQuery):
     # ou = await gen_cmds_kb(q.message)
     # keyboard = ikb(ou, True)
     # try:
-        cpt = f"""
+        cpt = smallcaps(f"""
 Hello, .
 I'm here to help you manage your groups
-Commands available:"""
+Commands available:""")
 
         await q.edit_message_caption(
             caption=cpt,
@@ -224,7 +230,7 @@ async def help_menu(_, m: Message):
                   [
                     [
                       InlineKeyboardButton(
-                        "Help",
+                        smallcaps("Help"),
                         url=_telegram_url(Config.BOT_USERNAME, f"?start={help_option}"),
                         ),
                     ],
@@ -244,7 +250,7 @@ Commands available:
               [
                 [
                   InlineKeyboardButton(
-                    "Help", 
+                    smallcaps("Help"),
                     url=_telegram_url(Config.BOT_USERNAME, "?start=start_help"),
                   ),
                 ],
@@ -300,58 +306,59 @@ async def get_module_info(c: app, q: CallbackQuery):
 async def handle_details_callback(_, query: CallbackQuery):
     await query.answer()
     await query.message.edit_text(
-     f"""[{Config.BOT_NAME}]({_telegram_url(Config.BOT_USERNAME)}) is a powerful, anime-inspired bot crafted for group management with tons of extra magical features. 🧙‍♂️✨
+     smallcaps_html(f"""<a href='{_telegram_url(Config.BOT_USERNAME)}'>{Config.BOT_NAME}</a> is a powerful bot crafted for group management with useful extra features.
 
-Built upon the solid foundation of [Gojo](https://github.com/Gojo-Bots/Gojo_Satoru),
-{Config.BOT_NAME} operates under the GNU General Public License v3.0 🛡️
+Built upon the solid foundation of Gojo,
+{Config.BOT_NAME} operates under the GNU General Public License v3.0.
 
 Got questions or need some help with the bot?
-Hop into the [Support Chat]({_telegram_url(Config.SUPPORT_GROUP)}) — the help desk is always open! 💬🔮""",
+Hop into the support chat. The help desk is always open."""),
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("How to use me", callback_data="how_to_use"),
+                    InlineKeyboardButton(smallcaps("How to use me"), callback_data="how_to_use"),
                 ],
                 [
-                    InlineKeyboardButton("♨️ Ping", callback_data="bot_curr_info"),
-                    InlineKeyboardButton("↩️ Back ↩️", callback_data="start_back"),
+                    InlineKeyboardButton(smallcaps("Ping"), callback_data="bot_curr_info"),
+                    InlineKeyboardButton(smallcaps("Back"), callback_data="start_back"),
                 ],
             ],
         ),
+        parse_mode=enums.ParseMode.HTML,
     )
 
 @app.on_callback_query(filters.regex("^how_to_use$"))
 async def handle_how_to_use_callback(_, query: CallbackQuery):
     await query.answer()
     await query.message.edit_text(
-     f"""Hey there! my name is {Config.BOT_NAME}. Click on Help button to know my commands
+     smallcaps_html(f"""Hey there. My name is {Config.BOT_NAME}. Click on help to know my commands.
 
 I'm here to make your group management fun and easy! I have lots of handy features, such as flood control, a warning system, a note keeping system, and even replies on predetermined filters.
 
- Join [Updates Channel]({_telegram_url(Config.SUPPORT_CHANNEL)}) To Keep Yourself Updated About me.
+Join the updates channel to keep yourself updated about me.
 
-Any issues or need help related to me? Come visit us in [Support Chat]({_telegram_url(Config.SUPPORT_GROUP)})
+Any issues or need help related to me? Come visit us in support chat.
 
 You Can Know More About Me By Clicking The Below Buttons.
-        """,
+        """),
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("Add Me to Your Group", url=_telegram_url(Config.BOT_USERNAME, "?startgroup=new")),
+                    InlineKeyboardButton(smallcaps("Add me to your group"), url=_telegram_url(Config.BOT_USERNAME, "?startgroup=new")),
                 ],
-                [InlineKeyboardButton("Back", callback_data="start_back")],
+                [InlineKeyboardButton(smallcaps("Back"), callback_data="start_back")],
             ],
         ),
     )
 
 @app.on_callback_query(filters.regex(r"help_(.*?)"))
-async def help_button(_,query):  
+async def help_button(_,query):
     HELP_STRINGS = f"""I'm here to help you manage your groups
 Commands available."""
     mod_match = re.match(r"help_module\((.+?)\)", query.data)
     prev_match = re.match(r"help_prev\((.+?)\)", query.data)
     next_match = re.match(r"help_next\((.+?)\)", query.data)
-    back_match = re.match(r"help_back", query.data) 
+    back_match = re.match(r"help_back", query.data)
     try:
         if back_match:
            await query.message.edit_caption(
@@ -359,7 +366,7 @@ Commands available."""
                 reply_markup=InlineKeyboardMarkup(
                     paginate_modules(0, HELP_COMMANDS, "help")
                 ),
-            )            
+            )
         elif mod_match:
             module = mod_match.group(1)
             text = (
@@ -369,7 +376,7 @@ Commands available."""
                 + HELP_COMMANDS[f"plugins.{module}"]["help_msg"]
             )
             await query.message.edit_caption(
-                text,               
+                text,
                 reply_markup=InlineKeyboardMarkup(
                     [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
                 ),
@@ -382,7 +389,7 @@ Commands available."""
                 reply_markup=InlineKeyboardMarkup(paginate_modules(curr_page - 1, HELP_COMMANDS, "help")
              ),
           )
-                                   
+
         elif next_match:
             next_page = int(next_match.group(1))
             await query.message.edit_caption(
@@ -390,7 +397,7 @@ Commands available."""
                 reply_markup=InlineKeyboardMarkup(
                     paginate_modules(next_page + 1, HELP_COMMANDS, "help")
                 ),
-            )                   
+            )
 
         return await _.answer_callback_query(query.id)
 

@@ -189,7 +189,7 @@ async def unapproveall_users(_, m: Message):
     await m.reply_text(
         "Are you sure you want to remove everyone who is approved in this chat?",
         reply_markup=ikb(
-            [[("⚠️ Confirm", "unapprove_all"), ("❌ Cancel", "close_admin")]],
+            [[(" Confirm", "unapprove_all"), (" Cancel", "close_admin")]],
         ),
     )
     return
@@ -231,14 +231,14 @@ __alt_name__ = ["approved"]
 
 
 __HELP__ = """
-**✅ Approve**
+** Approve**
 
 **Admin commands:**
-➥ /approval: Check a user's approval status in this chat.
-➥ /approve: Approve of a user. Locks, blacklists, and antiflood won't apply to them anymore.
-➥ /unapprove: Unapprove of a user. They will now be subject to blocklists.
-➥ /approved: List all approved users.
-➥ /unapproveall: Unapprove *ALL* users in a chat. This cannot be undone!
+ /approval: Check a user's approval status in this chat.
+ /approve: Approve of a user. Locks, blacklists, and antiflood won't apply to them anymore.
+ /unapprove: Unapprove of a user. They will now be subject to blocklists.
+ /approved: List all approved users.
+ /unapproveall: Unapprove *ALL* users in a chat. This cannot be undone!
 
 **Example:**
 `/approve @username`: this approves a user in the chat."""

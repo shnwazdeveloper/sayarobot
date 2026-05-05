@@ -16,17 +16,24 @@ from Curse.database.rules_db import Rules
 from Curse.database.users_db import Users
 from Curse.database.warns_db import Warns, WarnSettings
 from Curse.utils.custom_filters import command
+from Curse.utils.text_style import smallcaps, smallcaps_html
 from Curse.supports import get_support_staff
+from Curse.vars import Config
 
 SUPPORT_STAFF = get_support_staff()
 C_HANDLER = PREFIX_HANDLER
+
+
+def _telegram_url(username):
+    username = (username or "").lstrip("@")
+    return f"https://t.me/{username}" if username else "https://t.me/"
+
 
 @app.on_message(filters.command(["stats"], C_HANDLER), group=9696)
 async def get_stats(_, m: Message):
     if m.from_user.id not in SUPPORT_STAFF:
         return
 
-    # Initializing magic scrolls
     bldb = Blacklist
     gbandb = GBan()
     notesdb = Notes()
@@ -42,41 +49,46 @@ async def get_stats(_, m: Message):
     warns_db = Warns
     warns_settings_db = WarnSettings
 
-    replymsg = await m.reply_text("🧙‍♂️ Summoning Magical Metrics... Please wait...", quote=True)
+    replymsg = await m.reply_text(
+        smallcaps("Collecting bot statistics. Please wait..."),
+        quote=True,
+    )
 
     rply = (
-        "🪄 <b>𝙃𝙤𝙜𝙬𝙖𝙧𝙩𝙨 Magical Records</b>\n\n"
-        "📜 <b>Here lies the current state of our enchanted realm:</b>\n\n"
-        f"👥 <b>Wizards Registered:</b> <code>{userdb.count_users()}</code> in <code>{chatdb.count_chats()}</code> covens\n"
-        f"📌 <b>Anti-Channel Pin Curse:</b> Active in <code>{pinsdb.count_chats('antichannelpin')}</code> covens\n"
-        f"🧹 <b>Linked Message Cleaning Charm:</b> Active in <code>{pinsdb.count_chats('cleanlinked')}</code> covens\n"
-        f"📖 <b>Spell Scrolls (Filters):</b> <code>{fldb.count_filters_all()}</code> across <code>{fldb.count_filters_chats()}</code> covens\n"
-        f"🪶 <b>Alias Spells:</b> <code>{fldb.count_filter_aliases()}</code>\n"
-        f"☠️ <b>Blacklisted Curses:</b> <code>{bldb.count_blacklists_all()}</code> in <code>{bldb.count_blackists_chats()}</code> covens\n"
-        f"    🔍 <b>With Effects:</b>\n"
-        f"        💤 <b>None:</b> <code>{bldb.count_action_bl_all('none')}</code>\n"
-        f"        🦶 <b>Kick:</b> <code>{bldb.count_action_bl_all('kick')}</code>\n"
-        f"        ⚠️ <b>Warn:</b> <code>{bldb.count_action_bl_all('warn')}</code>\n"
-        f"        🚫 <b>Ban:</b> <code>{bldb.count_action_bl_all('ban')}</code>\n"
-        f"📚 <b>Rules Enchanted In:</b> <code>{rulesdb.count_chats_with_rules()}</code> covens\n"
-        f"🔒 <b>Private Decrees:</b> <code>{rulesdb.count_privrules_chats()}</code>\n"
-        f"⚔️ <b>Warnings Cast:</b> <code>{warns_db.count_warns_total()}</code> across <code>{warns_db.count_all_chats_using_warns()}</code> covens\n"
-        f"🔍 <b>Users Warned:</b> <code>{warns_db.count_warned_users()}</code>\n"
-        f"    🧾 <b>Action Details:</b>\n"
-        f"        🦶 <b>Kick:</b> <code>{warns_settings_db.count_action_chats('kick')}</code>\n"
-        f"        🔇 <b>Mute:</b> <code>{warns_settings_db.count_action_chats('mute')}</code>\n"
-        f"        🚫 <b>Ban:</b> <code>{warns_settings_db.count_action_chats('ban')}</code>\n"
-        f"🗒 <b>Notes Stored:</b> <code>{notesdb.count_all_notes()}</code> in <code>{notesdb.count_notes_chats()}</code> covens\n"
-        f"🔐 <b>Private Notes:</b> <code>{notesettings_db.count_chats()}</code>\n"
-        f"⛔️ <b>Globally Banished Wizards:</b> <code>{gbandb.count_gbans()}</code>\n"
-        f"🎉 <b>Welcoming Charms Active In:</b> <code>{grtdb.count_chats('welcome')}</code> covens\n"
-        f"✅ <b>Approved Companions:</b> <code>{appdb.count_all_approved()}</code> across <code>{appdb.count_approved_chats()}</code> covens\n"
-        f"🪄 <b>Disabling Hexes:</b> <code>{dsbl.count_disabled_all()}</code> items across <code>{dsbl.count_disabling_chats()}</code> covens\n"
-        f"     🔍 <b>Del Actions:</b> <code>{dsbl.count_action_dis_all('del')}</code> covens\n\n"
-        "🏰 <a href='https://t.me/THE_HOGWART'>𝗧𝗛𝗘 𝗛𝗢𝗚𝗪𝗔𝗥𝗧𝗦 — Central Archives</a>\n\n"
-        "🧙‍♂️ <i>Compiled with wand and wisdom by:</i> <a href='t.me/its_damiann'>𝗗𝗮𝗺𝗶𝗮𝗻 ❤‍🩹🌙</a>\n"
+        f"<b>{Config.BOT_NAME} records</b>\n\n"
+        "<b>Current state of this bot:</b>\n\n"
+        f"<b>Users registered:</b> <code>{userdb.count_users()}</code> in <code>{chatdb.count_chats()}</code> chats\n"
+        f"<b>Anti-channel pin:</b> active in <code>{pinsdb.count_chats('antichannelpin')}</code> chats\n"
+        f"<b>Linked message cleaning:</b> active in <code>{pinsdb.count_chats('cleanlinked')}</code> chats\n"
+        f"<b>Filters:</b> <code>{fldb.count_filters_all()}</code> across <code>{fldb.count_filters_chats()}</code> chats\n"
+        f"<b>Filter aliases:</b> <code>{fldb.count_filter_aliases()}</code>\n"
+        f"<b>Blacklists:</b> <code>{bldb.count_blacklists_all()}</code> in <code>{bldb.count_blackists_chats()}</code> chats\n"
+        f"    <b>Blacklist actions:</b>\n"
+        f"        <b>None:</b> <code>{bldb.count_action_bl_all('none')}</code>\n"
+        f"        <b>Kick:</b> <code>{bldb.count_action_bl_all('kick')}</code>\n"
+        f"        <b>Warn:</b> <code>{bldb.count_action_bl_all('warn')}</code>\n"
+        f"        <b>Ban:</b> <code>{bldb.count_action_bl_all('ban')}</code>\n"
+        f"<b>Rules in:</b> <code>{rulesdb.count_chats_with_rules()}</code> chats\n"
+        f"<b>Private rules:</b> <code>{rulesdb.count_privrules_chats()}</code>\n"
+        f"<b>Warnings:</b> <code>{warns_db.count_warns_total()}</code> across <code>{warns_db.count_all_chats_using_warns()}</code> chats\n"
+        f"<b>Users warned:</b> <code>{warns_db.count_warned_users()}</code>\n"
+        f"    <b>Warn actions:</b>\n"
+        f"        <b>Kick:</b> <code>{warns_settings_db.count_action_chats('kick')}</code>\n"
+        f"        <b>Mute:</b> <code>{warns_settings_db.count_action_chats('mute')}</code>\n"
+        f"        <b>Ban:</b> <code>{warns_settings_db.count_action_chats('ban')}</code>\n"
+        f"<b>Notes stored:</b> <code>{notesdb.count_all_notes()}</code> in <code>{notesdb.count_notes_chats()}</code> chats\n"
+        f"<b>Private notes:</b> <code>{notesettings_db.count_chats()}</code>\n"
+        f"<b>Global bans:</b> <code>{gbandb.count_gbans()}</code>\n"
+        f"<b>Welcomes active in:</b> <code>{grtdb.count_chats('welcome')}</code> chats\n"
+        f"<b>Approved users:</b> <code>{appdb.count_all_approved()}</code> across <code>{appdb.count_approved_chats()}</code> chats\n"
+        f"<b>Disabled commands:</b> <code>{dsbl.count_disabled_all()}</code> items across <code>{dsbl.count_disabling_chats()}</code> chats\n"
+        f"     <b>Delete actions:</b> <code>{dsbl.count_action_dis_all('del')}</code> chats\n\n"
+        f"<a href='{_telegram_url(Config.SUPPORT_CHANNEL or Config.SUPPORT_GROUP)}'>{Config.BOT_NAME} central archive</a>\n\n"
+        f"<i>Compiled by:</i> <b>{Config.BOT_NAME}</b>\n"
     )
 
     await replymsg.edit_text(
-        rply, parse_mode=enums.ParseMode.HTML, disable_web_page_preview=True
+        smallcaps_html(rply),
+        parse_mode=enums.ParseMode.HTML,
+        disable_web_page_preview=True,
     )

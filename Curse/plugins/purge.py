@@ -119,8 +119,8 @@ __PLUGIN__ = "Purge"
 __alt_name__ = ["purge", "del", "spurge"]
 
 __HELP__ = """
-**❗️Purge**
+**Purge**
 
-➥ /purge: Deletes messages upto replied message.
-➥ /spurge: Deletes messages upto replied message without a success message.
-➥ /del: Deletes a single message, used as a reply to message."""
+ /purge: Deletes messages upto replied message.
+ /spurge: Deletes messages upto replied message without a success message.
+ /del: Deletes a single message, used as a reply to message."""
