@@ -1,14 +1,47 @@
 from sys import exit as exiter
 
 from pymongo import MongoClient
-from pymongo.errors import PyMongoError
+from pymongo.errors import ConfigurationError, InvalidURI, PyMongoError
+from pymongo.uri_parser import parse_uri
 
 from Curse import DB_NAME, DB_URI, LOGGER
 
+
+def _redact_mongo_uri(uri):
+    if not uri:
+        return "<empty>"
+    uri = str(uri)
+    if "@" not in uri:
+        return uri[:32] + ("..." if len(uri) > 32 else "")
+    prefix, host = uri.rsplit("@", 1)
+    scheme = prefix.split("://", 1)[0] if "://" in prefix else "mongodb"
+    return f"{scheme}://<credentials>@{host[:32]}{'...' if len(host) > 32 else ''}"
+
+
+def _validate_mongo_uri(uri):
+    if not uri:
+        raise InvalidURI("DB_URI is empty")
+    if uri in {"mongodb://", "mongodb+srv://"} or "..." in uri:
+        raise InvalidURI("DB_URI looks like a placeholder, not a full MongoDB URI")
+    if not uri.startswith(("mongodb://", "mongodb+srv://")):
+        raise InvalidURI("DB_URI must start with mongodb:// or mongodb+srv://")
+    parse_uri(uri)
+
+
 try:
-    Curse_db_client = MongoClient(DB_URI)
-except PyMongoError as f:
-    LOGGER.error(f"Error in Mongodb: {f}")
+    _validate_mongo_uri(DB_URI)
+    Curse_db_client = MongoClient(
+        DB_URI,
+        connectTimeoutMS=10000,
+        serverSelectionTimeoutMS=10000,
+    )
+    Curse_db_client.admin.command("ping")
+except (ConfigurationError, InvalidURI, PyMongoError, UnicodeError) as f:
+    LOGGER.error(
+        "MongoDB connection failed. Set Railway DB_URI to the full MongoDB connection string, not a placeholder."
+    )
+    LOGGER.error("Current DB_URI value starts as: %s", _redact_mongo_uri(DB_URI))
+    LOGGER.error("MongoDB error: %s", f)
     exiter(1)
 Curse_main_db = Curse_db_client[DB_NAME]
 

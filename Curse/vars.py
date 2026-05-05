@@ -5,6 +5,8 @@ from prettyconf.loaders import EnvFile, Environment
 
 def _get_str(name, default=None, required=False):
     value = config(name, default=default)
+    if isinstance(value, str):
+        value = value.strip()
     if value in (None, ""):
         if required:
             raise RuntimeError(f"{name} environment variable is required")
