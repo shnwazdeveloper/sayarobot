@@ -16,7 +16,8 @@ from Curse.utils.custom_filters import command
 from Curse.utils.extras import StartVideo
 from Curse.utils.kbhelpers import ikb
 from Curse.utils.start_utils import (gen_start_kb, get_help_msg,
-                                      get_private_note, get_private_rules)
+                                      get_private_note, get_private_rules,
+                                      SOURCE_REPO_URL)
 from Curse.utils.text_style import smallcaps, smallcaps_html
 from Curse.vars import Config
 from Curse.utils.paginate import paginate_modules
@@ -29,6 +30,25 @@ def _telegram_url(username, query=""):
     return f"https://t.me/{username}{query}" if username else "https://t.me/"
 
 
+def _link_caption(title, url):
+    return smallcaps_html(
+        f"""<b>{title}</b>
+
+<a href="{url}">{url}</a>"""
+    )
+
+
+def _back_markup():
+    return InlineKeyboardMarkup(
+        [[InlineKeyboardButton(smallcaps("Back"), callback_data="start_back")]]
+    )
+
+
+def _pm_help_callback(help_option="start"):
+    callback_data = f"pm_help:{help_option}"
+    return callback_data if len(callback_data.encode()) <= 64 else "pm_help:start_help"
+
+
 async def _reply_start_video(message, caption, reply_markup=None, parse_mode=None, quote=True):
     return await message.reply_video(
         video=StartVideo,
@@ -37,6 +57,39 @@ async def _reply_start_video(message, caption, reply_markup=None, parse_mode=Non
         parse_mode=parse_mode,
         quote=quote,
         supports_streaming=True,
+    )
+
+
+@app.on_callback_query(filters.regex(r"^(source_code|updates_link|support_link|add_group_link)$"))
+async def link_menu(_, query: CallbackQuery):
+    links = {
+        "source_code": (smallcaps("Source Code"), SOURCE_REPO_URL),
+        "updates_link": (smallcaps("Updates"), _telegram_url(Config.SUPPORT_CHANNEL)),
+        "support_link": (smallcaps("Support"), _telegram_url(Config.SUPPORT_GROUP)),
+        "add_group_link": (
+            smallcaps("Add bot to your group"),
+            _telegram_url(Config.BOT_USERNAME, "?startgroup=new"),
+        ),
+    }
+    title, url = links[query.data]
+    await query.answer()
+    await query.message.edit_caption(
+        caption=_link_caption(title, url),
+        parse_mode=enums.ParseMode.HTML,
+        reply_markup=_back_markup(),
+    )
+
+
+@app.on_callback_query(filters.regex(r"^pm_help(?::(.+))?$"))
+async def private_help_link(_, query: CallbackQuery):
+    match = re.match(r"^pm_help(?::(.+))?$", query.data)
+    help_option = match.group(1) if match and match.group(1) else "start"
+    url = _telegram_url(Config.BOT_USERNAME, f"?start={help_option}")
+    await query.answer()
+    await query.message.edit_caption(
+        caption=_link_caption(smallcaps("Open help in private chat"), url),
+        parse_mode=enums.ParseMode.HTML,
+        reply_markup=_back_markup(),
     )
 
 
@@ -124,7 +177,7 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
     # ── GROUP CONTEXT ────────────────────────────────────────────
     else:
         kb = InlineKeyboardMarkup(
-            [[InlineKeyboardButton(smallcaps("Click here for help"), url=_telegram_url(Config.BOT_USERNAME, "?start=start"))]]
+            [[InlineKeyboardButton(smallcaps("Click here for help"), callback_data=_pm_help_callback())]]
         )
 
         await _reply_start_video(
@@ -214,7 +267,7 @@ async def help_menu(_, m: Message):
                     [
                       InlineKeyboardButton(
                         smallcaps("Help"),
-                        url=_telegram_url(Config.BOT_USERNAME, f"?start={help_option}"),
+                        callback_data=_pm_help_callback(help_option),
                         ),
                     ],
                   ],
@@ -237,7 +290,7 @@ Commands available:
                 [
                   InlineKeyboardButton(
                     smallcaps("Help"),
-                    url=_telegram_url(Config.BOT_USERNAME, "?start=start_help"),
+                    callback_data=_pm_help_callback("start_help"),
                   ),
                 ],
               ],
@@ -333,7 +386,7 @@ You Can Know More About Me By Clicking The Below Buttons.
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton(smallcaps("Add me to your group"), url=_telegram_url(Config.BOT_USERNAME, "?startgroup=new")),
+                    InlineKeyboardButton(smallcaps("Add me to your group"), callback_data="add_group_link"),
                 ],
                 [InlineKeyboardButton(smallcaps("Back"), callback_data="start_back")],
             ],
