@@ -48,22 +48,17 @@ async def gen_start_kb(q: Message or CallbackQuery):
     return ikb(
         [
             [
-                (
-                    smallcaps("About Me"),
-                    "details",
-                ),
+                (smallcaps("Add me to your group"), "add_group_link")
             ],
             [
-                (smallcaps("Source Code"), "source_code"),
-                (smallcaps("Commands"), "commands"),
+                (smallcaps("Help"), "commands"),
             ],
             [
-                (smallcaps("Updates"), "updates_link"),
-                (smallcaps("Support"), "support_link")
-
+                (smallcaps("Support"), "support_link"),
+                (smallcaps("Channel"), "updates_link"),
             ],
             [
-                (smallcaps("Add bot to your groups"), "add_group_link")
+                (smallcaps("Source"), "source_code"),
             ],
         ],
     )

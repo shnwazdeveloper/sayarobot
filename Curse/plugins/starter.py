@@ -40,7 +40,12 @@ def _link_caption(title, url):
 
 def _back_markup():
     return InlineKeyboardMarkup(
-        [[InlineKeyboardButton(smallcaps("Back"), callback_data="start_back")]]
+        [
+            [
+                InlineKeyboardButton(smallcaps("Back"), callback_data="start_back"),
+                InlineKeyboardButton(smallcaps("Close"), callback_data="close_menu"),
+            ],
+        ]
     )
 
 
@@ -63,8 +68,8 @@ async def _reply_start_video(message, caption, reply_markup=None, parse_mode=Non
 @app.on_callback_query(filters.regex(r"^(source_code|updates_link|support_link|add_group_link)$"))
 async def link_menu(_, query: CallbackQuery):
     links = {
-        "source_code": (smallcaps("Source Code"), SOURCE_REPO_URL),
-        "updates_link": (smallcaps("Updates"), _telegram_url(Config.SUPPORT_CHANNEL)),
+        "source_code": (smallcaps("Source"), SOURCE_REPO_URL),
+        "updates_link": (smallcaps("Channel"), _telegram_url(Config.SUPPORT_CHANNEL)),
         "support_link": (smallcaps("Support"), _telegram_url(Config.SUPPORT_GROUP)),
         "add_group_link": (
             smallcaps("Add bot to your group"),
@@ -78,6 +83,12 @@ async def link_menu(_, query: CallbackQuery):
         parse_mode=enums.ParseMode.HTML,
         reply_markup=_back_markup(),
     )
+
+
+@app.on_callback_query(filters.regex("^close_menu$"))
+async def close_menu(_, query: CallbackQuery):
+    await query.answer()
+    await query.message.delete()
 
 
 @app.on_callback_query(filters.regex(r"^pm_help(?::(.+))?$"))
