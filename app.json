@@ -1,6 +1,6 @@
 {
     "name": "sayarobot",
-    "description": "sayarobot is a Telegram group management bot made using Pyrogram and Python.",
+    "description": "sayarobot is a Telegram group-management bot built with Pyrogram, MongoDB, Gemini AI, and Railway deployment support.",
     "logo" : "https://telegra.ph//file/a4843f7867cf2ca13def0.jpg",
     "keywords": [
       "telegram bot",
@@ -99,6 +99,26 @@
         "description": "Your removebackground api to remove the background",
         "required": false,
         "value": ""
+      },
+      "GEMINI_API_KEY": {
+        "description": "Gemini API key used by the chatbot plugin.",
+        "required": false,
+        "value": ""
+      },
+      "GEMINI_MODEL": {
+        "description": "Gemini model name used by the chatbot plugin.",
+        "required": false,
+        "value": "gemini-2.5-flash"
+      },
+      "CHATBOT_DB_URI": {
+        "description": "Optional MongoDB URI for chatbot data. Falls back to DB_URI when empty.",
+        "required": false,
+        "value": ""
+      },
+      "CHATBOT_DB_NAME": {
+        "description": "MongoDB database name for chatbot data.",
+        "required": false,
+        "value": "sayarobot"
       },
       "WORKERS": {
         "description": "Number of workers to run the bot.",
