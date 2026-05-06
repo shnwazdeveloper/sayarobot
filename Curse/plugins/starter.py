@@ -40,6 +40,34 @@ async def _reply_start_video(message, caption, reply_markup=None, parse_mode=Non
     )
 
 
+def _back_close_markup(back_callback="start_back"):
+    return InlineKeyboardMarkup(
+        [
+            [
+                InlineKeyboardButton(smallcaps("Back"), callback_data=back_callback),
+                InlineKeyboardButton(smallcaps("Close"), callback_data="close_menu"),
+            ],
+        ]
+    )
+
+
+def _module_help_markup(help_kb):
+    rows = ikb(help_kb).inline_keyboard if help_kb else []
+    rows.append(
+        [
+            InlineKeyboardButton(smallcaps("Back"), callback_data="commands"),
+            InlineKeyboardButton(smallcaps("Close"), callback_data="close_menu"),
+        ]
+    )
+    return InlineKeyboardMarkup(rows)
+
+
+@app.on_callback_query(filters.regex("^close_menu$"))
+async def close_menu(_, query: CallbackQuery):
+    await query.answer()
+    await query.message.delete()
+
+
 @app.on_callback_query(filters.regex("^close_admin$"))
 async def close_admin_callback(_, q: CallbackQuery):
     user_id = q.from_user.id
@@ -279,14 +307,14 @@ async def get_module_info(c: app, q: CallbackQuery):
       await q.edit_message_caption(
           caption=help_msg,
           parse_mode=enums.ParseMode.MARKDOWN,
-          reply_markup=ikb(help_kb, True, todo="commands"),
+          reply_markup=_module_help_markup(help_kb),
       )
     except MediaCaptionTooLong:
       await c.send_message(
           chat_id=q.message.chat.id,
           text=help_msg,
           parse_mode=enums.ParseMode.MARKDOWN,
-          reply_markup=ikb(help_kb, True, todo="commands"),
+          reply_markup=_module_help_markup(help_kb),
       )
     await q.answer()
     return
@@ -309,7 +337,10 @@ Hop into the support chat. The help desk is always open."""),
                 ],
                 [
                     InlineKeyboardButton(smallcaps("Ping"), callback_data="bot_curr_info"),
+                ],
+                [
                     InlineKeyboardButton(smallcaps("Back"), callback_data="start_back"),
+                    InlineKeyboardButton(smallcaps("Close"), callback_data="close_menu"),
                 ],
             ],
         ),
@@ -335,7 +366,10 @@ You Can Know More About Me By Clicking The Below Buttons.
                 [
                     InlineKeyboardButton(smallcaps("Add me to your group"), url=_telegram_url(Config.BOT_USERNAME, "?startgroup=new")),
                 ],
-                [InlineKeyboardButton(smallcaps("Back"), callback_data="start_back")],
+                [
+                    InlineKeyboardButton(smallcaps("Back"), callback_data="start_back"),
+                    InlineKeyboardButton(smallcaps("Close"), callback_data="close_menu"),
+                ],
             ],
         ),
     )
@@ -369,9 +403,7 @@ Commands available."""
             )
             await query.message.edit_caption(
                 text,
-                reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text=smallcaps("Back"), callback_data="help_back")]]
-                ),
+                reply_markup=_back_close_markup("help_back"),
             )
 
         elif prev_match:
