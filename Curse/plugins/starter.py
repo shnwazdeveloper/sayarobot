@@ -1,5 +1,4 @@
 import re
-from random import choice
 from time import gmtime, strftime, time
 
 from pyrogram import enums, filters
@@ -14,7 +13,7 @@ from Curse import (HELP_COMMANDS, LOGGER, PYROGRAM_VERSION, PYTHON_VERSION,
                     UPTIME, VERSION)
 from Curse.bot_class import app
 from Curse.utils.custom_filters import command
-from Curse.utils.extras import StartPic
+from Curse.utils.extras import StartVideo
 from Curse.utils.kbhelpers import ikb
 from Curse.utils.start_utils import (gen_start_kb, get_help_msg,
                                       get_private_note, get_private_rules)
@@ -30,33 +29,15 @@ def _telegram_url(username, query=""):
     return f"https://t.me/{username}{query}" if username else "https://t.me/"
 
 
-@app.on_callback_query(filters.regex("^donate$"))
-async def handle_donate_callback(_, query: CallbackQuery):
-    await query.answer()
-    await query.message.edit_text(
-        smallcaps(
-            f"""
-Hey dude.
-So glad to hear you want to donate.
-
-You can directly contact my developer for donation info,
-or hop into our support chat and ask there.
-
-Thanks for supporting {Config.BOT_NAME}.
-"""
-        ),
-        reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(smallcaps("Support"), url=_telegram_url(Config.SUPPORT_GROUP)),
-                ],
-                [InlineKeyboardButton(smallcaps("Back"), callback_data="start_back")],
-            ],
-        ),
+async def _reply_start_video(message, caption, reply_markup=None, parse_mode=None, quote=True):
+    return await message.reply_video(
+        video=StartVideo,
+        caption=caption,
+        reply_markup=reply_markup,
+        parse_mode=parse_mode,
+        quote=quote,
+        supports_streaming=True,
     )
-
-    LOGGER.info(f"{query.from_user.id} fetched donation text")
-    return
 
 
 @app.on_callback_query(filters.regex("^close_admin$"))
@@ -110,8 +91,8 @@ async def start(c: app, m: Message):
                         quote=True,
                     )
                     return
-                await m.reply_photo(
-                    photo=str(choice(StartPic)),
+                await _reply_start_video(
+                    m,
                     caption=help_msg,
                     parse_mode=enums.ParseMode.MARKDOWN,
                     reply_markup=help_kb,
@@ -129,8 +110,8 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
 """
             )
 
-            sent = await m.reply_photo(
-                photo=str(choice(StartPic)),
+            await _reply_start_video(
+                m,
                 caption=caption,
                 reply_markup=await gen_start_kb(m),
                 parse_mode=enums.ParseMode.MARKDOWN,
@@ -146,8 +127,8 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
             [[InlineKeyboardButton(smallcaps("Click here for help"), url=_telegram_url(Config.BOT_USERNAME, "?start=start"))]]
         )
 
-        await m.reply_photo(
-            photo=str(choice(StartPic)),
+        await _reply_start_video(
+            m,
             caption=smallcaps("I am awake. Use the button below for help."),
             reply_markup=kb,
             parse_mode=enums.ParseMode.MARKDOWN,
@@ -216,8 +197,8 @@ async def help_menu(_, m: Message):
                     quote=True,
                 )
                 return
-            await m.reply_photo(
-                photo=str(choice(StartPic)),
+            await _reply_start_video(
+                m,
                 caption=help_msg,
                 parse_mode=enums.ParseMode.MARKDOWN,
                 reply_markup=help_kb,
@@ -225,8 +206,8 @@ async def help_menu(_, m: Message):
             )
         else:
 
-            await m.reply_photo(
-                photo=str(choice(StartPic)),
+            await _reply_start_video(
+                m,
                 caption=smallcaps(f"Press the button below to get help for {help_option}"),
                 reply_markup=InlineKeyboardMarkup(
                   [
@@ -263,8 +244,8 @@ Commands available:
             )
             msg = smallcaps("Contact me in PM to get the list of possible commands.")
 
-        await m.reply_photo(
-            photo=str(choice(StartPic)),
+        await _reply_start_video(
+            m,
             caption=msg,
             reply_markup=reply_markup,
         )
@@ -313,7 +294,7 @@ async def get_module_info(c: app, q: CallbackQuery):
 @app.on_callback_query(filters.regex("^details$"))
 async def handle_details_callback(_, query: CallbackQuery):
     await query.answer()
-    await query.message.edit_text(
+    await query.message.edit_caption(
      smallcaps_html(f"""<a href='{_telegram_url(Config.BOT_USERNAME)}'>{Config.BOT_NAME}</a> is a powerful bot crafted for group management with useful extra features.
 
 Built upon the solid foundation of Gojo,
@@ -338,7 +319,7 @@ Hop into the support chat. The help desk is always open."""),
 @app.on_callback_query(filters.regex("^how_to_use$"))
 async def handle_how_to_use_callback(_, query: CallbackQuery):
     await query.answer()
-    await query.message.edit_text(
+    await query.message.edit_caption(
      smallcaps_html(f"""Hey there. My name is {Config.BOT_NAME}. Click on help to know my commands.
 
 I'm here to make your group management fun and easy! I have lots of handy features, such as flood control, a warning system, a note keeping system, and even replies on predetermined filters.

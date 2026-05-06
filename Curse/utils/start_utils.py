@@ -24,6 +24,7 @@ from Curse.vars import Config
 
 # Initialize
 notes_db = Notes()
+SOURCE_REPO_URL = "https://github.com/shnwazdeveloper/sayarobot.git"
 
 
 def _telegram_url(username, query=""):
@@ -53,7 +54,7 @@ async def gen_start_kb(q: Message or CallbackQuery):
                 ),
             ],
             [
-                (smallcaps("Donate"), "donate"),
+                (smallcaps("Source Code"), SOURCE_REPO_URL, "url"),
                 (smallcaps("Commands"), "commands"),
             ],
             [

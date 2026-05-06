@@ -595,10 +595,7 @@ NO       NO   NONONO            NONO
 """
 ]
 
-StartPic = [
-    "https://files.catbox.moe/zq3yuw.jpg",
-    "https://files.catbox.moe/f2v55k.jpg",
-]
+StartVideo = "https://litter.catbox.moe/x8c6h2xv1xv1tzus.mp4"
 
 
 birthday_wish = [
