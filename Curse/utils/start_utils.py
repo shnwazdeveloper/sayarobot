@@ -48,17 +48,21 @@ async def gen_start_kb(q: Message or CallbackQuery):
     return ikb(
         [
             [
-                (smallcaps("Add me to your group"), "add_group_link")
+                (
+                    smallcaps("Add me to your group"),
+                    _telegram_url(Config.BOT_USERNAME, "?startgroup=new"),
+                    "url",
+                )
             ],
             [
                 (smallcaps("Help"), "commands"),
             ],
             [
-                (smallcaps("Support"), "support_link"),
-                (smallcaps("Channel"), "updates_link"),
+                (smallcaps("Support"), _telegram_url(Config.SUPPORT_GROUP), "url"),
+                (smallcaps("Channel"), _telegram_url(Config.SUPPORT_CHANNEL), "url"),
             ],
             [
-                (smallcaps("Source"), "source_code"),
+                (smallcaps("Source"), SOURCE_REPO_URL, "url"),
             ],
         ],
     )
