@@ -1,4 +1,3 @@
-import os
 import re
 from random import choice
 from time import gmtime, strftime, time
@@ -6,8 +5,8 @@ from time import gmtime, strftime, time
 from pyrogram import enums, filters
 from pyrogram.enums import ChatMemberStatus as CMS
 from pyrogram.enums import ChatType
-from pyrogram.errors import (MediaCaptionTooLong, MessageNotModified,
-                             QueryIdInvalid, UserIsBlocked)
+from pyrogram.errors import (BadRequest, MediaCaptionTooLong, MessageNotModified,
+                             UserIsBlocked)
 from pyrogram.types import (CallbackQuery, InlineKeyboardButton,
                             InlineKeyboardMarkup, Message)
 
@@ -17,7 +16,7 @@ from Curse.bot_class import app
 from Curse.utils.custom_filters import command
 from Curse.utils.extras import StartPic
 from Curse.utils.kbhelpers import ikb
-from Curse.utils.start_utils import (gen_cmds_kb, gen_start_kb, get_help_msg,
+from Curse.utils.start_utils import (gen_start_kb, get_help_msg,
                                       get_private_note, get_private_rules)
 from Curse.utils.text_style import smallcaps, smallcaps_html
 from Curse.vars import Config
@@ -103,7 +102,15 @@ async def start(c: app, m: Message):
             # module help
             help_msg, help_kb = await get_help_msg(m, help_option)
             if help_msg:
-                sent = await m.reply_photo(
+                if len(help_msg) >= 1026:
+                    await m.reply_text(
+                        help_msg,
+                        parse_mode=enums.ParseMode.MARKDOWN,
+                        reply_markup=help_kb,
+                        quote=True,
+                    )
+                    return
+                await m.reply_photo(
                     photo=str(choice(StartPic)),
                     caption=help_msg,
                     parse_mode=enums.ParseMode.MARKDOWN,
@@ -169,29 +176,20 @@ Don't forget to check out the About Me section below for all the cool stuff I ca
 
 @app.on_callback_query(filters.regex("^commands$"))
 async def commands_menu(_, q: CallbackQuery):
-    # ou = await gen_cmds_kb(q.message)
-    # keyboard = ikb(ou, True)
-    # try:
-        cpt = smallcaps(f"""
-Hello, .
+    cpt = smallcaps(
+        """
+Hello.
 I'm here to help you manage your groups
-Commands available:""")
+Commands available:
+"""
+    )
 
-        await q.edit_message_caption(
-            caption=cpt,
-            reply_markup=InlineKeyboardMarkup(
-                    paginate_modules(0, HELP_COMMANDS, "help")
-                ),
-        )
-    # except MessageNotModified:
-    #     pass
-    # except QueryIdInvalid:
-    #     await q.message.reply_photo(
-    #         photo=str(choice(StartPic)), caption=cpt, reply_markup=keyboard
-    #     )
-
-    # await q.answer()
-    # return
+    await q.edit_message_caption(
+        caption=cpt,
+        reply_markup=InlineKeyboardMarkup(paginate_modules(0, HELP_COMMANDS, "help")),
+    )
+    await q.answer()
+    return
 
 
 @app.on_message(filters.command(["help"], C_HANDLER), group=1001)
@@ -212,8 +210,12 @@ async def help_menu(_, m: Message):
         if m.chat.type == ChatType.PRIVATE:
             if len(help_msg) >= 1026:
                 await m.reply_text(
-                    help_msg, parse_mode=enums.ParseMode.MARKDOWN, quote=True
+                    help_msg,
+                    parse_mode=enums.ParseMode.MARKDOWN,
+                    reply_markup=help_kb,
+                    quote=True,
                 )
+                return
             await m.reply_photo(
                 photo=str(choice(StartPic)),
                 caption=help_msg,
@@ -225,7 +227,7 @@ async def help_menu(_, m: Message):
 
             await m.reply_photo(
                 photo=str(choice(StartPic)),
-                caption=f"Press the button below to get help for <i>{help_option}</i>",
+                caption=smallcaps(f"Press the button below to get help for {help_option}"),
                 reply_markup=InlineKeyboardMarkup(
                   [
                     [
@@ -240,13 +242,16 @@ async def help_menu(_, m: Message):
     else:
 
         if m.chat.type == ChatType.PRIVATE:
-            msg = f"""
-Hello, .
+            msg = smallcaps(
+                """
+Hello.
 I'm here to help you manage your groups
 Commands available:
 """
+            )
+            reply_markup = InlineKeyboardMarkup(paginate_modules(0, HELP_COMMANDS, "help"))
         else:
-            keyboard = InlineKeyboardMarkup(
+            reply_markup = InlineKeyboardMarkup(
               [
                 [
                   InlineKeyboardButton(
@@ -256,14 +261,12 @@ Commands available:
                 ],
               ],
             )
-            msg = "Contact me in PM to get the list of possible commands."
+            msg = smallcaps("Contact me in PM to get the list of possible commands.")
 
         await m.reply_photo(
             photo=str(choice(StartPic)),
             caption=msg,
-            reply_markup = InlineKeyboardMarkup(
-                    paginate_modules(0, HELP_COMMANDS, "help")
-                ),
+            reply_markup=reply_markup,
         )
 
     return
@@ -284,7 +287,7 @@ async def give_curr_info(c: app, q: CallbackQuery):
     await q.answer(txt, show_alert=True)
     return
 
-@app.on_callback_query(filters.regex("^plugins."))
+@app.on_callback_query(filters.regex(r"^plugins\."))
 async def get_module_info(c: app, q: CallbackQuery):
     module = q.data.split(".", 1)[1]
 
@@ -298,7 +301,12 @@ async def get_module_info(c: app, q: CallbackQuery):
           reply_markup=ikb(help_kb, True, todo="commands"),
       )
     except MediaCaptionTooLong:
-      await c.send_message(chat_id=q.message.chat.id,text=help_msg,)
+      await c.send_message(
+          chat_id=q.message.chat.id,
+          text=help_msg,
+          parse_mode=enums.ParseMode.MARKDOWN,
+          reply_markup=ikb(help_kb, True, todo="commands"),
+      )
     await q.answer()
     return
 
@@ -353,8 +361,10 @@ You Can Know More About Me By Clicking The Below Buttons.
 
 @app.on_callback_query(filters.regex(r"help_(.*?)"))
 async def help_button(_,query):
-    HELP_STRINGS = f"""I'm here to help you manage your groups
+    HELP_STRINGS = smallcaps(
+        """I'm here to help you manage your groups
 Commands available."""
+    )
     mod_match = re.match(r"help_module\((.+?)\)", query.data)
     prev_match = re.match(r"help_prev\((.+?)\)", query.data)
     next_match = re.match(r"help_next\((.+?)\)", query.data)
@@ -370,15 +380,16 @@ Commands available."""
         elif mod_match:
             module = mod_match.group(1)
             text = (
-                "» **ᴀᴠᴀɪʟᴀʙʟᴇ ᴄᴏᴍᴍᴀɴᴅs ꜰᴏʀ** **{}** :\n".format(
-                    module.title()
+                "**{} {}**:\n".format(
+                    smallcaps("Available commands for"),
+                    smallcaps(module.replace("_", " ").title()),
                 )
                 + HELP_COMMANDS[f"plugins.{module}"]["help_msg"]
             )
             await query.message.edit_caption(
                 text,
                 reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton(text="Back", callback_data="help_back")]]
+                    [[InlineKeyboardButton(text=smallcaps("Back"), callback_data="help_back")]]
                 ),
             )
 
@@ -399,8 +410,9 @@ Commands available."""
                 ),
             )
 
-        return await _.answer_callback_query(query.id)
+        await query.answer()
+        return
 
-    except errors.BadRequest as e:
+    except BadRequest as e:
         print(e)
         # pass

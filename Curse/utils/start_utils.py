@@ -3,15 +3,16 @@ from secrets import choice
 from traceback import format_exc
 
 from pyrogram.errors import RPCError
-from pyrogram.types import CallbackQuery, Message
+from pyrogram.types import CallbackQuery, InlineKeyboardMarkup, Message
 
-from Curse import HELP_COMMANDS, LOGGER, SUPPORT_GROUP
+from Curse import HELP_COMMANDS, LOGGER
 from Curse.bot_class import app
 from Curse.database.chats_db import Chats
 from Curse.database.notes_db import Notes
 from Curse.database.rules_db import Rules
 from Curse.utils.cmd_senders import send_cmd
 from Curse.utils.kbhelpers import ikb
+from Curse.utils.paginate import paginate_modules
 from Curse.utils.msg_types import Types
 from Curse.utils.string import (
     build_keyboard,
@@ -247,17 +248,15 @@ async def get_help_msg(m: Message or CallbackQuery, help_option: str):
             f"{m.from_user.id} fetched help for {help_option} in {m.chat.id}",
         )
     else:
-        if isinstance(m, CallbackQuery):
-            mes = m.message
-        else:
-            mes = m
-        help_msg = f"""
- Here, you will find a list of all the available commands.
+        help_msg = smallcaps(
+            """
+Here, you will find a list of all the available commands.
 
-ᴀʟʟ ᴄᴏᴍᴍᴀɴᴅs ᴄᴀɴ ʙᴇ ᴜsᴇᴅ ᴡɪᴛʜ : /
+All commands can be used with: /
 
-ᴛʜᴇʀᴇ ᴀʀᴇ ᴀᴅᴅɪᴛɪᴏɴᴀʟ ᴄᴏᴍᴍᴀɴᴅs ᴡɪᴛʜɪɴ ᴛʜᴇ ʙᴜᴛᴛᴏɴs ᴀs ᴡᴇʟʟ."""
-        ou = await gen_cmds_kb(m)
-        help_kb = ikb(ou, True)
+There are additional commands within the buttons as well.
+"""
+        )
+        help_kb = InlineKeyboardMarkup(paginate_modules(0, HELP_COMMANDS, "help"))
 
     return help_msg, help_kb

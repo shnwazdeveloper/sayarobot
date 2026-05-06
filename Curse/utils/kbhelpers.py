@@ -1,5 +1,7 @@
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+from Curse.utils.text_style import smallcaps
+
 
 def ikb(rows=None, back=False, todo="start_back"):
     """
@@ -14,7 +16,7 @@ def ikb(rows=None, back=False, todo="start_back"):
         for row in rows:
             line = []
             for button in row:
-                btn_text = button.split(".")[1].capitalize()
+                btn_text = smallcaps(button.split(".")[1].replace("_", " ").title())
                 button = btn(btn_text, button)  # InlineKeyboardButton
                 line.append(button)
             lines.append(line)
@@ -33,10 +35,10 @@ def ikb(rows=None, back=False, todo="start_back"):
             line.append(button)
         lines.append(line)
     if back:
-        back_btn = [(btn("𝗕𝗔𝗖𝗞", todo))]
+        back_btn = [(btn(smallcaps("Back"), todo))]
         lines.append(back_btn)
     return InlineKeyboardMarkup(inline_keyboard=lines)
 
 
 def btn(text, value, type="callback_data"):
-    return InlineKeyboardButton(text, **{type: value})
+    return InlineKeyboardButton(smallcaps(str(text)), **{type: value})
