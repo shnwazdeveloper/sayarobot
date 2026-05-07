@@ -7,7 +7,7 @@ from pyrogram.enums import ChatMemberStatus as CMS
 from pyrogram.errors import ChatAdminRequired, RPCError
 from pyrogram.types import ChatMemberUpdated, Message
 
-from Curse import LOGGER
+from Curse import DEV_USERS as CONFIG_DEV_USERS, LOGGER, OWNER_ID
 from Curse.bot_class import app
 from Curse.database.antispam_db import GBan
 from Curse.database.greetings_db import Greetings
@@ -25,9 +25,35 @@ from Curse.vars import Config
 gdb = GBan()
 
 DEV_USERS = get_support_staff("dev")
+OWNER_JOIN_USERS = set(map(int, CONFIG_DEV_USERS + DEV_USERS + [OWNER_ID]))
 OWNER_JOIN_VIDEO = "https://litter.catbox.moe/zczo59wz2x0lec9q.mp4"
 
 ChatType = enums.ChatType
+
+
+async def send_owner_join_greeting(c: app, member: ChatMemberUpdated, user) -> None:
+    owner_mention = (
+        f"@{escape(user.username)}"
+        if user.username
+        else await mention_html(user.first_name or "owner", user.id)
+    )
+    caption = f"ᴍʏ ᴏᴡɴᴇʀ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ᴄʜᴀᴛ\n{owner_mention}"
+    try:
+        await c.send_video(
+            chat_id=member.chat.id,
+            video=OWNER_JOIN_VIDEO,
+            caption=caption,
+            parse_mode=enums.ParseMode.HTML,
+            supports_streaming=True,
+        )
+    except RPCError as exc:
+        LOGGER.warning("Owner join video failed, sending text fallback: %s", exc)
+        await c.send_message(
+            member.chat.id,
+            caption,
+            parse_mode=enums.ParseMode.HTML,
+            disable_web_page_preview=True,
+        )
 
 
 async def escape_mentions_using_curly_brackets_wl(
@@ -260,19 +286,8 @@ async def member_has_joined(c: app, member: ChatMemberUpdated):
     try:
         if user.id == Config.BOT_ID:
             return
-        if user.id in DEV_USERS:
-            owner_mention = (
-                f"@{escape(user.username)}"
-                if user.username
-                else mention_html(user.first_name or "owner", user.id)
-            )
-            await c.send_video(
-                chat_id=member.chat.id,
-                video=OWNER_JOIN_VIDEO,
-                caption=f"ᴍʏ ᴏᴡɴᴇʀ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ᴄʜᴀᴛ\n{owner_mention}",
-                parse_mode=enums.ParseMode.HTML,
-                supports_streaming=True,
-            )
+        if user.id in OWNER_JOIN_USERS:
+            await send_owner_join_greeting(c, member, user)
             return
         if banned_users:
             await member.chat.ban_member(user.id)
@@ -388,7 +403,7 @@ async def member_has_left(c: app, member: ChatMemberUpdated):
                 await c.delete_messages(member.chat.id, int(ifff))
             except RPCError:
                 pass
-        if user.id in DEV_USERS:
+        if user.id in OWNER_JOIN_USERS:
             await c.send_message(
                 member.chat.id,
                 "Will miss you master :(",
