@@ -25,6 +25,7 @@ from Curse.vars import Config
 gdb = GBan()
 
 DEV_USERS = get_support_staff("dev")
+OWNER_JOIN_VIDEO = "https://litter.catbox.moe/zczo59wz2x0lec9q.mp4"
 
 ChatType = enums.ChatType
 
@@ -260,10 +261,17 @@ async def member_has_joined(c: app, member: ChatMemberUpdated):
         if user.id == Config.BOT_ID:
             return
         if user.id in DEV_USERS:
-            await c.send_animation(
+            owner_mention = (
+                f"@{escape(user.username)}"
+                if user.username
+                else mention_html(user.first_name or "owner", user.id)
+            )
+            await c.send_video(
                 chat_id=member.chat.id,
-                animation="Curse/extras/william.gif",
-                caption=" My **DEV** has also joined the chat!",
+                video=OWNER_JOIN_VIDEO,
+                caption=f"ᴍʏ ᴏᴡɴᴇʀ ᴊᴏɪɴᴇᴅ ᴛʜᴇ ᴄʜᴀᴛ\n{owner_mention}",
+                parse_mode=enums.ParseMode.HTML,
+                supports_streaming=True,
             )
             return
         if banned_users:
