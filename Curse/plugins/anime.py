@@ -5044,10 +5044,18 @@ async def animequotes(client, message):
 @app.on_callback_query(filters.regex("changek_quote"))
 async def changek_quote(client, callback_query):
     keyboard = [[InlineKeyboardButton(text="CHANGE", callback_data="changek_quote")]]
-    await callback_query.edit_message_media(
-        media=InputMediaPhoto(media=random.choice(QUOTES_IMG)),
-        reply_markup=InlineKeyboardMarkup(keyboard),
-    )
+    for quote_img in random.sample(QUOTES_IMG, k=min(5, len(QUOTES_IMG))):
+        try:
+            await callback_query.edit_message_media(
+                media=InputMediaPhoto(media=quote_img),
+                reply_markup=InlineKeyboardMarkup(keyboard),
+            )
+            await callback_query.answer()
+            return
+        except MessageNotModified:
+            continue
+
+    await callback_query.answer("ᴀʟʀᴇᴀᴅʏ sʜᴏᴡɪɴɢ ᴛʜɪs ǫᴜᴏᴛᴇ.")
 
 
 QUOTES_IMG = [

@@ -1,4 +1,5 @@
 import nekos
+import httpx
 from pyrogram import filters
 from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -80,11 +81,17 @@ async def nekomode_commands(client, message):
         target = message.command[0].lower()
         url = f"{url_sfw}{target}"
 
-        response = await fetch.get(
-            url
-        )  # Use the fetch function from the Curse.karma.https module
-        result = response.json()  # Parse the JSON response
-        img = result["url"]
+        try:
+            response = await fetch.get(url)
+            response.raise_for_status()
+            result = response.json()
+            img = result.get("url")
+            if not img:
+                raise ValueError("waifu.pics response did not include a url")
+        except (httpx.HTTPError, ValueError, TypeError):
+            await message.reply_text("ᴄᴏᴜʟᴅɴ'ᴛ ɢᴇᴛ ᴀ ɢɪғ ʀɪɢʜᴛ ɴᴏᴡ. ᴛʀʏ ᴀɢᴀɪɴ.")
+            return
+
         await message.reply_animation(img)
 
 
