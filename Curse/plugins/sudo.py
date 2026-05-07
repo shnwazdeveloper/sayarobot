@@ -26,7 +26,6 @@ from Curse.plugins.scheduled_jobs import clean_my_db
 from Curse.supports import get_support_staff
 from Curse.utils.clean_file import remove_markdown_and_html
 from Curse.utils.custom_filters import SUDO_LEVEL, command
-from Curse.utils.extract_user import extract_user
 from Curse.utils.parser import mention_markdown
 
 
@@ -39,28 +38,31 @@ def can_change_type(curr, to_user):
         return False
 
 
-def can_manage_sudo(actor_id: int, actor_type: str) -> bool:
-    return actor_id == int(OWNER_ID) or actor_type == "dev"
-
-
 async def extract_support_target(c: app, m: Message, usage: str):
-    if not m.reply_to_message and len(m.command) < 2:
+    if m.reply_to_message and m.reply_to_message.from_user:
+        user = m.reply_to_message.from_user
+        return user.id, user.first_name or str(user.id), user.username
+
+    if len(m.command) < 2:
         await m.reply_text(f"**USAGE**\n{usage}")
         return None
 
+    user_ref = m.command[1]
+    if user_ref.lstrip("-").isdigit():
+        user_id = int(user_ref)
+        try:
+            user = await c.get_users(user_id)
+            return user.id, user.first_name or str(user.id), user.username
+        except Exception:
+            return user_id, str(user_id), None
+
     try:
-        user_id, first_name, username = await extract_user(c, m)
+        user = await c.get_users(user_ref)
     except Exception:
         await m.reply_text("Dunno who u r talking abt")
         return None
 
-    try:
-        user_id = int(user_id)
-    except (TypeError, ValueError):
-        await m.reply_text("Dunno who u r talking abt")
-        return None
-
-    return user_id, first_name or str(user_id), username
+    return user.id, user.first_name or str(user.id), user.username
 
 
 def add_runtime_sudo(user_id: int) -> None:
@@ -75,13 +77,9 @@ def remove_runtime_sudo(user_id: int) -> None:
     SUDO_LEVEL.discard(user_id)
 
 
-@app.on_message(command("addsudo"))
+@app.on_message(command("addsudo", owner_cmd=True))
 async def add_sudo(c: app, m: Message):
     support = SUPPORTS()
-    actor_type = support.get_support_type(m.from_user.id)
-    if not can_manage_sudo(m.from_user.id, actor_type):
-        await m.reply_text("Stay in your limit")
-        return
 
     target = await extract_support_target(
         c,
@@ -112,13 +110,9 @@ async def add_sudo(c: app, m: Message):
     return
 
 
-@app.on_message(command(["rmsudo", "removesudo"]))
+@app.on_message(command(["rmsudo", "removesudo"], owner_cmd=True))
 async def remove_sudo(c: app, m: Message):
     support = SUPPORTS()
-    actor_type = support.get_support_type(m.from_user.id)
-    if not can_manage_sudo(m.from_user.id, actor_type):
-        await m.reply_text("Stay in your limit")
-        return
 
     target = await extract_support_target(
         c,
