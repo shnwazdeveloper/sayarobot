@@ -37,7 +37,7 @@ async def palm_chatbot(client,message):
     input_text = args[1]
 
     # Send the "giving results" message first
-    result_msg = await message.reply("")
+    result_msg = await message.reply("ᴛʜɪɴᴋɪɴɢ...")
 
     # Call the PALM API to get the chatbot response asynchronously
     api_params = {"model_id": MODEL_ID, "prompt": input_text}

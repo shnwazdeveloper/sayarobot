@@ -6,7 +6,13 @@ from datetime import datetime
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from pyrogram import Client
 from pyrogram.enums import ChatMemberStatus as CMS
-from pyrogram.errors import UserNotParticipant
+from pyrogram.errors import (
+    ChannelInvalid,
+    ChannelPrivate,
+    PeerIdInvalid,
+    RPCError,
+    UserNotParticipant,
+)
 
 from Curse import BDB_URI, LOGGER, MESSAGE_DUMP, TIME_ZONE
 from Curse.database.approve_db import Approve
@@ -35,14 +41,15 @@ async def clean_my_db(c:Client,is_cmd=False, id=None):
             stat = await c.get_chat_member(chat_id=chats,user_id=Config.BOT_ID)
             if stat.status not in [CMS.MEMBER, CMS.ADMINISTRATOR, CMS.OWNER]:
                 to_clean.append(chats)
-        except UserNotParticipant:
+        except (UserNotParticipant, ChannelInvalid, ChannelPrivate, PeerIdInvalid):
+            LOGGER.info("Removing stale chat from database: %s", chats)
             to_clean.append(chats)
+        except RPCError as e:
+            LOGGER.warning("Skipping chat %s during database cleanup: %s", chats, e)
         except Exception as e:
             LOGGER.error(e)
             LOGGER.error(format_exc())
-            if not is_cmd:
-                return e
-            else:
+            if is_cmd:
                 to_clean.append(chats)
     for i in to_clean:
         Approve(i).clean_approve()

@@ -260,21 +260,21 @@ async def msg_quotly_cmd(self: Client, ctx: Message):
                     if not i.empty and not i.media
                 ]
             except Exception:
-                return await ctx.reply_text("")
+                return await ctx.reply_text("ᴄᴏᴜʟᴅɴ'ᴛ ᴄʀᴇᴀᴛᴇ ǫᴜᴏᴛᴇ.")
             try:
                 make_quotly = await pyrogram_to_quotly(messages)
                 bio_sticker = BytesIO(make_quotly)
                 bio_sticker.name = "biosticker.webp"
                 return await ctx.reply_sticker(bio_sticker)
             except Exception:
-                return await ctx.reply("")
+                return await ctx.reply("ᴄᴏᴜʟᴅɴ'ᴛ ᴄʀᴇᴀᴛᴇ ǫᴜᴏᴛᴇ.")
     try:
         messages_one = await self.get_messages(
             chat_id=ctx.chat.id, message_ids=ctx.reply_to_message.id, replies=-1
         )
         messages = [messages_one]
     except Exception:
-        return await ctx.reply("")
+        return await ctx.reply("ᴄᴏᴜʟᴅɴ'ᴛ ᴄʀᴇᴀᴛᴇ ǫᴜᴏᴛᴇ.")
     try:
         make_quotly = await pyrogram_to_quotly(messages)
         bio_sticker = BytesIO(make_quotly)

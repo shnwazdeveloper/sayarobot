@@ -107,7 +107,7 @@ async def send_log(c: app, m: Message):
 async def cleeeen(c:app,m:Message):
     if m.from_user.id not in CHAD:
         return
-    x = await m.reply_text("")
+    x = await m.reply_text("ᴄʟᴇᴀɴɪɴɢ...")
     try:
         z = await clean_my_db(c,True,m.from_user.id)
         try:

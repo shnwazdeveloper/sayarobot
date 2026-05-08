@@ -19,6 +19,7 @@ from Curse import PREFIX_HANDLER as COMMAND_HANDLER
 #have to add youtube
 
 gsearch = GoogleSearch()
+SEARCHING_TEXT = "sᴇᴀʀᴄʜɪɴɢ..."
 
 
 @app.on_message(filters.command(["google", "googlu"], COMMAND_HANDLER), group=101012)
@@ -26,7 +27,7 @@ async def g_search(c: app, m: Message):
     split = m.text.split(None, 1)
     if len(split) == 1:
         return await m.reply_text("ʜᴇʏ ɢɪᴠᴇ me a Querry to search")
-    to_del = await m.reply_text("")
+    to_del = await m.reply_text(SEARCHING_TEXT)
     query = split[1]
     try:
         result = await gsearch.async_search(query)
@@ -108,7 +109,7 @@ async def pinterest(_, message):
     except:
         return await message.reply("Input image name for search ")
 
-    search_message = await message.reply("")
+    search_message = await message.reply(SEARCHING_TEXT)
 
     try:
         response = await fetch.get(f"https://pinterest-api-one.vercel.app/?q={query}")
@@ -160,7 +161,7 @@ async def bingimg_search(client: Client, message: Message):
             "Provide me a query to search!"
         )  # Return error if no query is provided
 
-    search_message = await message.reply_text("")  # Display searching message
+    search_message = await message.reply_text(SEARCHING_TEXT)
 
     # Send request to Bing image search API using fetch function
     bingimg_url = "https://sugoi-api.vercel.app/bingimg?keyword=" + text
@@ -197,7 +198,7 @@ async def googleimg_search(client: Client, message: Message):
             "Provide me a query to search!"
         )  # Return error if no query is provided
 
-    search_message = await message.reply_text("")  # Display searching message
+    search_message = await message.reply_text(SEARCHING_TEXT)
 
     # Send request to Google image search API using fetch function
     googleimg_url = "https://sugoi-api.vercel.app/googleimg?keyword=" + text

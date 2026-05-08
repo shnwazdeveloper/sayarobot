@@ -141,7 +141,7 @@ async def who_is_next(c: app, m: Message):
         await m.reply_text("Use it in a group")
         return
     curr = datetime.now(TIME_ZONE).date()
-    xx = await m.reply_text("")
+    xx = await m.reply_text("ᴄʜᴇᴄᴋɪɴɢ...")
     users = []
     today_users = []  # Users with birthday today
 
